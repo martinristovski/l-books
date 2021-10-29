@@ -47,6 +47,7 @@ Scenario: update the listing I just created for this book and check if it went t
     And  I press "Edit"
     And  I fill in "description" with "test NEW test NEW"
     And  I fill in "price" with "17.99"
+    And  I press "Update!"
     And  I am on the listing page for the book with ISBN "978-1-1234562-13" and description "test NEW test NEW"
 
     Then I should see "Seller information"
