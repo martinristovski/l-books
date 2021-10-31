@@ -134,16 +134,18 @@ p, div {
 /* RESULTS SECTION */
 
 .listing-main {
+    margin-top: 64px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: 64px 32px 1fr;
     grid-template-areas: 
-        ". listing-wrapper ."
+        ". flexbox ."
+        ". search-btn ."
+        ". listing-wrapper .";
 }
 
 #listing-wrapper {
     grid-area: listing-wrapper;
-    border: 1px solid red;
     margin-top: 64px;
     width: max-content;
     max-width: 80vw;

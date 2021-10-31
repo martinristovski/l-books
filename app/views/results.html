@@ -15,8 +15,18 @@
             <button id="signin">Sign In</a>
         </div>
         <div class="listing-main">
+            <div id="flexbox">
+                <select name="criteria" id="criteria">
+                    <option value="titleauthor">Title/Author</option>
+                    <option value="course">Course Number</option>
+                    <option value="isbn">ISBN</option>
+                </select>
+                <input type="text" id="search" placeholder="The Iliad">
+            </div>
+            <button id="search-btn">Search</button>
+
             <div id="listing-wrapper">
-                <div class="listing">
+                <a class="listing" href="#"> 
                     <img class="cover-small" src="../assets/images/iliad.jpg" />
                     <div class="listing-title-author-edition">
                         <p class="listing-title">Book Title</p>
@@ -27,8 +37,8 @@
                         <div class="listing-count">X</div>
                         <div style="text-align: center;">listings</div>
                     </div>
-                </div>
-                <div class="listing">
+                </a>
+                <a class="listing" href="#"> 
                     <img class="cover-small" src="../assets/images/iliad.jpg" />
                     <div class="listing-title-author-edition">
                         <p class="listing-title">Book Title</p>
@@ -39,8 +49,8 @@
                         <div class="listing-count">X</div>
                         <div style="text-align: center;">listings</div>
                     </div>
-                </div>
-                <div class="listing">
+                </a>
+                <a class="listing" href="#"> 
                     <img class="cover-small" src="../assets/images/iliad.jpg" />
                     <div class="listing-title-author-edition">
                         <p class="listing-title">Book Title</p>
@@ -51,8 +61,8 @@
                         <div class="listing-count">X</div>
                         <div style="text-align: center;">listings</div>
                     </div>
-                </div>
-                <div class="listing">
+                </a>
+                <a class="listing" href="#"> 
                     <img class="cover-small" src="../assets/images/iliad.jpg" />
                     <div class="listing-title-author-edition">
                         <p class="listing-title">Book Title</p>
@@ -63,8 +73,8 @@
                         <div class="listing-count">X</div>
                         <div style="text-align: center;">listings</div>
                     </div>
-                </div>
-                <div class="listing">
+                </a>
+                <a class="listing" href="#"> 
                     <img class="cover-small" src="../assets/images/iliad.jpg" />
                     <div class="listing-title-author-edition">
                         <p class="listing-title">Book Title</p>
@@ -75,7 +85,7 @@
                         <div class="listing-count">X</div>
                         <div style="text-align: center;">listings</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </body>
