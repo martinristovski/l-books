@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_31_200022) do
+ActiveRecord::Schema.define(version: 2021_10_31_200720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,18 @@ ActiveRecord::Schema.define(version: 2021_10_31_200022) do
     t.index ["seller_id"], name: "index_listings_on_seller_id"
   end
 
+  create_table "user_reputation_ratings", force: :cascade do |t|
+    t.bigint "target_user_id", null: false
+    t.bigint "rater_user_id", null: false
+    t.bigint "listing_id", null: false
+    t.integer "score"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["listing_id"], name: "index_user_reputation_ratings_on_listing_id"
+    t.index ["rater_user_id"], name: "index_user_reputation_ratings_on_rater_user_id"
+    t.index ["target_user_id"], name: "index_user_reputation_ratings_on_target_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -69,4 +81,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_200022) do
   add_foreign_key "book_course_associations", "courses"
   add_foreign_key "listings", "books"
   add_foreign_key "listings", "users", column: "seller_id"
+  add_foreign_key "user_reputation_ratings", "listings"
+  add_foreign_key "user_reputation_ratings", "users", column: "rater_user_id"
+  add_foreign_key "user_reputation_ratings", "users", column: "target_user_id"
 end
