@@ -11,8 +11,8 @@ Background: books, users, and listings have been added to the database
       |  1 | Sample Book 1  | Sample Example | 2       | 978-1-1234562-13 |
 
     Given the following users exist:
-      | id | last_name | first_name | email              | school
-      |  1 | Doe       | Jane       | jd123@columbia.edu | SEAS
+      | id | last_name | first_name | email              | school |
+      |  1 | Doe       | Jane       | jd123@columbia.edu | SEAS   |
 
     And I am on the home page
     And I select "ISBN" from "search_type"
