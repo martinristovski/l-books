@@ -161,7 +161,8 @@ p, div {
     grid-template-rows: 160px;
     grid-template-areas: 
         "cover-small listing-title-author-edition listing-number";
-    border: 1px solid black;
+    border: 1px solid gray;
+    border-radius: 5px;
     margin: 20px 10px 20px 10px;
 }
 
