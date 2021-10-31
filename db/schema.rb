@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_31_194542) do
+ActiveRecord::Schema.define(version: 2021_10_31_200022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "book_course_associations", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_id", "course_id"], name: "index_book_course_associations_on_book_id_and_course_id", unique: true
+    t.index ["book_id"], name: "index_book_course_associations_on_book_id"
+    t.index ["course_id"], name: "index_book_course_associations_on_course_id"
+  end
 
   create_table "books", force: :cascade do |t|
     t.string "title", null: false
@@ -55,6 +65,8 @@ ActiveRecord::Schema.define(version: 2021_10_31_194542) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "book_course_associations", "books"
+  add_foreign_key "book_course_associations", "courses"
   add_foreign_key "listings", "books"
   add_foreign_key "listings", "users", column: "seller_id"
 end
