@@ -3,23 +3,48 @@ html {
     min-height: 100%;
 }
 
+body {
+    margin: 0;
+}
+
 a {
     text-decoration: none;
     color: black;
     font-family: 'Open Sans', sans-serif;
 }
 
-p {
+p, div {
     font-family: 'Open Sans', sans-serif;
 }
 
 /* NAVBAR SECTION */
 
-#navbar {
+#topbar {
     display: grid;
     grid-template-columns: 1fr 128px;
     grid-template-rows: 48px;
     grid-template-areas: ". signin";
+}
+
+#navbar {
+    display: grid;
+    grid-template-columns: 128px 1fr 128px;
+    grid-template-rows: 48px;
+    grid-template-areas: "navbar-logo . signin";
+    background-color: black;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#navbar-logo {
+    grid-area: navbar-logo;
+    justify-self: center;
+    align-self: end;
+    font-family: 'Parisienne', cursive;
+    font-size: 32px;
+    color: white;
 }
 
 #signin {
@@ -37,7 +62,7 @@ p {
 
 /* MAIN SECTION */
 
-#main {
+.main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 256px 64px 32px;
@@ -104,4 +129,61 @@ p {
 
 #search-btn:focus {
     border: 1px solid darkgray;
+}
+
+/* RESULTS SECTION */
+
+.listing-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 
+        ". listing-wrapper ."
+}
+
+#listing-wrapper {
+    grid-area: listing-wrapper;
+    border: 1px solid red;
+    margin-top: 64px;
+    width: max-content;
+    max-width: 80vw;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+.listing {
+    display: grid;
+    grid-template-columns: 110px 210px 100px;
+    grid-template-rows: 160px;
+    grid-template-areas: 
+        "cover-small listing-title-author-edition listing-number";
+    border: 1px solid black;
+    margin: 20px 10px 20px 10px;
+}
+
+.cover-small {
+    grid-area: cover-small;
+    height: 150px;
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-title-author-edition {
+    grid-area: listing-title-author-edition;
+    justify-self: left;
+    align-self: center;
+    margin-left: 10px;
+}
+
+.listing-number {
+    grid-area: listing-number;
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-count {
+    text-align: center;
+    font-size: 40px;
 }
