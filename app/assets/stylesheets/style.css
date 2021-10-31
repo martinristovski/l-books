@@ -3,23 +3,48 @@ html {
     min-height: 100%;
 }
 
+body {
+    margin: 0;
+}
+
 a {
     text-decoration: none;
     color: black;
     font-family: 'Open Sans', sans-serif;
 }
 
-p {
+p, div {
     font-family: 'Open Sans', sans-serif;
 }
 
 /* NAVBAR SECTION */
 
-#navbar {
+#topbar {
     display: grid;
     grid-template-columns: 1fr 128px;
     grid-template-rows: 48px;
     grid-template-areas: ". signin";
+}
+
+#navbar {
+    display: grid;
+    grid-template-columns: 128px 1fr 128px;
+    grid-template-rows: 48px;
+    grid-template-areas: "navbar-logo . signin";
+    background-color: black;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#navbar-logo {
+    grid-area: navbar-logo;
+    justify-self: center;
+    align-self: end;
+    font-family: 'Parisienne', cursive;
+    font-size: 32px;
+    color: white;
 }
 
 #signin {
@@ -37,7 +62,7 @@ p {
 
 /* MAIN SECTION */
 
-#main {
+.main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 256px 64px 32px;
@@ -104,4 +129,176 @@ p {
 
 #search-btn:focus {
     border: 1px solid darkgray;
+}
+
+/* RESULTS SECTION */
+
+.results-main {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 64px 32px 1fr;
+    grid-template-areas: 
+        ". flexbox ."
+        ". search-btn ."
+        ". results-wrapper .";
+}
+
+#results-wrapper {
+    grid-area: results-wrapper;
+    margin-top: 64px;
+    width: max-content;
+    max-width: 80vw;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+.result {
+    display: grid;
+    grid-template-columns: 110px 210px 100px;
+    grid-template-rows: 160px;
+    grid-template-areas: 
+        "cover-small book-title-author-edition book-number";
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 20px 10px 20px 10px;
+}
+
+.cover-small {
+    grid-area: cover-small;
+    height: 150px;
+    justify-self: center;
+    align-self: center;
+}
+
+.book-title-author-edition {
+    grid-area: book-title-author-edition;
+    justify-self: left;
+    align-self: center;
+    margin-left: 10px;
+}
+
+.book-number {
+    grid-area: book-number;
+    justify-self: center;
+    align-self: center;
+}
+
+.book-count {
+    text-align: center;
+    font-size: 40px;
+}
+
+/* BOOK SECTION */
+
+.book-main {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr ;
+    grid-template-rows: 400px 32px 1fr;
+    grid-template-areas: 
+        "book-wrapper"
+        "listing-number"
+        "listings-wrapper";
+}
+
+#book-wrapper {
+    grid-area: book-wrapper;
+    width: max-content;
+    max-width: 80vw;
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.book {
+    display: grid;
+    grid-template-columns: 250px 350px;
+    grid-template-rows: 320px;
+    grid-template-areas: 
+        "cover book-title-author-edition";
+    margin: 20px 10px 20px 10px;
+}
+
+.cover {
+    grid-area: cover;
+    height: 300px;
+    justify-self: center;
+    align-self: center;
+}
+
+.book .book-title-author-edition .book-title{
+    font-size: 40px;
+}
+
+.book .book-title-author-edition .book-author{
+    font-size: 30px;
+}
+
+.book .book-title-author-edition .book-edition{
+    font-size: 30px;
+}
+
+.listing-number {
+    grid-area: listing-number;
+    margin: 10px 40px 10px 40px;
+    font-size: 20px;
+    justify-self: flex-start;
+    align-items: center;
+}
+
+.listings-wrapper {
+    grid-area: listings-wrapper;
+    margin: 20px 40px 20px 40px;
+}
+
+.listing {
+    grid-area: listing;
+    border: 1px solid gray;
+    border-radius: 32px;
+    margin: 4px 8px 4px 8px;
+    display: grid;
+    grid-template-columns: 128px 1fr 256px;
+    grid-template-rows: 64px;
+    grid-template-areas: 
+        "listing-price listing-description listing-actions";
+}
+
+.listing-price {
+    grid-area: listing-price;
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-description {
+    grid-area: listing-description;
+    justify-self: left;
+    align-self: center;
+}
+
+.listing-actions{
+    grid-area: listing-actions;
+    justify-self: right;
+    align-self: center;
+    margin-right: 40px;
+}
+
+.mine {
+    display: grid;
+    grid-template-columns: 64px 64px;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "listing-edit-option listing-delete-option";
+}
+
+.listing-edit-option {
+    grid-area: listing-edit-option;
+    justify-self: right;
+}
+
+.listing-delete-option {
+    grid-area: listing-delete-option;
+    justify-self: right;
 }
