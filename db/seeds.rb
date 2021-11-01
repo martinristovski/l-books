@@ -43,7 +43,7 @@ b1 = Book.create!(
   edition: nil,
   publisher: "University of Chicago Press",
   isbn: "9780226470498",
-  photo_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: S3 later.
+  image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: S3 later.
 )
 b2 = Book.create!(
   title: "Plato Symposium (Hackett Classics)",
@@ -51,7 +51,7 @@ b2 = Book.create!(
   edition: "1989 Edition",
   publisher: "Hackett Publishing Co",
   isbn: "9780872200760",
-  photo_url: "https://images-na.ssl-images-amazon.com/images/I/41vx+Jrc8GL.jpg" # TODO: S3 later.
+  image_url: "https://images-na.ssl-images-amazon.com/images/I/41vx+Jrc8GL.jpg" # TODO: S3 later.
 )
 b3 = Book.create!(
   title: "The Aeneid of Virgil (Bantam Classics)",
@@ -59,7 +59,7 @@ b3 = Book.create!(
   edition: "Revised ed.",
   publisher: "Bantam Classics",
   isbn: "9780553210415",
-  photo_url: "https://images-na.ssl-images-amazon.com/images/I/71Rd1htsJvL.jpg" # TODO: S3 later.
+  image_url: "https://images-na.ssl-images-amazon.com/images/I/71Rd1htsJvL.jpg" # TODO: S3 later.
 )
 
 # courses
