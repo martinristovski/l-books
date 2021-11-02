@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   root 'search#index'
 
   # search
-  post 'search', to: 'search#search_from_home'
+  post 'search', to: 'search#results'
 end

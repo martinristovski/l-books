@@ -5,14 +5,28 @@ class SearchController < ApplicationController
     @search_types = form_search_types
   end
 
-  def search_from_home
+  def results
+    @search_types = form_search_types
     if params[:commit] == "Go" && params[:criteria] != nil && params[:search_term] != nil
       if params[:search_term].length == 0 || params[:criteria].length == 0
         flash[:notice] = "Please enter a search term."
         redirect_to action: "index"
       end
 
+      # get search params
+      c =  params[:criteria]
+      st = params[:search_term].downcase  # convert to lowercase | TODO: Sanitize!
 
+      # search by param
+      # TODO: Currently searching for substrings. Make this more forgiving.
+      if c == "titleauthor"
+        @results = Book.where("LOWER(title) like ? OR LOWER(authors) like ?", "%#{st}%", "%#{st}%")
+      elsif c == "course"
+        @results = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
+      else # c == "isbn"
+        st = st.tr('^0-9', '') # strip all non numeric chars
+        @results = Course.where("isbn like ? OR isbn = ?", "%#{st}%", "%#{st}%")
+      end
     end
   end
 

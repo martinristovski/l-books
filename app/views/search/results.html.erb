@@ -1,0 +1,35 @@
+<div id="navbar">
+  <%= link_to "L'Books", '/', :id => 'navbar-logo' %>
+  <button id="signin">Sign In</button>
+</div>
+<div class="results-main">
+  <%= form_with url: search_path, :id => "flexbox", method: :post do |form| %>
+    <%= form.select :criteria, @search_types.collect { |st| [st.display_name, st.id] }, :id => "criteria" %>
+    <%= form.text_field :search_term, placeholder: "(type your query here)", aria: { "label": "Search by query type selected" }, :id => "search" %>
+    <%= form.submit "Go", :id => "search-btn" %>
+  <% end %>
+
+  <div id="results-wrapper">
+    <% @results.each do |res| %>
+      <a class="result" href="app/views/book.html.erb">
+        <%= image_tag res.image_url, class: "cover-small" %>
+        <div class="book-title-author-edition">
+          <p class="book-title"><%= res.title %></p>
+          <p class="book-author"><%= res.authors %></p>
+          <p class="book-edition">
+            <%= res.publisher %>
+            <% if not res.edition.nil? and not res.edition.empty? %>
+              (<%= res.edition %>)
+            <% end %>
+            |
+            <%= res.isbn %>
+          </p>
+        </div>
+        <div class="book-number">
+          <div class="book-count"><%= res.listings.length %></div>
+          <div style="text-align: center;">listings</div>
+        </div>
+      </a>
+    <% end %>
+  </div>
+</div>
