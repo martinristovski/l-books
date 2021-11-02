@@ -4,14 +4,19 @@
 </div>
 <div class="results-main">
   <%= form_with url: search_path, :id => "flexbox", method: :post do |form| %>
-    <%= form.select :criteria, @search_types.collect { |st| [st.display_name, st.id] }, :id => "criteria" %>
-    <%= form.text_field :search_term, placeholder: "(type your query here)", aria: { "label": "Search by query type selected" }, :id => "search" %>
+    <%= form.select :criteria,
+                    @search_types.collect { |st| [st.display_name, st.id] }, :id => "criteria",
+                    :selected => params[:criteria] %>
+    <%= form.text_field :search_term,
+                        placeholder: "(type your query here)", aria: { "label": "Search by query type selected" },
+                        :id => "search",
+                        :value => params[:search_term] %>
     <%= form.submit "Go", :id => "search-btn" %>
   <% end %>
 
   <div id="results-wrapper">
     <% @results.each do |res| %>
-      <a class="result" href="app/views/book.html.erb">
+      <a class="result" href="app/views/book/book.html.erb">
         <%= image_tag res.image_url, class: "cover-small" %>
         <div class="book-title-author-edition">
           <p class="book-title"><%= res.title %></p>
