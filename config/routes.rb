@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   root 'search#index'
 
   # search
-  post 'search', to: 'search#results'
-  get 'search', to: redirect('/')
+  post '/search', to: 'search#results'
+  get '/search', to: redirect('/')
 
   # book
   get '/book/:id', to: 'book#show'
+  get '/book', to: redirect('/')
 end
