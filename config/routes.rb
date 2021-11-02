@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   # search
   post 'search', to: 'search#results'
   get 'search', to: redirect('/')
+
+  # book
+  get '/book/:id', to: 'book#show'
 end

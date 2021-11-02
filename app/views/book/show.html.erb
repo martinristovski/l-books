@@ -4,16 +4,33 @@
 </div>
 <div class="book-main">
   <div id="book-wrapper">
-    <a class="book" href="#">
-      <img class="cover" src="../assets/images/iliad.jpg" />
+    <div class="book">
+      <%= image_tag @book.image_url, class: "cover" %>
       <div class="book-title-author-edition">
-        <p class="book-title">Book Title</p>
-        <p class="book-author">Book Author</p>
-        <p class="book-edition">Edition | ISBN</p>
+        <p class="book-title"><%= @book.title %></p>
+        <p class="book-author"><%= @book.authors %></p>
+        <p class="book-edition">
+          <%= @book.publisher %>
+          <% if not @book.edition.nil? and not @book.edition.empty? %>
+            (<%= @book.edition %>)
+          <% end %>
+          |
+          <%= @book.isbn %>
+        </p>
       </div>
-    </a>
+    </div>
   </div>
-  <div class="listing-number">X listings found</div>
+
+  <div class="listing-number">
+    <% if @book.listings.empty? %>
+      No listings found!
+    <% elsif @book.listings.length == 1 %>
+      1 listing found:
+    <% else %>
+      <%= @book.listings.length %> listings found:
+    <% end %>
+  </div>
+
   <div class="listings-wrapper">
     <div class="listing">
       <div class="listing-price">$XX.XX</div>
