@@ -7,7 +7,8 @@ class SearchController < ApplicationController
 
   def results
     @search_types = form_search_types
-    if params[:commit] == "Go" && params[:criteria] != nil && params[:search_term] != nil
+    p params
+    if params[:commit] == "Go" && params[:criteria] != nil && params[:search_term] != nil && valid_criteria?(params[:criteria])
       if params[:search_term].length == 0 || params[:criteria].length == 0
         flash[:notice] = "Please enter a search term."
         redirect_to action: "index"
@@ -27,6 +28,9 @@ class SearchController < ApplicationController
         st = st.tr('^0-9', '') # strip all non numeric chars
         @results = Book.where("isbn like ? OR isbn = ?", "%#{st}%", "%#{st}%")
       end
+    else
+      flash[:notice] = "Invalid search."
+      redirect_to action: "index"
     end
   end
 
@@ -36,5 +40,9 @@ class SearchController < ApplicationController
     c2 = OpenStruct.new(:display_name => "Course Number", :id => "course")
     c3 = OpenStruct.new(:display_name => "ISBN", :id => "isbn")
     [c1, c2, c3]
+  end
+
+  def valid_criteria? c
+    %w[titleauthor course isbn].include? c
   end
 end
