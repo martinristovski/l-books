@@ -25,7 +25,7 @@ class SearchController < ApplicationController
         @results = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
       else # c == "isbn"
         st = st.tr('^0-9', '') # strip all non numeric chars
-        @results = Course.where("isbn like ? OR isbn = ?", "%#{st}%", "%#{st}%")
+        @results = Book.where("isbn like ? OR isbn = ?", "%#{st}%", "%#{st}%")
       end
     end
   end
