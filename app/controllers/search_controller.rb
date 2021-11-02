@@ -6,7 +6,14 @@ class SearchController < ApplicationController
   end
 
   def search_from_home
+    if params[:commit] == "Go" && params[:criteria] != nil && params[:search_term] != nil
+      if params[:search_term].length == 0 || params[:criteria].length == 0
+        flash[:notice] = "Please enter a search term."
+        redirect_to action: "index"
+      end
 
+
+    end
   end
 
   private
