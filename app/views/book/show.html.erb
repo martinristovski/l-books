@@ -31,56 +31,70 @@
     <% end %>
   </div>
 
-  <div class="listings-wrapper">
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions foreign">
-        <div class="listing-contact-status">Contacted</div>
-      </div>
+  <% unless @book.listings.empty? %>
+    <div class="listings-wrapper">
+      <% @book.listings.each do |listing| %>
+        <div class="listing">
+          <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
+          <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(50) %></div>
+          <div class="listing-actions foreign">
+            <div class="listing-contact-status">Contact</div>
+          </div>
+        </div>
+      <% end %>
     </div>
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions mine">
-        <div class="listing-edit-option">Edit</div>
-        <div class="listing-delete-option">Delete</div>
-      </div>
-    </div>
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions foreign">
-        <div class="listing-contact-status">Contact</div>
-      </div>
-    </div>
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions foreign">
-        <div class="listing-contact-status">Contact</div>
-      </div>
-    </div>
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions foreign">
-        <div class="listing-contact-status">Contact</div>
-      </div>
-    </div>
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions foreign">
-        <div class="listing-contact-status">Contact</div>
-      </div>
-    </div>
-    <div class="listing">
-      <div class="listing-price">$XX.XX</div>
-      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>
-      <div class="listing-actions foreign">
-        <div class="listing-contact-status">Contact</div>
-      </div>
-    </div>
-  </div>
+  <% end %>
+
+<!--  <div class="listings-wrapper">-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions foreign">-->
+<!--        <div class="listing-contact-status">Contacted</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions mine">-->
+<!--        <div class="listing-edit-option">Edit</div>-->
+<!--        <div class="listing-delete-option">Delete</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions foreign">-->
+<!--        <div class="listing-contact-status">Contact</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions foreign">-->
+<!--        <div class="listing-contact-status">Contact</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions foreign">-->
+<!--        <div class="listing-contact-status">Contact</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions foreign">-->
+<!--        <div class="listing-contact-status">Contact</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="listing">-->
+<!--      <div class="listing-price">$XX.XX</div>-->
+<!--      <div class="listing-description">Like new - Lorem ipsum dolor sit amet...</div>-->
+<!--      <div class="listing-actions foreign">-->
+<!--        <div class="listing-contact-status">Contact</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>
