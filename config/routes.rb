@@ -8,4 +8,7 @@ Rails.application.routes.draw do
   # book
   get '/book/:id', to: 'book#show'
   get '/book', to: redirect('/')
+
+  # coverage
+  get '/coverage', :to => redirect('/index.html')
 end
