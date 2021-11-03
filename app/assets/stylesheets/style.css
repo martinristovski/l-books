@@ -302,3 +302,124 @@ p, div {
     grid-area: listing-delete-option;
     justify-self: right;
 }
+
+/* LISTING SECTION */
+
+.book-main {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr ;
+    grid-template-rows: 400px 32px 1fr;
+    grid-template-areas: 
+        "book-wrapper"
+        "listing-number"
+        "listings-wrapper";
+}
+
+#book-wrapper {
+    grid-area: book-wrapper;
+    width: max-content;
+    max-width: 80vw;
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.listing-page-main {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: 
+        "listing-photos listing-info seller-info";
+}
+
+.listing-photos {
+    grid-area: listing-photos;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 4fr 1fr;
+    grid-template-areas: 
+        "listing-cover"
+        "listing-alt-photos";
+}
+
+.listing-cover {
+    grid-area: listing-cover;
+    height: 300px;
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-alt-photos {
+    grid-area: listing-alt-photos;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+}
+
+.listing-alt-photo {
+    margin: 10px 5px 10px 5px;
+    height: 64px;
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-info {
+    grid-area: listing-info;
+    grid-template-columns: 1fr;
+    grid-template-rows: 128px 64px 64px 128px 1fr;
+    grid-template-areas: 
+        "listing-title listing-author listing-edition listing-price listing-description";
+}
+
+.listing-title {
+    grid-area: listing-title;
+    font-size: 40px;
+}
+
+.listing-author {
+    grid-area: listing-author;
+    font-size: 20px;
+}
+
+.listing-edition {
+    grid-area: listing-edition;
+    font-size: 20px;
+}
+
+.listing-price {
+    grid-area: listing-price;
+    font-size: 25px;
+}
+
+.listing-description {
+    grid-area: listing-description;
+}
+
+.seller-info {
+    grid-area: seller-info;
+    border: 1px solid lightgray;
+    padding: 10px;
+    max-width: fit-content;
+    max-height: fit-content;
+    grid-template-columns: 64px 64px 64px 64px 256px;
+    grid-template-rows: 1fr;
+    grid-template-areas: 
+        "seller-name seller-school seller-reputation seller-contact";
+}
+
+.seller-name {
+    grid-area: seller-name;
+}
+
+.seller-school {
+    grid-area: seller-school;
+}
+
+.seller-reputation {
+    grid-area: seller-reputation;
+}
+
+.seller-contact {
+    grid-area: seller-contact;
+}
