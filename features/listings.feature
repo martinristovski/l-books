@@ -22,7 +22,7 @@ Background: books, users, and listings have been added to the database
     Then I should be on the listings page for the book with ISBN "978-1-1234562-13"
     Then I should see "No listings available!"
 
-Scenario: read the details of the listing we just created
+Scenario: read the details of the listing 
     Given I am on the listing page for the book with ISBN "978-1-1234562-13" and description "test lorem ipsum blah blah blah."
     Then  I should see "Seller information"
     And   I should see "test lorem ipsum blah blah blah."
