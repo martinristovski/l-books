@@ -23,7 +23,17 @@ class SearchController < ApplicationController
       if c == "titleauthor"
         @results = Book.where("LOWER(title) like ? OR LOWER(authors) like ?", "%#{st}%", "%#{st}%")
       elsif c == "course"
-        @results = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
+        courses = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
+        if courses.empty?
+          @results = []
+        else
+          c = courses[0]
+          all_bca = BookCourseAssociation.where(course_id: c.id)
+          @results = []
+          all_bca.each do |bca|
+            @results.append(bca.book)
+          end
+        end
       else # c == "isbn"
         st = st.tr('^0-9', '') # strip all non numeric chars
         @results = Book.where("isbn like ? OR isbn = ?", "%#{st}%", "%#{st}%")
