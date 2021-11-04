@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   get '/book/:id', to: 'book#show'
   get '/book', to: redirect('/')
 
+  # listing
+  get '/listing/:id', to: 'listing#show'
+  get '/listing', to: redirect('/')
+
   # coverage
   get '/coverage', :to => redirect('/index.html')
 end
