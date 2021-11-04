@@ -40,6 +40,7 @@ RSpec.describe "Books", type: :request do
     it "redirect home for a non-existing book" do
       get '/book/0'
       expect(response).to redirect_to('/')
+      expect(flash[:notice]).to eq("Sorry, we couldn't find a book with that ID.")
     end
   end
 
@@ -47,6 +48,7 @@ RSpec.describe "Books", type: :request do
     it "redirect home if non-numeric id given" do
       get '/book/dekoewd'
       expect(response).to redirect_to('/')
+      expect(flash[:notice]).to eq("Sorry, we couldn't find a book with that ID.")
     end
   end
 
