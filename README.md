@@ -1,24 +1,13 @@
-# README
+# L'Books
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Team members:
+- Martin Ristovski, mr3986
+- Ivy Cao, ic2502
+- Aditya Vikram Satnalika, avs2170
+- Vishnu Nair, vn2287
 
-Things you may want to cover:
+Heroku: https://lbooks-4995.herokuapp.com/
 
-* Ruby version
+Github: https://github.com/martinristovski/l-books
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+NB. Some of our tests and user stories relate to features we intend to implement in iter2.
