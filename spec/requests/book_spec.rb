@@ -33,6 +33,7 @@ RSpec.describe "Books", type: :request do
     it "renders book listing template for an existing book" do
       get '/book/1'
       expect(response).to render_template('show')
+      expect(assigns(:book).isbn).to eq("9780226470498")
     end
   end
 
