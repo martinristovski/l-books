@@ -16,6 +16,7 @@ Background: books, users, and listings have been added to the database
 
     And I am on the home page
     And I fill in "query" with "978-1-1234562-13"
+    And I click "Go"
 
     Then I should be on the results page for a search with the query "978-1-1234562-13"
     And  I click the result entry with title "Sample Book 1"

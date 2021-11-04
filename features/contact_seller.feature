@@ -14,8 +14,9 @@ Background: books and users have been added to the database
       | id | last_name | first_name | UNI    | email              | school | reputation |
       |  1 | Doe       | Jane       | jd123  | jd123@columbia.edu | SEAS   | 3          |
 
-    And  I am on the home page
-    And  I fill in "query" with "978-1-1234562-11"
+    And I am on the home page
+    And I fill in "query" with "978-1-1234562-11"
+    And I click "Go"
 
     Then I should be on the results page for a search with the query "978-1-1234562-11"
     And  I click the result entry with title "The Iliad"
