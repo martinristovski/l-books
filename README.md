@@ -24,4 +24,4 @@ Please migrate and seed first.
 * Search by title/author, course, and isbn.
 * See book results.
 * See listings for a book.
-* See listing page.
+* See listing page. (need to manually put in the URL; for example, `/listing/1`)
