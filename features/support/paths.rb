@@ -23,7 +23,10 @@ module NavigationHelpers
 
     when /^the results page for "(.*)"$/
       edit_book_path(Book.find_by_title($1).id)
-      
+
+    when /^the results page for a search with the query "(.*)"$/
+      "/search"
+
     when /^the listings page for "(.*)"$/
       book_path(Book.find_by_title($1).id)
       
