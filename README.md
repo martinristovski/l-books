@@ -8,6 +8,9 @@ Team members:
 
 Heroku: https://lbooks-4995.herokuapp.com/
 
+Coverage: https://lbooks-4995.herokuapp.com/coverage
+* We have 100% RSpec coverage.
+
 Github: https://github.com/martinristovski/l-books
 
 NB. Some of our tests and user stories relate to features we intend to implement in iter2.
