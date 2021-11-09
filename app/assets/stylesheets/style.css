@@ -423,3 +423,56 @@ p, div {
 .seller-contact {
     grid-area: seller-contact;
 }
+
+/* USER DASHBOARD SECTION */
+
+.dashboard-main {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 64px 32px 1fr 32px 1fr;
+    grid-template-areas: 
+        ". heading ."
+        ". my-listings ."
+        ". my-listings-wrapper ."
+        ". bookmarked-listings ."
+        ". bookmarked-listings-wrapper .";
+}
+
+#heading {
+    grid-area: heading;
+    font-size: 30px;
+}
+
+#my-listings, #bookmarked-listings {
+    font-size: 30px;
+}
+
+#my-listings-wrapper, #bookmarked-listings-wrapper {
+    margin-top: 64px;
+    width: max-content;
+    max-width: 80vw;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+#my-listings-wrapper {
+    grid-area: my-listings-wrapper;
+}
+
+#bookmarked-listings-wrapper {
+    grid-area: bookmarked-listings-wrapper;
+}
+
+.result {
+    display: grid;
+    grid-template-columns: 110px 210px 100px;
+    grid-template-rows: 160px;
+    grid-template-areas: 
+        "cover-small book-title-author-edition book-number";
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 20px 10px 20px 10px;
+}
