@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_11_01_212044) do
     t.string "last_name", null: false
     t.string "uni"
     t.string "email", null: false
+    t.string "password_digest"
     t.string "school"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
