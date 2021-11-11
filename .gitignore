@@ -43,3 +43,6 @@ yarn-debug.log*
 /public/coverage/assets/
 /public/coverage/.resultset.json
 /public/coverage/.resultset.json.lock
+
+# local_env.yml
+config/local_env.yml
