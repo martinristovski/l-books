@@ -430,13 +430,11 @@ p, div {
     margin-top: 64px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 64px 32px 1fr 32px 1fr;
+    grid-template-rows: 64px 20px 1fr;
     grid-template-areas: 
         ". heading ."
         ". my-listings ."
         ". my-listings-wrapper ."
-        ". bookmarked-listings ."
-        ". bookmarked-listings-wrapper .";
 }
 
 #heading {
@@ -444,11 +442,14 @@ p, div {
     font-size: 30px;
 }
 
-#my-listings, #bookmarked-listings {
+#my-listings {
+    grid-area: my-listings;
     font-size: 30px;
+    margin-top: 30px;
 }
 
-#my-listings-wrapper, #bookmarked-listings-wrapper {
+#my-listings-wrapper { 
+    grid-area: my-listings-wrapper;
     margin-top: 64px;
     width: max-content;
     max-width: 80vw;
@@ -456,14 +457,6 @@ p, div {
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
-}
-
-#my-listings-wrapper {
-    grid-area: my-listings-wrapper;
-}
-
-#bookmarked-listings-wrapper {
-    grid-area: bookmarked-listings-wrapper;
 }
 
 .result {

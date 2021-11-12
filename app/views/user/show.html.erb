@@ -2,46 +2,41 @@
   <%= link_to "L'Books", '/', :id => 'navbar-logo' %>
   <button id="signin">Sign In</button> <!-- TODO -->
 </div>
-<div class="book-main">
-  <div id="book-wrapper">
-    <div class="book">
-      <%= image_tag @book.image_url, class: "cover" %>
-      <div class="book-title-author-edition">
-        <p class="book-title"><%= @book.title %></p>
-        <p class="book-author"><%= @book.authors %></p>
-        <p class="book-edition">
-          <%= @book.publisher %>
-          <% if not @book.edition.nil? and not @book.edition.empty? %>
-            (<%= @book.edition %>)
-          <% end %>
-          |
-          <%= @book.isbn %>
-        </p>
-      </div>
-    </div>
-  </div>
 
-  <div class="listing-number">
-    <% if @book.listings.empty? %>
-      No listings found!
-    <% elsif @book.listings.length == 1 %>
-      1 listing found:
-    <% else %>
-      <%= @book.listings.length %> listings found:
+<div class="dashboard-main">
+  <div id="heading"> Dashboard - <%= @user.email %> </div>
+
+  <div id="my-listings">My listings</div>
+  <div id="my-listings-wrapper">
+    <% @listings.each do |res| %>
+      <%= link_to "/book/#{res.id}", :class => 'result' do %>
+        <%= image_tag res.image_url, class: "cover-small" %>
+        <div class="book-title-author-edition">
+          <p class="book-title"><%= res.title %></p>
+          <p class="book-author"><%= res.authors %></p>
+          <p class="book-edition">
+            <%= res.publisher %>
+            <% if not res.edition.nil? and not res.edition.empty? %>
+              (<%= res.edition %>)
+            <% end %>
+            |
+            <%= res.isbn %>
+          </p>
+        </div>
+        <div class="book-number">
+          <div class="book-count"><%= res.listings.length %></div>
+          <div style="text-align: center;">listings</div>
+        </div>
+      <% end %>
     <% end %>
   </div>
-
-  <% unless @book.listings.empty? %>
-    <div class="listings-wrapper">
-      <% @book.listings.each do |listing| %>
-        <%= link_to "/listing/#{listing.id}", :class => 'listing' do %>
-          <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
-          <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(50) %></div>
-          <div class="listing-actions foreign">
-            <div class="listing-contact-status">Contact</div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
 </div>
+
+
+
+
+
+
+
+
+

@@ -1,38 +1,38 @@
-        <div id="navbar">
-            <a href="index.html" id="navbar-logo">L'Books</a>
-            <button id="signin">Sign In</button>
+<div id="navbar">
+  <%= link_to "L'Books", '/', :id => 'navbar-logo' %>
+  <button id="signin">Sign In</button>
+</div>
+<div class="listing-page-main">
+    <div class="listing-photos">
+        <%= image_tag @listing.book.image_url, class: "listing-cover" %>
+        <div class="listing-alt-photos">
+            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
+            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
+            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
+            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
         </div>
-        <div class="listing-page-main">
-            <div class="listing-photos">
-                <%= image_tag @listing.book.image_url, class: "listing-cover" %>
-                <div class="listing-alt-photos">
-                    <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-                    <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-                    <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-                    <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-                </div>
-            </div>
-            <div class="listing-info">
-                <p class="listing-title"><%= @listing.book.title %></p>
-                <p class="listing-author"><%= @listing.book.authors %></p>
-                <p class="listing-edition">
-                    <%= @listing.book.publisher %>
-                    <% if not @listing.book.edition.nil? and not @listing.book.edition.empty? %>
-                        (<%= @listing.book.edition %>)
-                    <% end %>
-                    |
-                    <%= @listing.book.isbn %>
-                </p>
-                <p class="listing-price"><%= sprintf('$%.2f', @listing.price) %></p>
-                <div class="listing-description"><em><%= @listing.condition %></em> | <%= @listing.description.truncate(50) %></div>
-            </div>
-            <div class="seller-info">
-                <p style="font-size: 25px;">Seller Information</p>
-                <p class="seller-name">Name: <%= @listing.seller.first_name %> <%= @listing.seller.last_name %></p>
-                <p class="seller-school">School: <%= @listing.seller.school %></p>
-                <p class="seller-reputation">Reputation: 4.5</p>
-                <div class="seller-contact">
-                    <p>Email: <%= @listing.seller.email %></p>
-                </div>
-            </div>
+    </div>
+    <div class="listing-info">
+        <p class="listing-title"><%= @listing.book.title %></p>
+        <p class="listing-author"><%= @listing.book.authors %></p>
+        <p class="listing-edition">
+            <%= @listing.book.publisher %>
+            <% if not @listing.book.edition.nil? and not @listing.book.edition.empty? %>
+                (<%= @listing.book.edition %>)
+            <% end %>
+            |
+            <%= @listing.book.isbn %>
+        </p>
+        <p class="listing-price"><%= sprintf('$%.2f', @listing.price) %></p>
+        <div class="listing-description"><em><%= @listing.condition %></em> | <%= @listing.description.truncate(50) %></div>
+    </div>
+    <div class="seller-info">
+        <p style="font-size: 25px;">Seller Information</p>
+        <p class="seller-name">Name: <%= @listing.seller.first_name %> <%= @listing.seller.last_name %></p>
+        <p class="seller-school">School: <%= @listing.seller.school %></p>
+        <p class="seller-reputation">Reputation: 4.5</p>
+        <div class="seller-contact">
+            <p>Email: <%= @listing.seller.email %></p>
         </div>
+    </div>
+</div>
