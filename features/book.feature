@@ -25,8 +25,13 @@ Background: books, users, courses, and BCAs have been added to the database
     | 1       | 1         |
     | 2       | 2         |
 
-Scenario: Pull up a book's information page
+Scenario: Pull up a book's information page for a book with no listings
   Given I am on the book view page for "Sample Book 1"
   Then I should see "Sample Book 1"
   Then I should see "9781123456213"
   Then I should see "No listings found!"
+
+Scenario: Pull up a book's information page for a non-existent book
+  Given I am on the book view page for a book with ID "4"
+  Then  I should be on the home page
+  And   I should see "Sorry, we couldn't find a book with that ID."

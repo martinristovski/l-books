@@ -29,6 +29,9 @@ module NavigationHelpers
 
     when /^the book view page for "(.*)"$/
       book_path(Book.find_by_title($1).id)
+
+    when /^the book view page for a book with ID "(.*)"$/
+      book_path($1)
       
     when /^the listing page for the book with ISBN "(.*)" and description "(.*)"$/
       listing_path(Listing.find(isbn = $1, description = $2))
