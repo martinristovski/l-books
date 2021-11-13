@@ -33,7 +33,7 @@ class SearchController < ApplicationController
           end
           @results = []
           all_bca.each do |bca|
-            @results.append(bca.book)
+            @results.append(bca.book) unless @results.include? bca.book
           end
         end
       else # c == "isbn"
