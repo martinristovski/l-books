@@ -40,9 +40,12 @@ yarn-debug.log*
 .yarn-integrity
 
 # Ignore simplecov coverage
-/public/coverage/assets/
-/public/coverage/.resultset.json
-/public/coverage/.resultset.json.lock
+/public/cov_rspec/assets/
+/public/cov_rspec/.resultset.json
+/public/cov_rspec/.resultset.json.lock
+/public/cov_cucumber/assets/
+/public/cov_cucumber/.resultset.json
+/public/cov_cucumber/.resultset.json.lock
 
 # local_env.yml
 config/local_env.yml

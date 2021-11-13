@@ -27,5 +27,6 @@ Rails.application.routes.draw do
   get '/listing', to: redirect('/')
 
   # coverage
-  get '/coverage', :to => redirect('/index.html')
+  get '/cov_rspec', :to => redirect('/cov_rspec/index.html')
+  get '/cov_cucumber', :to => redirect('/cov_cucumber/index.html')
 end
