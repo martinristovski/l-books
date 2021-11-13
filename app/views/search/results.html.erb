@@ -17,7 +17,9 @@
   <div id="results-wrapper">
     <% @results.each do |res| %>
       <%= link_to "/book/#{res.id}", :class => 'result' do %>
-        <%= image_tag res.image_url, class: "cover-small" %>
+        <% unless res.image_url.nil? %>
+          <%= image_tag res.image_url, class: "cover-small" %>
+        <% end %>
         <div class="book-title-author-edition">
           <p class="book-title"><%= res.title %></p>
           <p class="book-author"><%= res.authors %></p>

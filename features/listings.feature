@@ -1,22 +1,29 @@
-Feature: Search for books
+Feature: Search for and access listings
 
   As users of L'Books
   So that we can buy and sell books
-  We want to search for books
+  We want to search for books and listings
 
 Background: books, users, and listings have been added to the database
 
     Given the following books exist:
-      | title          | authors        | edition | isbn             |
-      | Sample Book 1  | Sample Example | 2       | 978-1-1234562-13 |
+      | title          | authors           | edition | isbn          |
+      | Sample Book 1  | Sample Example    | 2       | 9781123456213 |
+      | Sample Book 2  | Sample Example II | 4       | 9781575675320 |
 
     Given the following users exist:
-      | last_name | first_name | email              | school |
-      | Doe       | Jane       | jd123@columbia.edu | SEAS   |
+      | last_name | first_name | email              | school | password     | password_confirmation
+      | Doe       | Jane       | jd123@columbia.edu | SEAS   | qwerty123456 | qwerty123456
 
 
 Scenario: Perform a search
-    Given I am on the home page
-    And I fill in "search" with "978-1-1234562-13"
-    And I press "Go"
-    Then I should be on the results page for a search with the query "978-1-1234562-13"
+  Given I am on the home page
+  And I select "ISBN" from "criteria"
+  And I fill in "search" with "978-1-1234562-13"
+  And I press "Go"
+  Then I should be on the search results page
+
+  Then I should see "Sample Book 1"
+  Then I should not see "Sample Book 2"
+  Then I should see "9781123456213"
+  Then I should not see "9781575675320"
