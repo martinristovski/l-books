@@ -3,6 +3,7 @@
   <button id="signin">Sign In</button>
 </div>
 <div class="listing-page-main">
+  <% unless @listing.book.image_url.nil? %>
     <div class="listing-photos">
         <%= image_tag @listing.book.image_url, class: "listing-cover" %>
         <div class="listing-alt-photos">
@@ -12,6 +13,7 @@
             <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
         </div>
     </div>
+    <% end %>
     <div class="listing-info">
         <p class="listing-title"><%= @listing.book.title %></p>
         <p class="listing-author"><%= @listing.book.authors %></p>

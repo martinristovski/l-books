@@ -1,8 +1,8 @@
-Feature: Search for books
+Feature: View book information
 
   As users of L'Books
   So that we can buy and sell books
-  We want to search for books
+  We want to look at info about books and see what listings a book might have
 
 Background: books, users, courses, BCAs, and listings have been added to the database
 

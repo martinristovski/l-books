@@ -35,8 +35,8 @@
 
   <% unless @book.listings.empty? %>
     <div class="listings-wrapper">
-      <% @book.listings.each do |listing| %>
-        <%= link_to "/listing/#{listing.id}", :class => 'listing' do %>
+      <% @book.listings.each_with_index do |listing, index| %>
+        <%= link_to "/listing/#{listing.id}", :class => 'listing', :id => "result-#{index}" do %>
           <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
           <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(50) %></div>
           <div class="listing-actions foreign">

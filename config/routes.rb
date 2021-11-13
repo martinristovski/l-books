@@ -25,8 +25,10 @@ Rails.application.routes.draw do
   end
 
   # listing
-  get '/listing/:id', to: 'listing#show'
-  get '/listing', to: redirect('/')
+  resources :listing do
+    get '/listing/:id', to: 'listing#show'
+    get '/listing', to: redirect('/')
+  end
 
   # coverage
   get '/cov_rspec', :to => redirect('/cov_rspec/index.html')
