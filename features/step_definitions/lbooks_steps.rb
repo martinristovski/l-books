@@ -21,3 +21,9 @@ Given /the following book-course associations exist/ do |bca_table|
     BookCourseAssociation.create!(bca)
   end
 end
+
+Given /the following listings exist/ do |listings_table|
+  listings_table.hashes.each do |listing|
+    Listing.create!(listing)
+  end
+end

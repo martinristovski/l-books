@@ -4,7 +4,7 @@ Feature: Search for books
   So that we can buy and sell books
   We want to search for books
 
-Background: books, users, courses, and BCAs have been added to the database
+Background: books, users, courses, BCAs, and listings have been added to the database
 
   Given the following books exist:
     | id | title          | authors           | edition | isbn          |
@@ -24,6 +24,10 @@ Background: books, users, courses, and BCAs have been added to the database
     | book_id | course_id |
     | 1       | 1         |
     | 2       | 2         |
+
+  Given the following listings exist:
+    | id | book_id   | price   | condition | description     | seller_id |
+    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         |
 
 Scenario: Perform a standard search and pull up a book's view via search
   Given I am on the home page
@@ -47,3 +51,9 @@ Scenario: Pull up a book's information page for a non-existent book
   Given I am on the book view page for a book with ID "4"
   Then  I should be on the home page
   And   I should see "Sorry, we couldn't find a book with that ID."
+
+Scenario: Pull up a book's information page for a book with a listing
+  Given I am on the book view page for "Sample Book 2"
+  Then I should see "Sample Book 2"
+  Then I should see "1 listing found:"
+  And  I should see "Like new | This is a test."
