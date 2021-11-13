@@ -12,28 +12,36 @@ u1 = User.create!(
   last_name: "Nair",
   uni: "vn1234",
   email: "vn@columbia.edu",
-  school: "SEAS"
+  school: "SEAS",
+  password: "password123",
+  password_confirmation: "password123"
 )
 u2 = User.create!(
   first_name: "Ivy",
   last_name: "Cao",
   uni: "ic1234",
   email: "ic@columbia.edu",
-  school: "SEAS"
+  school: "SEAS",
+  password: "password456",
+  password_confirmation: "password456"
 )
 u3 = User.create!(
   first_name: "Aditya",
   last_name: "Satnalika",
   uni: "as1234",
   email: "as@columbia.edu",
-  school: "SEAS"
+  school: "SEAS",
+  password: "pass123",
+  password_confirmation: "pass123"
 )
 u4 = User.create!(
   first_name: "Martin",
   last_name: "Ristovski",
   uni: "mr1234",
   email: "mr@columbia.edu",
-  school: "CC"
+  school: "CC",
+  password: "pass456",
+  password_confirmation: "pass456"
 )
 
 # books
