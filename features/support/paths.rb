@@ -27,7 +27,7 @@ module NavigationHelpers
     when /^the search results page$/
       search_path
 
-    when /^the listings page for "(.*)"$/
+    when /^the book view page for "(.*)"$/
       book_path(Book.find_by_title($1).id)
       
     when /^the listing page for the book with ISBN "(.*)" and description "(.*)"$/

@@ -19,8 +19,10 @@ Rails.application.routes.draw do
   get '/search', to: 'search#results'
 
   # book
-  get '/book/:id', to: 'book#show'
-  get '/book', to: redirect('/')
+  resources :book do
+    get '/book/:id', to: 'book#show'
+    get '/book', to: redirect('/')
+  end
 
   # listing
   get '/listing/:id', to: 'listing#show'
