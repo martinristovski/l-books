@@ -27,8 +27,10 @@ class SearchController < ApplicationController
         if courses.empty?
           @results = []
         else
-          c = courses[0]
-          all_bca = BookCourseAssociation.where(course_id: c.id)
+          all_bca = []
+          courses.each do |c|
+            all_bca += BookCourseAssociation.where(course_id: c.id)
+          end
           @results = []
           all_bca.each do |bca|
             @results.append(bca.book)
