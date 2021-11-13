@@ -25,6 +25,18 @@ Background: books, users, courses, and BCAs have been added to the database
     | 1       | 1         |
     | 2       | 2         |
 
+Scenario: Perform a standard search and pull up a book's view via search
+  Given I am on the home page
+  And I select "ISBN" from "criteria"
+  And I fill in "search" with "978-1-1234562-13"
+  And I press "Go"
+  Then I should be on the search results page
+
+  Then I click on the element with ID "result-0"
+  Then I should see "Sample Book 1"
+  Then I should see "9781123456213"
+  Then I should see "No listings found!"
+
 Scenario: Pull up a book's information page for a book with no listings
   Given I am on the book view page for "Sample Book 1"
   Then I should see "Sample Book 1"

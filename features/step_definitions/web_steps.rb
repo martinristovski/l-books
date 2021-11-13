@@ -53,7 +53,7 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   click_button(button)
 end
 
-When /^(?:|I )click on the element with id "([^"]*)"$/ do |ele_id|
+When /^(?:|I )click on the element with ID "([^"]*)"$/ do |ele_id|
   ele = find("##{ele_id}")
   ele.should_not be_nil
   ele.click
@@ -253,6 +253,10 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   else
     assert_equal expected_params, actual_params
   end
+end
+
+Then /^(?:|I )should be on the search results page for the query "([^"]*)" and search type "([^"]*)"/ do |query, stype|
+
 end
 
 Then /^show me the page$/ do
