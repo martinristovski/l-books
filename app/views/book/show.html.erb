@@ -5,7 +5,9 @@
 <div class="book-main">
   <div id="book-wrapper">
     <div class="book">
-      <%= image_tag @book.image_url, class: "cover" %>
+      <% unless @book.image_url.nil? %>
+        <%= image_tag @book.image_url, class: "cover" %>
+      <% end %>
       <div class="book-title-author-edition">
         <p class="book-title"><%= @book.title %></p>
         <p class="book-author"><%= @book.authors %></p>

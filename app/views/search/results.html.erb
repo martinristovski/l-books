@@ -15,8 +15,8 @@
   <% end %>
 
   <div id="results-wrapper">
-    <% @results.each do |res| %>
-      <%= link_to "/book/#{res.id}", :class => 'result' do %>
+    <% @results.each_with_index do |res, index| %>
+      <%= link_to "/book/#{res.id}", :class => 'result', :id => "result-#{index}" do %>
         <% unless res.image_url.nil? %>
           <%= image_tag res.image_url, class: "cover-small" %>
         <% end %>
