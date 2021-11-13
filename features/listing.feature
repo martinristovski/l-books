@@ -44,7 +44,7 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     And I should see "Seller Information"
     And I should see "Name: Jane Doe"
 
-  Scenario: Pull up a book's information page for a non-existent book
+  Scenario: Pull up listing information for a non-existent listing
     Given I am on the listing view page for a listing with ID "4"
     Then  I should be on the home page
     And   I should see "Sorry, we couldn't find a listing with that ID."
