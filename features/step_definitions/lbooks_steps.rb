@@ -10,3 +10,14 @@ Given /the following users exist/ do |users_table|
   end
 end
 
+Given /the following courses exist/ do |courses_table|
+  courses_table.hashes.each do |course|
+    Course.create!(course)
+  end
+end
+
+Given /the following book-course associations exist/ do |bca_table|
+  bca_table.hashes.each do |bca|
+    BookCourseAssociation.create!(bca)
+  end
+end

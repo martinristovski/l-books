@@ -53,6 +53,12 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   click_button(button)
 end
 
+When /^(?:|I )click on the element with id "([^"]*)"$/ do |ele_id|
+  ele = find("##{ele_id}")
+  ele.should_not be_nil
+  ele.click
+end
+
 When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)
 end
