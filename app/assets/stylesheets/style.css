@@ -271,6 +271,9 @@ p, div {
     justify-self: center;
     align-self: center;
 }
+.center {
+    text-align: center;
+}
 
 .listing-description {
     grid-area: listing-description;

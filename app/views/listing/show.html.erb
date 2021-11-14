@@ -26,7 +26,7 @@
     </div>
     <% if Current.user %>
            <div class="seller-info">
-               <p style="font-size: 25px;">S</p>
+            <p style="font-size: 25px;">Seller Information</p>
                <p class="seller-name">Name: <%= @listing.seller.first_name %> <%= @listing.seller.last_name %></p>
                <p class="seller-school">School: <%= @listing.seller.school %></p>
                <p class="seller-reputation">Reputation: 4.5</p>
@@ -43,12 +43,12 @@
             <div class="seller-contact">
                 <p>Email: **Hidden**</p>
             </div>
-            <!-- TODO: fix the Signin path
             <br/>
-                <%= link_to 'Sign Up', signin_path %>
+            <div class="center">
+                <%= link_to 'Sign Up', signup_path %>
                 or
                 <%= link_to 'Login', signin_path %>
-                -->
+           </div>
          </div>
     <% end %>
 </div>
