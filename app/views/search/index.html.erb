@@ -1,11 +1,7 @@
 <div id="topbar">
-  <button id="signin">Sign In</button>
+  <%= link_to "Sign In", '/signin', :id => 'signin' %>
 </div>
 <div class="main">
-  <% if flash[:notice] %> <!-- TODO: Style this! -->
-    <div class="notice"><%= flash[:notice] %></div>
-  <% end %>
-
   <a href="#" id="logo">L'Books</a>
 
   <%= form_with url: search_path, :id => "flexbox", method: :get do |form| %>
