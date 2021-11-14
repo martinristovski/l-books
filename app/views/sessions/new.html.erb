@@ -1,14 +1,18 @@
-<h1>Sign In</h1>
-<%= form_with url: signin_path do |f| %>
-    <p>
-        <%= f.label 'email:'%><br>
-        <%= f.text_field :email, id: 'email' %>
-    </p>
-    <p>
-        <%= f.label 'password:'%><br>
-        <%= f.password_field :password, id: 'password' %>
-    </p>
-    <p>
-        <%= f.submit 'Log In' %>
-    </p>
-<% end %>
+<div class = "signin_prompt">
+    <h1 >Sign In</h1>
+    <br/>
+    <%= form_with url: signin_path do |f| %>
+        <p>
+            <%= f.label 'email:'%><br>
+            <%= f.text_field :email, id: 'email' %>
+        </p>
+        <p >
+            <%= f.label 'password:'%><br>
+            <%= f.password_field :password, id: 'password' %>
+        </p>
+        <br/>
+        <p>
+            <%= f.submit 'Log In' %>
+        </p>
+    <% end %>
+</div>

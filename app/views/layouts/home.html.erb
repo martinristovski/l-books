@@ -16,7 +16,8 @@
 
   <body>
     <div id="topbar_new">
-      <% if session[:user_id].nil? %>
+      <%= link_to "L'Books", '/', :id => 'navbar-logo' %>
+        <% if session[:user_id].nil? %>
         <%= link_to "Sign In", '/signin', :id => 'signin' %>
         <%= link_to "Register", '/signup', :id => 'signin' %>
       <% else %>
