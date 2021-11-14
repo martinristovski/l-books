@@ -15,10 +15,10 @@
   </head>
 
   <body>
-    <div id="topbar">
+    <div id="topbar_new">
       <% if session[:user_id].nil? %>
         <%= link_to "Sign In", '/signin', :id => 'signin' %>
-        <%= link_to "Register", '/signup', :id => 'signup' %> <!-- TODO: Style this! -->
+        <%= link_to "Register", '/signup', :id => 'signin' %>
       <% else %>
         <%= link_to "Sign Out", '/logout', :id => 'signin' %>
       <% end %>

@@ -26,6 +26,12 @@ p, div {
     grid-template-areas: ". signin";
 }
 
+#topbar_new{
+    text-align: right;
+    padding:20px;
+
+}
+
 #navbar {
     display: grid;
     grid-template-columns: 128px 1fr 128px;
