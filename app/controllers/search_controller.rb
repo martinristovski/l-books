@@ -7,7 +7,6 @@ class SearchController < ApplicationController
 
   def results
     @search_types = form_search_types
-    p params
     if params[:commit] == "Go" && params[:criteria] != nil && params[:search_term] != nil && valid_criteria?(params[:criteria])
       if params[:search_term].length == 0 || params[:criteria].length == 0
         flash[:notice] = "Please enter a search term."
