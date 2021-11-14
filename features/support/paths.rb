@@ -28,13 +28,13 @@ module NavigationHelpers
       search_path
 
     when /^the book view page for "(.*)"$/
-      book_path(Book.find_by_title($1).id)
+      "/book/#{Book.find_by_title($1).id}"
 
     when /^the book view page for a book with ID "(.*)"$/
-      book_path($1)
+      "/book/#{$1}"
 
     when /^the listing view page for a listing with ID "(.*)"$/
-      listing_path($1)
+      "/listing/#{$1}"
       
     when /^the listing page for the book with ISBN "(.*)" and description "(.*)"$/
       listing_path(Listing.find(isbn = $1, description = $2))

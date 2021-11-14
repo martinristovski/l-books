@@ -3,6 +3,7 @@ require 'ostruct'
 class SearchController < ApplicationController
   def index
     @search_types = form_search_types
+    render layout: 'home'
   end
 
   def results
@@ -11,6 +12,7 @@ class SearchController < ApplicationController
       if params[:search_term].length == 0 || params[:criteria].length == 0
         flash[:notice] = "Please enter a search term."
         redirect_to action: "index"
+        return
       end
 
       # get search params
@@ -39,6 +41,8 @@ class SearchController < ApplicationController
         st = st.tr('^0-9', '') # strip all non numeric chars
         @results = Book.where("isbn like ? OR isbn = ?", "%#{st}%", "%#{st}%")
       end
+
+      render layout: 'other_pages'
     else
       flash[:notice] = "Invalid search."
       redirect_to action: "index"

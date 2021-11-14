@@ -1,4 +1,6 @@
 class BookController < ApplicationController
+  layout 'other_pages'
+
   def show
     book_id = params[:id]
     begin

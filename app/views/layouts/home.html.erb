@@ -15,8 +15,17 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <div id="topbar">
+      <% if session[:user_id].nil? %>
+        <%= link_to "Sign In", '/signin', :id => 'signin' %>
+        <%= link_to "Register", '/signup', :id => 'signup' %> <!-- TODO: Style this! -->
+      <% else %>
+        <%= link_to "Sign Out", '/logout', :id => 'signin' %>
+      <% end %>
+    </div>
+    <% unless flash[:notice].nil? %>
+      <p class="notice"><%= flash[:notice] %></p>
+    <% end %>
     <%= yield %>
   </body>
 </html>

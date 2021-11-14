@@ -1,4 +1,6 @@
 class ListingController < ApplicationController
+  layout 'other_pages'
+
   def show
     listing_id = params[:id]
     begin
