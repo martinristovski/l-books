@@ -19,15 +19,15 @@ Rails.application.routes.draw do
   get '/search', to: 'search#results'
 
   # book
+  get '/book', to: redirect('/')
   resources :book do
     get '/book/:id', to: 'book#show'
-    get '/book', to: redirect('/')
   end
 
   # listing
+  get '/listing', to: redirect('/')
   resources :listing do
     get '/listing/:id', to: 'listing#show'
-    get '/listing', to: redirect('/')
   end
 
   # coverage
