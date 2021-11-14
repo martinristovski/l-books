@@ -58,6 +58,8 @@ group :test do
   # SimpleCov code coverage tool
   # https://github.com/simplecov-ruby/simplecov
   gem 'simplecov', require: false
+  # database cleaner
+  gem 'database_cleaner-active_record'
 end
 
 group :test do

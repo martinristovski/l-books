@@ -312,6 +312,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   cucumber-rails
   database_cleaner
+  database_cleaner-active_record
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg (~> 1.2.3)
