@@ -45,9 +45,11 @@
             </div>
             <br/>
             <div class="center">
-                <%= link_to 'Sign Up', signup_path %>
+                Please
+                <u><%= link_to 'Register', signup_path,:id => 'link' %> </u>
                 or
-                <%= link_to 'Login', signin_path %>
+                <u><%= link_to 'SignIn', signin_path, :id => 'link'%></u>
+                to <br/> view the seller Information.
            </div>
          </div>
     <% end %>
