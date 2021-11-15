@@ -35,16 +35,16 @@
                </div>
                <br/>
                 <% if Current.user.email === @listing.seller.email %>
-                 <div class="contact-seller">
-                   <p style="font-size: 25px;">Contact The Seller:</p>
-                   <p class="seller-name">From Name: <%= Current.user.email %> </p>
-                    <%= text_area "post", "body", placeholder: "type your message here","cols" => 35, "rows" => 10%> <!-- TODO make it work went email feature is ready -->
-                    <br/>
-                    <br/>
-                    <%= link_to 'Send', "",:id => 'send_button'%>
-                 </div>
+                 <%= link_to "Edit", '/edit', :id => 'signin' %>
               <% else %>
-                <%= link_to "Edit", '/edit', :id => 'signin' %>
+              <div class="contact-seller">
+                 <p style="font-size: 25px;">Contact The Seller:</p>
+                 <p class="seller-name">From Name: <%= Current.user.email %> </p>
+                  <%= text_area "post", "body", placeholder: "type your message here","cols" => 35, "rows" => 10%> <!-- TODO make it work went email feature is ready -->
+                  <br/>
+                  <br/>
+                  <%= link_to 'Send', "",:id => 'signin' %>
+               </div>
               <% end %>
           </div>
 
