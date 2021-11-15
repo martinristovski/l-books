@@ -512,3 +512,11 @@ p, div {
     color: blue;
     cursor: pointer;
 }
+
+#send_button{
+    float: right;
+    padding :5px;
+    margin:5px;
+    border : 1px solid black;
+    border-radius: 5px;
+}
