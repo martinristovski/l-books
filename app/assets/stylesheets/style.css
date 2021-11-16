@@ -170,9 +170,8 @@ p, div {
 .result {
     display: grid;
     grid-template-columns: 110px 210px 100px;
-    grid-template-rows: 160px;
-    grid-template-areas: 
-        "cover-small book-title-author-edition book-number";
+    grid-template-rows: 170px;
+    grid-template-areas: "cover-small book-title-author-edition book-number";
     border: 1px solid gray;
     border-radius: 5px;
     margin: 20px 10px 20px 10px;
@@ -189,7 +188,9 @@ p, div {
     grid-area: book-title-author-edition;
     justify-self: left;
     align-self: center;
-    margin-left: 10px;
+    margin-left: 5px;
+    padding-top:10px;
+    line-height: 0.9;
 }
 
 .book-number {
