@@ -26,7 +26,7 @@ class ListingController < ApplicationController
         :description => "",
         :hidden_expandisbn => false
       }
-
+      flash[:notice] = nil
       render 'new', layout: 'other_pages'
     elsif request.post?
       # store form info in a hash in case we need to return back to the form
