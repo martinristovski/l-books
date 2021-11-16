@@ -33,7 +33,7 @@ p, div {
     top: 0;
     width: 100%;
     padding : 2px;
-    padding-right:15px;
+    padding-right: 0px;
 }
 
 #navbar {
@@ -519,4 +519,8 @@ p, div {
     margin:5px;
     border : 1px solid black;
     border-radius: 5px;
+}
+/*Giving Padding to make navbar visible*/
+.alert {
+    margin : 65px 10px
 }

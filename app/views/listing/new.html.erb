@@ -1,7 +1,7 @@
-<div class="listing-page-main">
-    <p> New Listing </p>
-    <div>
-    <%= form_with url: "/listing/new" do |f| %>
+<div class="registration_prompt" >
+    <%= form_with url: "/listing/new"   do |f| %>
+        <p class="h3"> New Listing </p> </br>
+        <div class="form-group">
             <p>
                 <%= f.label 'Book ISBN' %><br>
                 <%= f.text_field :isbn, value: @form_data[:isbn] %>
@@ -20,15 +20,16 @@
             </p>
             <p>
                 <%= f.label 'Description' %><br>
-                <%= f.text_field :description, value: @form_data[:description] %>
+                <%= f.text_area :description, placeholder: "(Describe the condition of the book)" , value: @form_data[:description] %>
             </p>
 
             <%= f.hidden_field :hidden_expandisbn, value: @form_data[:hidden_expandisbn] %>
 
             <br/>
             <p>
-                <%= f.submit 'Post' %>
+                <%= f.submit 'Post' , :id => 'signin' , :style => "float:none" %>
             </p>
+            </div>
         <% end %>
     </div>
 </div>

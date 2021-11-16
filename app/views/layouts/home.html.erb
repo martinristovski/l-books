@@ -22,6 +22,7 @@
         <%= link_to "Register", '/signup', :id => 'signin' %>
       <% else %>
         <%= link_to "Sign Out", '/logout', :id => 'signin' %>
+        <%= link_to "New Listing", '/listing/new', :id => 'signin' %>
       <% end %>
     </div>
     <% unless flash[:notice].nil? %>
