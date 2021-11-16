@@ -1,4 +1,4 @@
-<div class="registration_prompt" >
+<div class="new_listing" >
     <%= form_with url: "/listing/new"   do |f| %>
         <p class="h3"> New Listing </p> </br>
         <div class="form-group">
@@ -6,6 +6,26 @@
                 <%= f.label 'Book ISBN' %><br>
                 <%= f.text_field :isbn, value: @form_data[:isbn] %>
             </p>
+            <% if @form_data[:hidden_expandisbn] and @form_data[:hidden_expandisbn] === "false" %>
+            <div class="form-group extra_book_details" >
+                <p>
+                    <%= f.label 'Title' %><br>
+                    <%= f.text_field :book_title, value: @form_data[:book_title] %>
+                </p>
+                <p>
+                    <%= f.label 'Author(s)' %><br>
+                    <%= f.text_field :book_authors, value: @form_data[:book_authors] %>
+                </p>
+                <p>
+                    <%= f.label 'Edition' %><br>
+                    <%= f.text_field :book_edition, value: @form_data[:book_edition] %>
+                </p>
+                <p>
+                    <%= f.label 'Publisher' %><br>
+                    <%= f.text_field :book_publisher, value: @form_data[:book_publisher] %>
+                </p>
+            </div>
+            <% end %>
             <p>
                 <%= f.label 'condition' %><br>
                 <%= f.text_field :condition, value: @form_data[:condition] %>
