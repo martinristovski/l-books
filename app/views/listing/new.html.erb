@@ -1,0 +1,34 @@
+<div class="listing-page-main">
+    <p> New Listing </p>
+    <div>
+    <%= form_with url: "/listing/new" do |f| %>
+            <p>
+                <%= f.label 'Book ISBN' %><br>
+                <%= f.text_field :isbn, value: @form_data[:isbn] %>
+            </p>
+            <p>
+                <%= f.label 'condition' %><br>
+                <%= f.text_field :condition, value: @form_data[:condition] %>
+            </p>
+            <p>
+                <%= f.label 'Price' %><br>
+                <%= f.text_field :price, value: @form_data[:price] %>
+            </p>
+            <p>
+                <%= f.label 'Course' %><br>
+                <%= f.text_field :course, value: @form_data[:course] %>
+            </p>
+            <p>
+                <%= f.label 'Description' %><br>
+                <%= f.text_field :description, value: @form_data[:description] %>
+            </p>
+
+            <%= f.hidden_field :hidden_expandisbn, value: @form_data[:hidden_expandisbn] %>
+
+            <br/>
+            <p>
+                <%= f.submit 'Post' %>
+            </p>
+        <% end %>
+    </div>
+</div>
