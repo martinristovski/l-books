@@ -107,30 +107,10 @@ Scenario: Create a new user account failed
     Given I am on the home page
     And I follow "Register"
     Then I should be on the signup page
-    
     When I fill in "user_email" with "test1234@gmail.com"
     And I press "Sign Up"
     Then I should be on the signup page
     And I should not see "Successfully created account"
-
-Scenario: Create a new user account successfully
-    Given I am on the home page
-    And I follow "Register"
-    Then I should be on the signup page
-
-    When I fill in "user_email" with "test1234@gmail.com"
-    And I fill in "user_first_name" with "test"
-    And I fill in "user_last_name" with "user"
-    And I fill in "user_uni" with "test1234"
-    And I fill in "user_school" with "SEAS"
-    And I fill in "user_password" with "password1000"
-    And I fill in "user_password_confirmation" with "password1000"
-    And I press "Sign Up"
-    Then I should be on the logged in page
-    And I should see "Successfully created account"
-
-    And I follow "Sign Out"
-    Then I should see "Logged Out"
 
 Scenario: Create a new listing without any initial fields completed
     Given I am on the home page
