@@ -1,0 +1,8 @@
+<div class="new_listing" >
+      <p class="h3"> Delete Listing #<%= @listing.id %> </p> </br>
+      <p class="h4" style="color: red;"> Are you sure you want to delete this listing? </p> </br>
+      <div class="form-group">
+        <%= button_to 'Delete!', "/listing/#{@listing.id}/delete", :method => :delete, :style => "float:none; color:red;" %>
+        <%= button_to 'Go Back', "/listing/#{@listing.id}", :method => :get, :style => "float:none" %>
+      </div>
+</div>

@@ -11,6 +11,39 @@ class ListingController < ApplicationController
     end
   end
 
+  def delete
+    if session[:user_id].nil?
+      redirect_to '/signin' # TODO: Redirect back.
+      return
+    end
+
+    # get the listing in question
+    listing_id = params[:id]
+    begin
+      listing_in_question = Listing.find(listing_id)
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "Sorry, we couldn't find a listing with that ID."
+      redirect_to controller: "search", action: 'index'
+      return
+    end
+
+    # only allow the seller to edit their own listing
+    if session[:user_id] != listing_in_question.seller.id
+      flash[:notice] = "Forbidden: Only the seller of a listing can delete that listing."
+      redirect_to controller: "search", action: 'index'
+      return
+    end
+
+    if request.get?
+      @listing = listing_in_question
+      render 'delete', layout: 'other_pages'
+    elsif request.delete?
+      listing_in_question.destroy
+      flash[:notice] = "Listing deleted!"
+      redirect_to controller: "search", action: 'index'
+    end
+  end
+
   def edit
     if session[:user_id].nil?
       redirect_to '/signin' # TODO: Redirect back.
