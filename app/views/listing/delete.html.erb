@@ -2,7 +2,7 @@
       <p class="h3"> Delete Listing #<%= @listing.id %> </p> </br>
       <p class="h4" style="color: red;"> Are you sure you want to delete this listing? </p> </br>
       <div class="form-group">
-        <%= button_to 'Delete!', "/listing/#{@listing.id}/delete", :method => :delete, :style => "float:none; color:red;" %>
-        <%= button_to 'Go Back', "/listing/#{@listing.id}", :method => :get, :style => "float:none" %>
+        <%= button_to 'Delete!', "/listing/#{@listing.id}/delete", :method => :delete, :class => "btn btn-danger" ,:style=>"width:88px"%> <br/>
+        <%= button_to 'Go Back', "/listing/#{@listing.id}", :method => :get, :class => "btn btn-secondary" ,:style=>"width:88px"%>
       </div>
 </div>
