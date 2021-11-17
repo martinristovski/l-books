@@ -67,16 +67,16 @@ class ListingController < ApplicationController
       return
     end
 
+    @listing = listing_in_question
+    @book = listing_in_question.book
+
     if request.get?
       @form_data = {
         :condition => listing_in_question.condition,
-        :price => listing_in_question.price,
+        :price => sprintf('%.2f', listing_in_question.price),  # convert to a string to 2 decimal places
         :course => "", # TODO
         :description => listing_in_question.description
       }
-
-      @listing = listing_in_question
-      @book = listing_in_question.book
 
       flash[:notice] = nil
       render 'edit', layout: 'other_pages'
@@ -115,6 +115,17 @@ class ListingController < ApplicationController
       # error check: the description is blank
       if @form_data[:description].nil? or @form_data[:description].empty?
         all_errors.append("Please enter a description for the book.")
+      end
+
+      # print a single flash notice message on errors
+      unless all_errors.empty?
+        result = ""
+        for err in all_errors do
+          result += "<li>#{err}</li>"
+        end
+        flash[:notice] = "We encountered the following errors:<ul>#{result}</ul>".html_safe
+        render 'edit', layout: 'other_pages'
+        return
       end
 
       listing_in_question.update(
