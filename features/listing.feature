@@ -235,6 +235,25 @@ Scenario: Create a new listing with all fields completed
     And I follow "Sign Out"
     Then I should see "Logged Out"
 
+Scenario: Create a new listing for an existing ISBN
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd123@columbia.edu"
+    And I fill in "password" with "qwerty123456"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    Then I follow "New Listing"
+    And I fill in "ISBN" with "9781575675320"
+    And I fill in "Condition" with "good"
+    And I fill in "Price" with "15"
+    And I fill in "Course" with "SaaS"
+    And I fill in "Description" with "This is a test listing."
+    And I press "Post"
+    
+    Then I should see "Listing created!"
+
 Scenario: Contact a seller via a listing
     Given I am on the home page
     And I follow "Sign In"
