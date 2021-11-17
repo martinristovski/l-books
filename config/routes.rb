@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get '/listing', to: redirect('/')
   get '/listing/new', to: 'listing#new'
   post '/listing/new', to: 'listing#new'
+  get '/listing/:id/edit', to: 'listing#edit'
+  post '/listing/:id/edit', to: 'listing#edit'
   resources :listing do
     get '/listing/:id', to: 'listing#show'
   end

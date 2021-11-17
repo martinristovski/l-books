@@ -11,6 +11,91 @@ class ListingController < ApplicationController
     end
   end
 
+  def edit
+    if session[:user_id].nil?
+      redirect_to '/signin' # TODO: Redirect back.
+      return
+    end
+
+    # get the listing in question
+    listing_id = params[:id]
+    begin
+      listing_in_question = Listing.find(listing_id)
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "Sorry, we couldn't find a listing with that ID."
+      redirect_to controller: "search", action: 'index'
+      return
+    end
+
+    # only allow the seller to edit their own listing
+    if session[:user_id] != listing_in_question.seller.id
+      flash[:notice] = "Forbidden: Only the seller of a listing can edit that listing."
+      redirect_to controller: "search", action: 'index'
+      return
+    end
+
+    if request.get?
+      @form_data = {
+        :condition => listing_in_question.condition,
+        :price => listing_in_question.price,
+        :course => "", # TODO
+        :description => listing_in_question.description
+      }
+
+      @listing = listing_in_question
+      @book = listing_in_question.book
+
+      flash[:notice] = nil
+      render 'edit', layout: 'other_pages'
+
+    elsif request.post?
+      @form_data = {
+        :condition => params[:condition],
+        :price => params[:price],
+        :course => params[:course], # TODO
+        :description => params[:description]
+      }
+
+      # some simple error checks
+      all_errors = []
+      price_blank = false
+
+      # error check: the condition is blank
+      if @form_data[:condition].nil? or @form_data[:condition].empty?
+        all_errors.append("Please enter the book's condition.")
+      end
+
+      # error check: the price is blank
+      if @form_data[:price].nil? or @form_data[:price].empty?
+        price_blank = true
+        all_errors.append("Please enter the book's price.")
+      end
+
+      # error check (not performed if the price is blank): the price is not a decimal/float or is not positive or has more than 2 numbers after the decimal
+      if not price_blank and
+        ((false if Float(@form_data[:price]) rescue true) \
+         or @form_data[:price].to_f < 0 \
+         or (@form_data[:price].split('.').length > 1 and @form_data[:price].split('.')[1].length != 2))
+        all_errors.append("The price you have entered is invalid.")
+      end
+
+      # error check: the description is blank
+      if @form_data[:description].nil? or @form_data[:description].empty?
+        all_errors.append("Please enter a description for the book.")
+      end
+
+      listing_in_question.update(
+        condition: @form_data[:condition],
+        price: @form_data[:price],
+        description: @form_data[:description],
+      )
+
+      flash[:notice] = "Listing updated!"
+      redirect_to "/listing/#{listing_in_question.id}"
+    end
+
+  end
+
   def new
     if session[:user_id].nil?
       redirect_to '/signin' # TODO: Redirect back.
