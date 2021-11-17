@@ -31,7 +31,7 @@ class ListingController < ApplicationController
     elsif request.post?
       # store form info in a hash in case we need to return back to the form
       @form_data = {
-        :isbn => params[:isbn],
+        :isbn => params[:isbn].tr('^0-9', ''),  # sanitize
         :condition => params[:condition],
         :price => params[:price],
         :course => params[:course],
@@ -39,33 +39,48 @@ class ListingController < ApplicationController
         :hidden_expandisbn => params[:hidden_expandisbn]
       }
 
-      # some simple checks
+      # some simple error checks
+      all_errors = []
+      isbn_blank = false
+      price_blank = false
+
+      # error check: the ISBN is blank
       if @form_data[:isbn].nil? or @form_data[:isbn].empty?
-        flash[:notice] = "Please enter an ISBN."
-        render 'new', layout: 'other_pages'
-        return
+        isbn_blank = true
+        all_errors.append("The ISBN is required.")
       end
 
+      # error check (not performed if the ISBN is blank): the ISBN is not a number or is not 13 digits
+      if not isbn_blank and (@form_data[:isbn].to_i.to_s != @form_data[:isbn] or @form_data[:isbn].to_i < 1000000000000 or @form_data[:isbn].to_i > 9999999999999)
+        all_errors.append("The ISBN you have entered is invalid.")
+      end
+
+      # error check: the condition is blank
       if @form_data[:condition].nil? or @form_data[:condition].empty?
-        flash[:notice] = "Please enter the book's condition."
-        render 'new', layout: 'other_pages'
-        return
+        all_errors.append("Please enter the book's condition.")
       end
 
+      # error check: the price is blank
       if @form_data[:price].nil? or @form_data[:price].empty?
-        flash[:notice] = "Please enter the book's price."
-        render 'new', layout: 'other_pages'
-        return
+        price_blank = true
+        all_errors.append("Please enter the book's price.")
       end
 
+      # error check (not performed if the price is blank): the price is not a decimal/float or is not positive or has more than 2 numbers after the decimal
+      if not price_blank and
+        ((false if Float(@form_data[:price]) rescue true) \
+         or @form_data[:price].to_f < 0 \
+         or (@form_data[:price].split('.').length > 1 and @form_data[:price].split('.')[1].length != 2))
+        all_errors.append("The price you have entered is invalid.")
+      end
+
+      # error check: the description is blank
       if @form_data[:description].nil? or @form_data[:description].empty?
-        flash[:notice] = "Please enter a description for the book."
-        render 'new', layout: 'other_pages'
-        return
+        all_errors.append("Please enter a description for the book.")
       end
 
-      # add extra fields if the form had them
-      if @form_data[:hidden_expandisbn]
+      # take extra fields into account if the form had them
+      if @form_data[:hidden_expandisbn] == "true"
         extra_grabbed_info = {
           :book_title => params[:book_title],
           :book_authors => params[:book_authors],
@@ -76,33 +91,37 @@ class ListingController < ApplicationController
         @form_data = @form_data.merge(extra_grabbed_info)
 
         if @form_data[:book_title].nil? or @form_data[:book_title].empty?
-          flash[:notice] = "Please enter the unknown book's title."
-          # TODO: Could render a different template here for the longer form.
-          render 'new', layout: 'other_pages'
-          return
+          all_errors.append("Please enter the unknown book's title.")
         end
 
         if @form_data[:book_authors].nil? or @form_data[:book_authors].empty?
-          flash[:notice] = "Please enter the unknown book's author list."
-          # TODO: Could render a different template here for the longer form.
-          render 'new', layout: 'other_pages'
-          return
+          all_errors.append("Please enter the unknown book's author list.")
         end
 
         if @form_data[:book_publisher].nil? or @form_data[:book_publisher].empty?
-          flash[:notice] = "Please enter the unknown book's publisher."
-          # TODO: Could render a different template here for the longer form.
-          render 'new', layout: 'other_pages'
-          return
+          all_errors.append("Please enter the unknown book's publisher.")
         end
+
+        @form_data[:isbn] = @form_data[:hidden__book_isbn]
+        # NOTE: edition is optional
+      end
+
+      # print a single flash notice message on errors
+      unless all_errors.empty?
+        result = ""
+        for err in all_errors do
+          result += "<li>#{err}</li>"
+        end
+        flash[:notice] = "We encountered the following errors:<ul>#{result}</ul>".html_safe
+        render 'new', layout: 'other_pages'
+        return
       end
 
       # search for this ISBN
-      sanitized_isbn = @form_data[:isbn].tr('^0-9', '') # strip all non numeric chars
-      books_with_isbn = Book.where("isbn like ? OR isbn = ?", "%#{sanitized_isbn}%", "%#{sanitized_isbn}%")
+      books_with_isbn = Book.where(isbn: @form_data[:isbn]).to_a
 
       # if book with isbn not found, return the lengthened form
-      if books_with_isbn.size == 0 and @form_data[:hidden_expandisbn] == false
+      if books_with_isbn.empty? and @form_data[:hidden_expandisbn] == "false"
         @form_data[:hidden_expandisbn] = true
         flash[:notice] = "Please enter more information about this book."
         extra_book_info = {
@@ -119,13 +138,13 @@ class ListingController < ApplicationController
       end
 
       # add the new book!
-      if @form_data[:hidden_expandisbn] == true
+      if @form_data[:hidden_expandisbn] == "true"
         this_book = Book.create!(
           title: @form_data[:book_title],
           authors: @form_data[:book_authors],
           edition: @form_data[:book_edition],
           publisher: @form_data[:book_publisher],
-          isbn: @form_data[:hidden__book_isbn],
+          isbn: @form_data[:isbn]
           # image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: Images later.
         )
       else
