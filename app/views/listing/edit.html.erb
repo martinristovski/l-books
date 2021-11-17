@@ -1,6 +1,6 @@
 <div class="new_listing" >
     <%= form_with url: "/listing/#{@listing.id}/edit"   do |f| %>
-        <p class="h3"> Edit Listing #<% @listing.id %> </p> </br>
+        <p class="h3"> Edit Listing #<%= @listing.id %> </p> </br>
         <p class="h4" style="color: red;"> Book information cannot be edited. To do so, delete this listing and create a new one. </p> </br>
         <div class="form-group">
             <p>
