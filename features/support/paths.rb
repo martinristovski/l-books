@@ -32,12 +32,23 @@ module NavigationHelpers
 
     when /^the book view page for a book with ID "(.*)"$/
       "/book/#{$1}"
-
+    
+    when /^the listing creation page$/
+      "/listing/new"
     when /^the listing view page for a listing with ID "(.*)"$/
       "/listing/#{$1}"
+
+    when /^the listing deletion page for a listing with ID "(.*)"$/
+      "/listing/#{$1}/delete"
+
+    when /^the listing edit page for a listing with ID "(.*)"$/
+      "/listing/#{$1}/edit"
       
     when /^the listing page for the book with ISBN "(.*)" and description "(.*)"$/
       listing_path(Listing.find(isbn = $1, description = $2))
+
+    when /^the logged in page$/
+      root_path
       
     else
       begin
