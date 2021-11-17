@@ -146,4 +146,25 @@ RSpec.describe "Listings", type: :request do
     end
   end
 
+  describe "Try to delete listing while not signed in" do
+    it "redirects to the sign in page" do
+      get '/listing/1/delete'
+      expect(response).to redirect_to('/signin')
+    end
+  end
+
+  describe "Try to delete non-existing listing while signed in" do
+    it "deletes the listing" do
+      # TODO: FIGURE THIS OUT
+      params = {}
+      params[:user] = {}
+      params[:user][:email] = u1.email
+      params[:user][:password] = u1.password
+      post '/signin', params: params
+
+      delete '/listing/1/delete', params: params
+      expect(response).to redirect_to('/search')
+    end
+  end
+
 end
