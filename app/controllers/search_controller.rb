@@ -3,7 +3,7 @@ require 'ostruct'
 class SearchController < ApplicationController
   def index
     @search_types = form_search_types
-    render layout: 'home'
+    render layout: 'other_pages'
   end
 
   def results

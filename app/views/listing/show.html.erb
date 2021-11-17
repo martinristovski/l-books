@@ -35,7 +35,8 @@
                </div>
                <br/>
                 <% if Current.user.email === @listing.seller.email %>
-                 <%= link_to "Edit", '/edit', :id => 'signin' %>
+                 <%= link_to "Edit", "/listing/#{@listing.id}/edit", :id => 'signin' %>
+                 <%= link_to "Delete", "/listing/delete", :id => 'signin' %>
               <% else %>
               <div class="contact-seller">
                  <p style="font-size: 25px;">Contact The Seller:</p>

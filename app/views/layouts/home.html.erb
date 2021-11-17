@@ -25,9 +25,15 @@
         <%= link_to "New Listing", '/listing/new', :id => 'signin' %>
       <% end %>
     </div>
-    <% unless flash[:notice].nil? %>
-      <p class="notice"><%= flash[:notice] %></p>
-    <% end %>
+    <% if flash[:notice] %>
+         <div class="alert alert-info" role="alert" id="notice">
+           <%= flash[:notice] %>
+         </div>
+       <% elsif flash[:warning] %>
+         <div class="alert alert-danger" role="alert" id="warning">
+           <%= flash[:warning] %>
+         </div>
+       <% end %>
     <%= yield %>
   </body>
 </html>

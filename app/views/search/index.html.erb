@@ -4,6 +4,6 @@
   <%= form_with url: search_path, :id => "flexbox", method: :get do |form| %>
     <%= form.select :criteria, @search_types.collect { |st| [st.display_name, st.id] }, :id => "criteria" %>
     <%= form.text_field :search_term, placeholder: "(type your query here)", aria: { "label": "Search by query type selected" }, :id => "search" %>
-    <%= form.submit "Go", :id => "search-btn" %>
+    <%= form.submit "Go",  :style=>"margin: 0px;border-radius: 20px;padding: 6px 15px 5px 15px;", :id => "signin" %>
   <% end %>
 </div>
