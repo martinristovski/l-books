@@ -3,10 +3,11 @@
         <p class="h3"> New Listing </p> </br>
         <div class="form-group">
             <p>
-                <%= f.label 'Book ISBN' %><br>
-                <%= f.text_field :isbn, value: @form_data[:isbn] %>
+                <!-- Force 13 digits. -->
+                <%= f.label 'Book ISBN (13 digits required, no dashes)' %><br>
+                <%= f.text_field :isbn, value: @form_data[:isbn], :readonly => @form_data[:hidden_expandisbn] === true %>
             </p>
-            <% if @form_data[:hidden_expandisbn] and @form_data[:hidden_expandisbn] === "false" %>
+            <% if @form_data[:hidden_expandisbn] and @form_data[:hidden_expandisbn] === true %>
             <div class="form-group extra_book_details" >
                 <p>
                     <%= f.label 'Title' %><br>
@@ -31,7 +32,7 @@
                 <%= f.text_field :condition, value: @form_data[:condition] %>
             </p>
             <p>
-                <%= f.label 'Price' %><br>
+                <%= f.label 'Price (no dollar sign)' %><br>
                 <%= f.text_field :price, value: @form_data[:price] %>
             </p>
             <p>
@@ -44,6 +45,7 @@
             </p>
 
             <%= f.hidden_field :hidden_expandisbn, value: @form_data[:hidden_expandisbn] %>
+            <%= f.hidden_field :hidden__book_isbn, value: @form_data[:hidden__book_isbn] %>
 
             <br/>
             <p>
