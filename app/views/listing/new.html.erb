@@ -5,43 +5,43 @@
             <p>
                 <!-- Force 13 digits. -->
                 <%= f.label 'Book ISBN (13 digits required, no dashes)' %><br>
-                <%= f.text_field :isbn, value: @form_data[:isbn], :readonly => @form_data[:hidden_expandisbn] === true %>
+                <%= f.text_field :isbn, value: @form_data[:isbn], :readonly => @form_data[:hidden_expandisbn] === true, :id => "ISBN" %>
             </p>
             <% if @form_data[:hidden_expandisbn] and @form_data[:hidden_expandisbn] === true %>
             <div class="form-group extra_book_details" >
                 <p>
                     <%= f.label 'Title' %><br>
-                    <%= f.text_field :book_title, value: @form_data[:book_title] %>
+                    <%= f.text_field :book_title, value: @form_data[:book_title], :id => "Title" %>
                 </p>
                 <p>
                     <%= f.label 'Author(s)' %><br>
-                    <%= f.text_field :book_authors, value: @form_data[:book_authors] %>
+                    <%= f.text_field :book_authors, value: @form_data[:book_authors], :id => "Author(s)" %>
                 </p>
                 <p>
                     <%= f.label 'Edition' %><br>
-                    <%= f.text_field :book_edition, value: @form_data[:book_edition] %>
+                    <%= f.text_field :book_edition, value: @form_data[:book_edition], :id => "Edition" %>
                 </p>
                 <p>
                     <%= f.label 'Publisher' %><br>
-                    <%= f.text_field :book_publisher, value: @form_data[:book_publisher] %>
+                    <%= f.text_field :book_publisher, value: @form_data[:book_publisher], :id => "Publisher" %>
                 </p>
             </div>
             <% end %>
             <p>
                 <%= f.label 'condition' %><br>
-                <%= f.text_field :condition, value: @form_data[:condition] %>
+                <%= f.text_field :condition, value: @form_data[:condition], :id => "Condition" %>
             </p>
             <p>
                 <%= f.label 'Price (no dollar sign)' %><br>
-                <%= f.text_field :price, value: @form_data[:price] %>
+                <%= f.text_field :price, value: @form_data[:price], :id => "Price" %>
             </p>
             <p>
                 <%= f.label 'Course' %><br>
-                <%= f.text_field :course, value: @form_data[:course] %>
+                <%= f.text_field :course, value: @form_data[:course], :id => "Course" %>
             </p>
             <p>
                 <%= f.label 'Description' %><br>
-                <%= f.text_area :description, placeholder: "(Describe the condition of the book)" , value: @form_data[:description] %>
+                <%= f.text_area :description, placeholder: "(Describe the condition of the book)" , value: @form_data[:description], :id => "Description" %>
             </p>
 
             <%= f.hidden_field :hidden_expandisbn, value: @form_data[:hidden_expandisbn] %>
