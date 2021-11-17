@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Books", type: :request do
+RSpec.describe "Listings", type: :request do
   before(:all) do
     ## COPIED FROM seeds.rb ##
     # users

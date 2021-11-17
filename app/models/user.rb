@@ -6,6 +6,5 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_many :seller_listings, class_name: "Listing", foreign_key: "seller_id"
-  has_many :listing_bookmarks
   has_many :user_reputation_ratings
 end
