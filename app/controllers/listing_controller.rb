@@ -269,6 +269,7 @@ class ListingController < ApplicationController
       # add the new book!
       if @form_data[:hidden_expandisbn] == "true"
         this_book = Book.create!(
+          id: Book.maximum(:id).next,
           title: @form_data[:book_title],
           authors: @form_data[:book_authors],
           edition: @form_data[:book_edition],
@@ -283,6 +284,7 @@ class ListingController < ApplicationController
       # create the listing
       # TODO: How do we use course?
       created_listing = Listing.create!(
+        id: Listing.maximum(:id).next,
         book_id: this_book.id,
         price: @form_data[:price],
         condition: @form_data[:condition],
