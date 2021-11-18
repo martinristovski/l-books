@@ -231,4 +231,12 @@ RSpec.describe "Listings", type: :request do
   #   end
   # end
 
+  # describe "Create new listing while not signed in" do
+  #   it "redirects to the sign in page" do
+  #     get '/listing/new'
+  #     expect(response).to redirect_to('/signin')
+  #   end
+  # end
+
+  
 end
