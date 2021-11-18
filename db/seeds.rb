@@ -136,14 +136,14 @@ l3_i1 = ListingImage.create!(
 )
 
 # listing bookmarks
-lb1 = ListingBookmark.create!(
-  listing_id: l3.id,
-  user_id: u4.id
-)
-lb2 = ListingBookmark.create!(
-  listing_id: l2.id,
-  user_id: u4.id
-)
+# lb1 = ListingBookmark.create!(
+#   listing_id: l3.id,
+#   user_id: u4.id
+# )
+# lb2 = ListingBookmark.create!(
+#   listing_id: l2.id,
+#   user_id: u4.id
+# )
 
 # listing contacts (only record when contact initiated)
 lc1 = ListingContact.create!(
