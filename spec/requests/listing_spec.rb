@@ -243,10 +243,34 @@ RSpec.describe "Listings", type: :request do
       expect(response).to render_template('edit')
     end
 
+    it "edits listing - invalid condition" do
+      post '/listing/1/edit', params: {:condition => "", :price => "5.50", :description => "lorem ipsum"}
+      expect(flash[:notice]).to match "Please enter the book's condition."
+      expect(response).to render_template('edit')
+    end
+
+    it "edits listing - blank price" do
+      post '/listing/1/edit', params: {:condition => "a", :price => "", :description => "lorem ipsum"}
+      expect(flash[:notice]).to match "Please enter the book's price."
+      expect(response).to render_template('edit')
+    end
+
+    it "edits listing - invalid price" do
+      post '/listing/1/edit', params: {:condition => "a", :price => "a", :description => "lorem ipsum"}
+      expect(flash[:notice]).to match "The price you have entered is invalid."
+      expect(response).to render_template('edit')
+    end
+
+    it "edits listing - invalid description" do
+      post '/listing/1/edit', params: {:condition => "a", :price => "5.50", :description => ""}
+      expect(flash[:notice]).to match "Please enter a description for the book."
+      expect(response).to render_template('edit')
+    end
+
     it "edits listing" do
-      post '/listing/1/edit'
+      post '/listing/1/edit', params: {:condition => "a", :price => "5.50", :description => "lorem ipsum"}
       expect(flash[:notice]).to eq("Listing updated!")
-      expect(response).to redirect_to('/')
+      expect(response).to redirect_to('/listing/1')
     end
   end
 
@@ -257,5 +281,83 @@ RSpec.describe "Listings", type: :request do
     end
   end
 
+  describe "Create new listing while signed in" do
+    before :each do
+      params = {:email => "vn@columbia.edu", :password => "password123"}
+      post '/signin', params: params
+      expect(session[:user_id]).to eq(1)
+    end
+
+    it "renders new on GET request" do
+      get '/listing/new'
+      expect(response).to render_template('new')
+    end
+
+    it "returns error for blank ISBN" do
+      params = {}
+      params[:isbn] = "" # THIS 
+      params[:condition] = "Like new"
+      params[:price] = 5.99
+      params[:course] = "HUMA1001"
+      params[:description] = "In great condition, only used for one week."
+      params[:hidden_expandisbn] = false
+      post '/listing/new', params: params
+      
+      expect(flash[:notice]).to match "The ISBN is required."
+    end
+
+    it "returns error for invalid ISBN" do
+      params = {}
+      params[:isbn] = "1119781001100110" # THIS 
+      params[:condition] = "Like new"
+      params[:price] = 5.99
+      params[:course] = "HUMA1001"
+      params[:description] = "In great condition, only used for one week."
+      params[:hidden_expandisbn] = false
+      post '/listing/new', params: params
+      
+      expect(flash[:notice]).to match "The ISBN you have entered is invalid."
+    end
+
+    it "returns error for blank condition" do
+      params = {}
+      params[:isbn] = "1119781001100110"
+      # params[:condition] = "" # THIS
+      params[:price] = 5.99
+      params[:course] = "HUMA1001"
+      params[:description] = "In great condition, only used for one week."
+      params[:hidden_expandisbn] = false
+      post '/listing/new', params: params
+      
+      expect(flash[:notice]).to match "Please enter the book's condition."
+    end
+
+    it "returns error for blank price" do
+      params = {}
+      params[:isbn] = "1119781001100110"
+      params[:condition] = "" 
+      # params[:price] = nothing # THIS
+      params[:course] = "HUMA1001"
+      params[:description] = "In great condition, only used for one week."
+      params[:hidden_expandisbn] = false
+      post '/listing/new', params: params
+      
+      expect(flash[:notice]).to match "Please enter the book's price."
+    end
+
+    it "returns error for invalid price" do
+      params = {}
+      params[:isbn] = "1119781001100110"
+      params[:condition] = "" 
+      params[:price] = 3.12312313 # THIS
+      params[:course] = "HUMA1001"
+      params[:description] = "In great condition, only used for one week."
+      params[:hidden_expandisbn] = false
+      post '/listing/new', params: params
+      
+      expect(flash[:notice]).to match "The price you have entered is invalid."
+    end
+
+  end
   
 end
