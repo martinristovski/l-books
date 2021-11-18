@@ -50,6 +50,7 @@ were not implemented in this iteration).
 ### Projected tasks for next iteration
 
 - User dashboard and password edits/resets.
+- Uploading listing photos.
 - Buyer-seller contact functionality.
 - E-mail verification for school-specific e-mail addresses.
 - Seller/transaction ratings.
