@@ -31,10 +31,11 @@ on how Ruby is installed on your computer.)_
 
 ## Currently-implemented features
 
-* Search by title/author, course, and isbn.
-* See book results.
-* See listings for a book.
-* See listing page. (need to manually put in the URL; for example, `/listing/1`)
+* Search by title/author, course, and ISBN.
+* See book results, and see book information page.
+* See listing info for a book, and see individual listings.
+* Register and login using an account.
+* Create, delete, and edit a listing.
 
 ### Features implemented in iteration 2
 
