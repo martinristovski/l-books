@@ -297,7 +297,7 @@ RSpec.describe "Listings", type: :request do
       params = {}
       params[:isbn] = "" # THIS 
       params[:condition] = "Like new"
-      params[:price] = 5.99
+      params[:price] = "5.99"
       params[:course] = "HUMA1001"
       params[:description] = "In great condition, only used for one week."
       params[:hidden_expandisbn] = false
@@ -310,7 +310,7 @@ RSpec.describe "Listings", type: :request do
       params = {}
       params[:isbn] = "1119781001100110" # THIS 
       params[:condition] = "Like new"
-      params[:price] = 5.99
+      params[:price] = "5.99"
       params[:course] = "HUMA1001"
       params[:description] = "In great condition, only used for one week."
       params[:hidden_expandisbn] = false
@@ -321,9 +321,9 @@ RSpec.describe "Listings", type: :request do
 
     it "returns error for blank condition" do
       params = {}
-      params[:isbn] = "1119781001100110"
+      params[:isbn] = "9781001100110"
       # params[:condition] = "" # THIS
-      params[:price] = 5.99
+      params[:price] = "5.99"
       params[:course] = "HUMA1001"
       params[:description] = "In great condition, only used for one week."
       params[:hidden_expandisbn] = false
@@ -334,7 +334,7 @@ RSpec.describe "Listings", type: :request do
 
     it "returns error for blank price" do
       params = {}
-      params[:isbn] = "1119781001100110"
+      params[:isbn] = "9781001100110"
       params[:condition] = "" 
       # params[:price] = nothing # THIS
       params[:course] = "HUMA1001"
@@ -347,8 +347,8 @@ RSpec.describe "Listings", type: :request do
 
     it "returns error for invalid price" do
       params = {}
-      params[:isbn] = "1119781001100110"
-      params[:condition] = "" 
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
       params[:price] = 3.12312313 # THIS
       params[:course] = "HUMA1001"
       params[:description] = "In great condition, only used for one week."
@@ -357,6 +357,34 @@ RSpec.describe "Listings", type: :request do
       
       expect(flash[:notice]).to match "The price you have entered is invalid."
     end
+
+    it "returns error for blank description" do
+      params = {}
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "" # THIS
+      params[:hidden_expandisbn] = false
+      post '/listing/new', params: params
+      
+      expect(flash[:notice]).to match "Please enter a description for the book."
+    end
+
+    it "asks for more info if hidden_expandisbn == false" do
+      params = {}
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:hidden_expandisbn] = false
+
+      post '/listing/new', params: params
+      expect(flash[:notice]).to eq("Please enter more information about this book.")
+      expect(response).to render_template('new')
+    end
+
 
   end
   
