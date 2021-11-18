@@ -5,6 +5,7 @@ RSpec.describe "Listings", type: :request do
     ## COPIED FROM seeds.rb ##
     # users
     u1 = User.create!(
+      id: 1,
       first_name: "Vishnu",
       last_name: "Nair",
       uni: "vn1234",
@@ -14,6 +15,7 @@ RSpec.describe "Listings", type: :request do
       password_confirmation: "password123"
     )
     u2 = User.create!(
+      id: 2,
       first_name: "Ivy",
       last_name: "Cao",
       uni: "ic1234",
@@ -23,6 +25,7 @@ RSpec.describe "Listings", type: :request do
       password_confirmation: "password123"
     )
     u3 = User.create!(
+      id: 3,
       first_name: "Aditya",
       last_name: "Satnalika",
       uni: "as1234",
@@ -32,6 +35,7 @@ RSpec.describe "Listings", type: :request do
       password_confirmation: "password123"
     )
     u4 = User.create!(
+      id: 4,
       first_name: "Martin",
       last_name: "Ristovski",
       uni: "mr1234",
@@ -93,6 +97,7 @@ RSpec.describe "Listings", type: :request do
 
     # listings
     l1 = Listing.create!(
+      id: 1,
       book_id: b1.id,
       price: 5.00,
       condition: "Like new",
@@ -100,6 +105,7 @@ RSpec.describe "Listings", type: :request do
       seller_id: u1.id
     )
     l2 = Listing.create!(
+      id: 2,
       book_id: b1.id,
       price: 4.50,
       condition: "Used, slightly worn",
@@ -107,6 +113,7 @@ RSpec.describe "Listings", type: :request do
       seller_id: u2.id
     )
     l3 = Listing.create!(
+      id: 3,
       book_id: b2.id,
       price: 5.15,
       condition: "Used",
@@ -146,22 +153,29 @@ RSpec.describe "Listings", type: :request do
     end
   end
 
-  # describe "Delete listing while not signed in" do
-  #   it "redirects to the sign in page" do
-  #     get '/listing/1/delete'
-  #     expect(response).to redirect_to('/signin')
-  #   end
-  # end
+  describe "Delete listing while not signed in" do
+    it "redirects to the sign in page" do
+      get '/listing/1/delete'
+      expect(response).to redirect_to('/signin')
+    end
+  end
+
+  describe "Delete listing while signed in but not as the seller" do
+    it "redirects to the home page with a message" do
+      params = {:email => "ic@columbia.edu", :password => "password123"}
+      post '/signin', params: params
+      expect(session[:user_id]).to eq(2)
+
+      get '/listing/1/delete'
+      expect(response).to redirect_to('/')
+      expect(flash[:notice]).to eq("Forbidden: Only the seller of a listing can delete that listing.")
+    end
+  end
 
   # describe "Delete listing while signed in" do
   #   before :each do
   #     # TODO: FIGURE THIS OUT
-  #     params = {}
-  #     params[:user] = {}
-  #     params[:user_id] = 1
-  #     params[:id] = 1
-  #     params[:user][:email] = User.find_by_id(1).email
-  #     params[:user][:password] = User.find_by_id(1).password
+  #     params = {:email => "Go", :password => "titleauthor", :search_term => "Iliad"}
   #     post '/signin', params: params
   #   end
 
