@@ -38,7 +38,8 @@ on how Ruby is installed on your computer.)_
 
 ### Features implemented in iteration 2
 
-1. User login, registration, and session creation (implemented manually using [this tutorial]([https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/](https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/))).
+1. User login, registration, and session creation (implemented manually using this tutorial:  
+   [https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/](https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/).
 2. The ability to create a new listing, edit a listing, and delete that listing.
 3. The ability to add a new book if the ISBN given for a book does not yet exist in our database.
 4. New views and new/improved CSS styling.
