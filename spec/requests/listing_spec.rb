@@ -385,7 +385,62 @@ RSpec.describe "Listings", type: :request do
       expect(response).to render_template('new')
     end
 
+    it "returns error for missing book title" do
+      params = {}
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "" # THIS
+      params[:book_authors] = "B"
+      params[:book_edition] = "C"
+      params[:book_publisher] = "D"
+      params[:book_isbn] = params[:isbn]
+
+      post '/listing/new', params: params
+      expect(flash[:notice]).to match "Please enter the unknown book's title."
+      expect(response).to render_template('new')
+    end
+
+    it "returns error for missing authors" do
+      params = {}
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "A" 
+      params[:book_authors] = "" # THIS
+      params[:book_edition] = "C"
+      params[:book_publisher] = "D"
+      params[:book_isbn] = params[:isbn]
+
+      post '/listing/new', params: params
+      expect(flash[:notice]).to match "Please enter the unknown book's author list."
+      expect(response).to render_template('new')
+    end
+
+    it "returns error for missing publisher" do
+      params = {}
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "A" 
+      params[:book_authors] = "B"
+      params[:book_edition] = "C"
+      params[:book_publisher] = "" # THIS
+      params[:book_isbn] = params[:isbn]
+
+      post '/listing/new', params: params
+      expect(flash[:notice]).to match "Please enter the unknown book's publisher."
+      expect(response).to render_template('new')
+    end
 
   end
-  
 end
