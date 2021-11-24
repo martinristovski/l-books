@@ -1,0 +1,16 @@
+<div class="new_listing" >
+    <%= form_with url: "/listing/#{@id}/sold" do |f| %>
+        <p class="h3"> Record the Purchase </p> </br>
+        <div class="form-group">
+                <p>
+                    <%= f.label 'Sold To' %><br>
+                    <%= f.text_field :user_email, placeholder: "Email address of the buyer" ,  :id => "user_email" %>
+                </p>
+            <p>
+                <%= f.label 'Amount' %><br>
+                <%= f.text_field :amount, :id => "amount" %>
+            </p>
+        </div>
+    <% end %>
+    </div>
+</div>

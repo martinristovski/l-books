@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   post '/listing/new', to: 'listing#new'
   get '/listing/:id/edit', to: 'listing#edit'
   post '/listing/:id/edit', to: 'listing#edit'
+  get '/listing/:id/sold', to: 'listing#sold'
+  post '/listing/:id/sold', to: 'listing#sold'
   get '/listing/:id/delete', to: 'listing#delete'
   delete '/listing/:id/delete', to: 'listing#delete'
   resources :listing do

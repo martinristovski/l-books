@@ -23,6 +23,12 @@
         </p>
         <p class="listing-price"><%= sprintf('$%.2f', @listing.price) %></p>
         <div class="listing-description"><em><%= @listing.condition %></em> | <%= @listing.description.truncate(50) %></div>
+        </br>
+        <% if Current.user.email === @listing.seller.email %>
+         <%= link_to "Edit", "/listing/#{@listing.id}/edit", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
+         <%= link_to "Delete", "/listing/#{@listing.id}/delete", :id => 'signin' , :style =>'float:left'%>
+         <%= link_to "Mark As Sold", "/listing/#{@listing.id}/sold", :id => 'signin' , :style =>'float:left'%>
+        <% end %>
     </div>
     <% if Current.user %>
           <div class="seller-info">
@@ -35,8 +41,7 @@
                </div>
                <br/>
                 <% if Current.user.email === @listing.seller.email %>
-                 <%= link_to "Edit", "/listing/#{@listing.id}/edit", :id => 'signin' %>
-                 <%= link_to "Delete", "/listing/#{@listing.id}/delete", :id => 'signin' %>
+
               <% else %>
               <div class="contact-seller">
                  <p style="font-size: 25px;">Contact The Seller:</p>
