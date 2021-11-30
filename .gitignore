@@ -50,3 +50,6 @@ yarn-debug.log*
 
 # local_env.yml
 config/local_env.yml
+
+# .idea
+.idea/
