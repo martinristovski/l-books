@@ -10,38 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_225753) do
+ActiveRecord::Schema.define(version: 2021_11_16_231751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
-    t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", force: :cascade do |t|
-    t.bigint "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
 
   create_table "book_course_associations", force: :cascade do |t|
     t.bigint "book_id", null: false
@@ -59,6 +31,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_225753) do
     t.string "edition"
     t.string "publisher"
     t.string "isbn"
+    t.string "image_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -88,6 +61,14 @@ ActiveRecord::Schema.define(version: 2021_11_30_225753) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["initiator_id"], name: "index_listing_contacts_on_initiator_id"
     t.index ["listing_id"], name: "index_listing_contacts_on_listing_id"
+  end
+
+  create_table "listing_images", force: :cascade do |t|
+    t.string "image_url"
+    t.bigint "listing_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["listing_id"], name: "index_listing_images_on_listing_id"
   end
 
   create_table "listings", force: :cascade do |t|
@@ -125,14 +106,13 @@ ActiveRecord::Schema.define(version: 2021_11_30_225753) do
     t.string "password_digest"
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "book_course_associations", "books"
   add_foreign_key "book_course_associations", "courses"
   add_foreign_key "listing_bookmarks", "listings"
   add_foreign_key "listing_bookmarks", "users"
   add_foreign_key "listing_contacts", "listings"
   add_foreign_key "listing_contacts", "users", column: "initiator_id"
+  add_foreign_key "listing_images", "listings"
   add_foreign_key "listings", "books"
   add_foreign_key "listings", "users", column: "seller_id"
   add_foreign_key "user_reputation_ratings", "listings"
