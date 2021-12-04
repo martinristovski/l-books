@@ -5,9 +5,9 @@
         <%= image_tag @book.image_url, class: "cover" %>
       <% end %>
       <div class="book-title-author-edition">
-        <p class="book-title"><%= @book.title %></p>
-        <p class="book-author"><%= @book.authors %></p>
-        <p class="book-edition">
+        <p class="book-title" style="font-size:27px"><%= @book.title %></p>
+        <p class="book-author" style="font-size:21px"><%= @book.authors %></p>
+        <p class="book-edition" style="font-size:21px">
           <%= @book.publisher %>
           <% if not @book.edition.nil? and not @book.edition.empty? %>
             (<%= @book.edition %>)

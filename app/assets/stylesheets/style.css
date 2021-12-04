@@ -190,8 +190,7 @@ p, div {
     justify-self: left;
     align-self: center;
     margin-left: 5px;
-    padding-top:10px;
-    line-height: 0.9;
+    padding-top:5px;
 }
 
 .book-number {

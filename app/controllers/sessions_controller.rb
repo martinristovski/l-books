@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-    layout 'home'
+    layout 'other_pages'
     def new; end
 
     def create
@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
         user = User.find_by(email: params[:email])
 
         if user.nil?
-            flash[:notice] = 'Invalid email or password'
+            flash[:warning] = 'Invalid email or password'
             render :new
             return
         end
@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
             session[:user_id] = user.id
             redirect_to root_path, notice: 'Logged in successfully'
         else
-            flash[:notice] = 'Invalid email or password'
+            flash[:warning] = 'Invalid email or password'
             render :new
         end
     end
