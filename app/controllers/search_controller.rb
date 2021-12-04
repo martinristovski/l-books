@@ -24,17 +24,23 @@ class SearchController < ApplicationController
       if c == "titleauthor"
         @results = Book.where("LOWER(title) like ? OR LOWER(authors) like ?", "%#{st}%", "%#{st}%")
       elsif c == "course"
-        courses = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
-        if courses.empty?
-          @results = []
+        if !(st.match /([A-Za-z][A-Za-z][A-Za-z][A-Za-z])([0-9][0-9][0-9][0-9])/)
+          flash[:notice] = "Invalid course code. Please use correct input form (E.g. 'HUMA1001')."
+          redirect_to action: "index"
+          return
         else
-          all_bca = []
-          courses.each do |c|
-            all_bca += BookCourseAssociation.where(course_id: c.id)
-          end
-          @results = []
-          all_bca.each do |bca|
-            @results.append(bca.book) unless @results.include? bca.book
+          courses = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
+          if courses.empty?
+            @results = []
+          else
+            all_bca = []
+            courses.each do |c|
+              all_bca += BookCourseAssociation.where(course_id: c.id)
+            end
+            @results = []
+            all_bca.each do |bca|
+              @results.append(bca.book) unless @results.include? bca.book
+            end
           end
         end
       else # c == "isbn"
