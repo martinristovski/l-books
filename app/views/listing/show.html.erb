@@ -1,13 +1,14 @@
 <div class="listing-page-main">
-  <% unless @listing.book.image_url.nil? %>
+  <% unless @listing.listing_images.count == 0 %>
     <div class="listing-photos">
-        <%= image_tag @listing.book.image_url, class: "listing-cover" %>
+        <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(@listing.listing_images[0].image_id, 2.hours.to_i), class: "listing-cover" %>
+        <% if @listing.listing_images.count > 1 %>
         <div class="listing-alt-photos">
-            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
-            <%= image_tag @listing.book.image_url, class: "listing-alt-photo" %>
+          <% @listing.listing_images.drop(1).each do |img| %>
+            <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(img.image_id, 2.hours.to_i), class: "listing-alt-photo" %>
+          <% end %>
         </div>
+        <% end %>
     </div>
     <% end %>
     <div class="listing-info">

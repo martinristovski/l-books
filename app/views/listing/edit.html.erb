@@ -45,6 +45,23 @@
                 <%= f.text_area :description, placeholder: "(Describe the condition of the book)" , value: @form_data[:description] %>
             </p>
 
+            <p>
+              <% if not @listing.nil? %>
+                <%= f.label sprintf('Images (%s/%s uploaded; min. 1)', @listing.listing_images.count, Listing.class_variable_get(:@@MAX_IMAGES)) %>
+                <br>
+                <% @listing.listing_images.each do |img| %>
+                  <%= f.submit 'X' , class: "btn btn-danger", formaction: "/listing/#{@listing.id}/edit/deleteimg/#{img.id}", formmethod: 'post'  %>
+                  <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(img.image_id, 2.hours.to_i), :style=>"width:88px" %>
+                <% end %>
+              <% else %>
+                <%= f.label sprintf('Images (0/%s uploaded; min. 1)', Listing.class_variable_get(:@@MAX_IMAGES)) %>
+              <% end %>
+
+              <br>
+              <%= f.file_field :image, accept: 'image/png,image/jpeg' %>
+              <%= f.submit 'Upload' , class: "btn btn-info", formaction: "/listing/#{@listing.id}/edit/uploadimg", formmethod: 'post'  %>
+            </p>
+
             <br/>
             <p>
                 <%= f.submit 'Save' , :id => 'signin' , :style => "float:none" %>

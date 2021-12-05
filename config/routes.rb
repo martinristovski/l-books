@@ -27,14 +27,23 @@ Rails.application.routes.draw do
 
   # listing
   get '/listing', to: redirect('/')
+
   get '/listing/new', to: 'listing#new'
-  post '/listing/new', to: 'listing#new'
+  post '/listing/new/uploadimg', to: 'listing#new__upload_image'
+  post '/listing/new', to: 'listing#new__finalize'
+  post '/listing/new/deleteimg/:imgid', to: 'listing#new__delete_uploaded_image'
+
+  post '/listing/:id/edit/uploadimg', to: 'listing#edit__upload_image'
+  post '/listing/:id/edit/deleteimg/:imgid', to: 'listing#edit__delete_uploaded_image'
   get '/listing/:id/edit', to: 'listing#edit'
   post '/listing/:id/edit', to: 'listing#edit'
+
   get '/listing/:id/sold', to: 'listing#sold'
   post '/listing/:id/sold', to: 'listing#sold'
+
   get '/listing/:id/delete', to: 'listing#delete'
   delete '/listing/:id/delete', to: 'listing#delete'
+
   resources :listing do
     get '/listing/:id', to: 'listing#show'
   end
