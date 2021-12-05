@@ -17,37 +17,36 @@ class ListingController < ApplicationController
     end
   end
 
-    def sold
-      listing_id = params[:id]
-      begin
-        listing_in_question = Listing.find(listing_id)
-      rescue ActiveRecord::RecordNotFound
-        flash[:notice] = "Sorry, we couldn't find a listing with that ID."
-        redirect_to controller: "listing", action: 'index'
-        return
-      end
-      if request.get?
-        @listing = listing_in_question
-        render 'sold', layout: 'other_pages'
-      elsif request.post?
-        @form_data = {
-          :user_email => params[:user_email],
-          :amount => params[:amount],
-         }
-         user = User.find_by(email: @form_data[:user_email])
-
-         if user.nil?
-             flash[:warning] = 'Please Enter Correct Email'
-             @listing = listing_in_question
-             redirect_to controller: "listing", action: 'sold'
-             return
-         end
-
-        flash[:notice] = "Listing updated!"
-        redirect_to "/listing/#{listing_in_question.id}"
-      end
-
+  def sold
+    listing_id = params[:id]
+    begin
+      listing_in_question = Listing.find(listing_id)
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "Sorry, we couldn't find a listing with that ID."
+      redirect_to controller: "listing", action: 'index'
+      return
     end
+    if request.get?
+      @listing = listing_in_question
+      render 'sold', layout: 'other_pages'
+    elsif request.post?
+      @form_data = {
+        :user_email => params[:user_email],
+        :amount => params[:amount],
+       }
+       user = User.find_by(email: @form_data[:user_email])
+
+       if user.nil?
+           flash[:warning] = 'Please Enter Correct Email'
+           @listing = listing_in_question
+           redirect_to controller: "listing", action: 'sold'
+           return
+       end
+
+      flash[:notice] = "Listing updated!"
+      redirect_to "/listing/#{listing_in_question.id}"
+    end
+  end
 
 
   def delete
