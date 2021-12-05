@@ -11,6 +11,39 @@ class ListingController < ApplicationController
     end
   end
 
+    def sold
+      listing_id = params[:id]
+      begin
+        listing_in_question = Listing.find(listing_id)
+      rescue ActiveRecord::RecordNotFound
+        flash[:notice] = "Sorry, we couldn't find a listing with that ID."
+        redirect_to controller: "listing", action: 'index'
+        return
+      end
+      if request.get?
+        @listing = listing_in_question
+        render 'sold', layout: 'other_pages'
+      elsif request.post?
+        @form_data = {
+          :user_email => params[:user_email],
+          :amount => params[:amount],
+         }
+         user = User.find_by(email: @form_data[:user_email])
+
+         if user.nil?
+             flash[:warning] = 'Please Enter Correct Email'
+             @listing = listing_in_question
+             redirect_to controller: "listing", action: 'sold'
+             return
+         end
+
+        flash[:notice] = "Listing updated!"
+        redirect_to "/listing/#{listing_in_question.id}"
+      end
+
+    end
+
+
   def delete
     if session[:user_id].nil?
       redirect_to '/signin' # TODO: Redirect back.
@@ -249,21 +282,40 @@ class ListingController < ApplicationController
       # search for this ISBN
       books_with_isbn = Book.where(isbn: @form_data[:isbn]).to_a
 
-      # if book with isbn not found, return the lengthened form
+      # if book with isbn not found, return the lengthened form or populate using Google Books API
       if books_with_isbn.empty? and @form_data[:hidden_expandisbn] == "false"
         @form_data[:hidden_expandisbn] = true
-        flash[:notice] = "Please enter more information about this book."
-        extra_book_info = {
-          :book_title => "",
-          :book_authors => "",
-          :book_edition => "",
-          :book_publisher => "",
-          :hidden__book_isbn => @form_data[:isbn]
-        }
-        @form_data = @form_data.merge(extra_book_info)  # add extra fields
-        # TODO: Could render a different template here for the longer form.
-        render 'new', layout: 'other_pages'
-        return
+	
+	books_match = GoogleBooks.search(@form_data[:isbn], {:api_key => ENV["API_KEY"]}) #returns collection of books that match the isbn
+
+        book_match = books_match.first
+
+	if book_match.nil?
+          flash[:notice] = "Please enter more information about this book."
+          extra_book_info = {
+            :book_title => "",
+            :book_authors => "",
+            :book_edition => "",
+            :book_publisher => "",
+            :hidden__book_isbn => @form_data[:isbn]
+          }
+          @form_data = @form_data.merge(extra_book_info)  # add extra fields
+          # TODO: Could render a different template here for the longer form.
+          render 'new', layout: 'other_pages'
+          return
+        else
+	  extra_book_info = {
+            :book_title => book_match.title,
+            :book_authors => book_match.authors,
+            :book_edition => "", # todo: make this optional?
+            :book_publisher => book_match.publisher,
+            # todo: add image to s3, using book_match.image_link(:zoom => 2) for a medium sized image
+            :hidden__book_isbn => @form_data[:isbn]
+          }
+          @form_data = @form_data.merge(extra_book_info)
+          render 'new', layout: 'other_pages'
+          return
+        end
       end
 
       # add the new book!

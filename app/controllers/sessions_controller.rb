@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-    layout 'home'
+    layout 'other_pages'
     def new
         @fdata = {
           :redirect_url => request.referrer
@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
         puts params[:redirect_url]
 
         if user.nil?
-            flash[:notice] = 'Invalid email or password'
+            flash[:warning] = 'Invalid email or password'
             render :new
             return
         end
@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
                 redirect_to params[:redirect_url], notice: 'Logged in successfully'
             end
         else
-            flash[:notice] = 'Invalid email or password'
+            flash[:warning] = 'Invalid email or password'
             render :new
         end
     end

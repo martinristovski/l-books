@@ -17,9 +17,9 @@
           <%= image_tag res.image_url, class: "cover-small" %>
         <% end %>
         <div class="book-title-author-edition ">
-          <p class="book-title"><%= res.title %></p>
-          <p class="book-author"><%= res.authors %></p>
-          <p class="book-edition">
+          <p class="book-title" style="line-height: 1.2; margin-bottom:10px"><%= res.title %></p>
+          <p class="book-author" style="line-height: 1.2; margin-bottom:7px"><%= res.authors %></p>
+          <p class="book-edition" style="line-height: 1.2; margin-bottom:7px">
             <%= res.publisher %>
             <% if not res.edition.nil? and not res.edition.empty? %>
               (<%= res.edition %>)
