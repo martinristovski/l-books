@@ -294,6 +294,11 @@ class ListingController < ApplicationController
         all_errors.append("Please enter the book's price.")
       end
 
+      # error check: the course code is in the wrong format
+      unless @form_data[:course].match /([A-Za-z][A-Za-z][A-Za-z][A-Za-z])([0-9][0-9][0-9][0-9])/
+        all_errors.append("Invalid course code. Please use correct input form (E.g. 'HUMA1001').")
+      end
+
       # error check (not performed if the price is blank): the price is not a decimal/float or is not positive or has more than 2 numbers after the decimal
       if not price_blank and
         ((false if Float(@form_data[:price]) rescue true) \
@@ -589,6 +594,11 @@ class ListingController < ApplicationController
     # error check: the description is blank
     if @form_data[:description].nil? or @form_data[:description].empty?
       all_errors.append("Please enter a description for the book.")
+    end
+
+    # error check: the course code is in the wrong format
+    unless @form_data[:course].match /([A-Za-z][A-Za-z][A-Za-z][A-Za-z])([0-9][0-9][0-9][0-9])/
+      all_errors.append("Invalid course code. Please use correct input form (E.g. 'HUMA1001').")
     end
 
     # error check: no images were uploaded
