@@ -45,29 +45,43 @@ u4 = User.create!(
 )
 
 # books
+b1_cover_file = File.read("./db/seed_files/b1_iliad.jpg")
+b1_cover_name = "seedcover_" + SecureRandom.uuid + ".jpg"
+S3FileHelper.upload_file(b1_cover_name, b1_cover_file)
+
 b1 = Book.create!(
   title: "The Iliad of Homer",
   authors: "Richmond Lattimore; Homer",
   edition: nil,
   publisher: "University of Chicago Press",
   isbn: "9780226470498",
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: S3 later.
+  image_id: b1_cover_name
 )
+
+b2_cover_file = File.read("./db/seed_files/b2_symposium.jpg")
+b2_cover_name = "seedcover_" + SecureRandom.uuid + ".jpg"
+S3FileHelper.upload_file(b2_cover_name, b2_cover_file)
+
 b2 = Book.create!(
   title: "Plato Symposium (Hackett Classics)",
   authors: "Plato; Alexander Nehamas; Paul Woodruff",
   edition: "1989 Edition",
   publisher: "Hackett Publishing Co",
   isbn: "9780872200760",
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/41vx+Jrc8GL.jpg" # TODO: S3 later.
+  image_id: b2_cover_name
 )
+
+b3_cover_file = File.read("./db/seed_files/b3_aeneid.jpg")
+b3_cover_name = "seedcover_" + SecureRandom.uuid + ".jpg"
+S3FileHelper.upload_file(b3_cover_name, b3_cover_file)
+
 b3 = Book.create!(
   title: "The Aeneid of Virgil (Bantam Classics)",
   authors: "Virgil; Allen Mandelbaum",
   edition: "Revised ed.",
   publisher: "Bantam Classics",
   isbn: "9780553210415",
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/71Rd1htsJvL.jpg" # TODO: S3 later.
+  image_id: b3_cover_name
 )
 
 # courses
@@ -100,39 +114,42 @@ l1 = Listing.create!(
   price: 5.00,
   condition: "Like new",
   description: "Copy of the Iliad. Looks like it was never used (which may or may not have been the case)...",
-  seller_id: u1.id
+  seller_id: u1.id,
+  status: 'published'
 )
 l2 = Listing.create!(
   book_id: b1.id,
   price: 4.50,
   condition: "Used, slightly worn",
   description: "Another copy of the Iliad. This actually looks like it was used.",
-  seller_id: u2.id
+  seller_id: u2.id,
+  status: 'published'
 )
 l3 = Listing.create!(
   book_id: b2.id,
   price: 5.15,
   condition: "Used",
   description: "Plato's Symposium. Used.",
-  seller_id: u3.id
+  seller_id: u3.id,
+  status: 'published'
 )
 
 # listing images
 l1_i1 = ListingImage.create!(
   listing_id: l1.id,
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: Using stock image for now.
+  image_id: b1_cover_name
 )
 l1_i2 = ListingImage.create!(  # duplicate image to test multiple in UI
   listing_id: l1.id,
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: Using stock image for now.
+  image_id: b1_cover_name
 )
 l2_i1 = ListingImage.create!(
   listing_id: l2.id,
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: Using stock image for now.
+  image_id: b2_cover_name
 )
 l3_i1 = ListingImage.create!(
   listing_id: l3.id,
-  image_url: "https://images-na.ssl-images-amazon.com/images/I/41vx+Jrc8GL.jpg" # TODO: Using stock image for now.
+  image_id: b3_cover_name
 )
 
 # listing bookmarks
