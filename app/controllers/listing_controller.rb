@@ -1,3 +1,5 @@
+require "down"
+
 class ListingController < ApplicationController
   skip_before_action :verify_authenticity_token
   layout 'other_pages'
@@ -660,16 +662,17 @@ class ListingController < ApplicationController
 
     # search for this ISBN
     books_with_isbn = Book.where(isbn: @form_data[:isbn]).to_a
+    book_autocreated = false
 
     # if book with isbn not found, return the lengthened form or populate using Google Books API
     if books_with_isbn.empty? and @form_data[:hidden_expandisbn] == "false"
       @form_data[:hidden_expandisbn] = true
 
       books_match = GoogleBooks.search(@form_data[:isbn], {:api_key => ENV["API_KEY"]}) #returns collection of books that match the isbn
-
       book_match = books_match.first
 
       if book_match.nil?
+        # if there was no match for the book, have the user manually input information
         flash[:notice] = "Please enter more information about this book."
         extra_book_info = {
           :book_title => "",
@@ -683,17 +686,38 @@ class ListingController < ApplicationController
         render 'new', layout: 'other_pages'
         return
       else
-        extra_book_info = {
-          :book_title => book_match.title,
-          :book_authors => book_match.authors,
-          :book_edition => "", # todo: make this optional?
-          :book_publisher => book_match.publisher,
-          # todo: add image to s3, using book_match.image_link(:zoom => 2) for a medium sized image
-          :hidden__book_isbn => @form_data[:isbn]
-        }
-        @form_data = @form_data.merge(extra_book_info)
-        render 'new', layout: 'other_pages'
-        return
+        # else if we found a match on Google Books, use that info to autocreate a new book
+        img_file = Down.download(book_match.image_link(:zoom => 2))
+        if img_file.size > 0
+          file_name_on_s3 = ListingImage.generate_unique_name
+          S3FileHelper.upload_file(file_name_on_s3, img_file)
+        else
+          file_name_on_s3 = nil
+        end
+
+        # extra_book_info = {
+        #   :book_title => book_match.title,
+        #   :book_authors => book_match.authors,
+        #   :book_edition => "", # make this optional
+        #   :book_publisher => book_match.publisher,
+        #   # add image to s3, using book_match.image_link(:zoom => 2) for a medium sized image
+        #   :hidden__book_isbn => @form_data[:isbn]
+        # }
+        # @form_data = @form_data.merge(extra_book_info)
+
+        # create the new book
+        Book.create!(
+          id: Book.maximum(:id).next,
+          title: book_match.title,
+          authors: book_match.authors,
+          edition: "",
+          publisher: book_match.publisher,
+          isbn: @form_data[:isbn],
+          image_id: file_name_on_s3
+        )
+
+        # search again for books with the given ISBN
+        books_with_isbn = Book.where(isbn: @form_data[:isbn]).to_a
       end
     end
 
@@ -705,8 +729,8 @@ class ListingController < ApplicationController
         authors: @form_data[:book_authors],
         edition: @form_data[:book_edition],
         publisher: @form_data[:book_publisher],
-        isbn: @form_data[:isbn]
-      # image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: Images later.
+        isbn: @form_data[:isbn],
+        # no images when the book's info was manually inserted
       )
     else
       this_book = books_with_isbn[0]

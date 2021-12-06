@@ -13,8 +13,8 @@
   <div id="results-wrapper">
     <% @results.each_with_index do |res, index| %>
       <%= link_to "/book/#{res.id}", :class => 'result', :id => "result-#{index}" do %>
-        <% unless res.image_url.nil? %>
-          <%= image_tag res.image_url, class: "cover-small" %>
+        <% unless res.image_id.nil? %>
+          <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(res.image_id, 2.hours.to_i), class: "cover-small" %>
         <% end %>
         <div class="book-title-author-edition ">
           <p class="book-title" style="line-height: 1.2; margin-bottom:10px"><%= res.title %></p>

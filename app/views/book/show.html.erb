@@ -1,8 +1,8 @@
 <div class="book-main">
   <div id="book-wrapper">
     <div class="book">
-      <% unless @book.image_url.nil? %>
-        <%= image_tag @book.image_url, class: "cover" %>
+      <% unless @book.image_id.nil? %>
+        <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(@book.image_id, 2.hours.to_i), class: "cover" %>
       <% end %>
       <div class="book-title-author-edition">
         <p class="book-title" style="font-size:27px"><%= @book.title %></p>

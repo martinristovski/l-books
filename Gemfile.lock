@@ -143,6 +143,8 @@ GEM
     database_cleaner-core (2.0.1)
     diff-lcs (1.4.4)
     docile (1.4.0)
+    down (5.2.4)
+      addressable (~> 2.8)
     erubi (1.10.0)
     ffi (1.15.4)
     figaro (1.2.0)
@@ -321,6 +323,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   database_cleaner-active_record
+  down (~> 5.0)
   figaro
   googlebooks
   jbuilder (~> 2.7)
