@@ -28,22 +28,28 @@ class ListingController < ApplicationController
       redirect_to controller: "listing", action: 'index'
       return
     end
+
+    @listing = listing_in_question
+    
     if request.get?
-      @listing = listing_in_question
       render 'sold', layout: 'other_pages'
     elsif request.post?
       @form_data = {
         :user_email => params[:user_email],
-        :amount => params[:amount],
-       }
-       user = User.find_by(email: @form_data[:user_email])
+        :amount => params[:amount]
+      }
 
-       if user.nil?
-           flash[:warning] = 'Please Enter Correct Email'
-           @listing = listing_in_question
-           redirect_to controller: "listing", action: 'sold'
-           return
-       end
+      user = User.find_by(email: @form_data[:user_email])
+
+      if user.nil?
+          flash[:warning] = 'Please Enter Correct Email'
+          @listing = listing_in_question
+          redirect_to controller: "listing", action: 'sold'
+          return
+      end
+
+      @listing.status = 'sold'
+      @listing.save!
 
       flash[:notice] = "Listing updated!"
       redirect_to "/listing/#{listing_in_question.id}"

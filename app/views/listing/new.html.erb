@@ -5,7 +5,7 @@
             <p>
                 <!-- Force 13 digits. -->
                 <%= f.label 'Book ISBN (13 digits required, no dashes)' %><br>
-                <%= f.text_field :isbn, value: @form_data[:isbn], :readonly => @form_data[:hidden_expandisbn] === true, :id => "ISBN" %>
+                <%= f.text_field :isbn, value: @form_data[:isbn], :readonly => @form_data[:hidden_expandisbn] === true, :id => "ISBN", :type => "number" %>
             </p>
             <% if @form_data[:hidden_expandisbn] and @form_data[:hidden_expandisbn] === true %>
             <div class="form-group extra_book_details" >
