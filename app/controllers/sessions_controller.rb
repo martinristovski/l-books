@@ -10,7 +10,6 @@ class SessionsController < ApplicationController
     def create
         # finds existing user, checks to see if user can be authenticated
         user = User.find_by(email: params[:email])
-        puts params[:redirect_url]
 
         if user.nil?
             flash[:warning] = 'Invalid email or password'
