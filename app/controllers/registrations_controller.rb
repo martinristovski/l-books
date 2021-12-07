@@ -12,6 +12,7 @@ class RegistrationsController < ApplicationController
             flash[:notice] = 'Successfully created account'
             redirect_to root_path
         else
+            flash[:notice] = @user.errors.full_messages
             render :new
         end
     end
