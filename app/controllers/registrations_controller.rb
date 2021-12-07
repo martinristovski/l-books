@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-    layout 'home'
+    layout 'other_pages'
 
     def new
         @user = User.new
@@ -12,7 +12,7 @@ class RegistrationsController < ApplicationController
             flash[:notice] = 'Successfully created account'
             redirect_to root_path
         else
-            flash[:notice] = @user.errors.full_messages
+            flash[:notice] = @user.errors.full_messages[0]
             render :new
         end
     end
