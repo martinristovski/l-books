@@ -502,7 +502,7 @@ p, div {
 .registration_prompt {
     background-color: #FFFFFF;
     width: 400px;
-    height: 600px;
+    height: fit-content;
     margin: 7em auto;
     text-align:center;
     padding : 20px;
