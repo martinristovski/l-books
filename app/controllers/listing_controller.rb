@@ -674,7 +674,7 @@ class ListingController < ApplicationController
     if books_with_isbn.empty? and @form_data[:hidden_expandisbn] == "false"
       @form_data[:hidden_expandisbn] = true
 
-      books_match = GoogleBooks.search(@form_data[:isbn], {:api_key => ENV["GBOOKS_API_KEY"]}) #returns collection of books that match the isbn
+      books_match = GoogleBooks.search('isbn:' + @form_data[:isbn], {:api_key => ENV["GBOOKS_API_KEY"]}) #returns collection of books that match the isbn
       book_match = books_match.first
 
       if book_match.nil?
