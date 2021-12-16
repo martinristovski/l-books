@@ -35,6 +35,7 @@ module NavigationHelpers
     
     when /^the listing creation page$/
       "/listing/new"
+    
     when /^the listing view page for a listing with ID "(.*)"$/
       "/listing/#{$1}"
 
@@ -43,7 +44,10 @@ module NavigationHelpers
 
     when /^the listing edit page for a listing with ID "(.*)"$/
       "/listing/#{$1}/edit"
-      
+    
+    when /^the sold view page for a listing with ID "(.*)"$/
+      "/listing/#{$1}/sold"
+  
     when /^the listing page for the book with ISBN "(.*)" and description "(.*)"$/
       listing_path(Listing.find(isbn = $1, description = $2))
 

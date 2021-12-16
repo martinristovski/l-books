@@ -7,9 +7,9 @@ Feature: View book information
 Background: books, users, courses, BCAs, and listings have been added to the database
 
   Given the following books exist:
-    | id | title          | authors           | edition | isbn          |
-    |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 |
-    |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 |
+    | id | title          | authors           | edition | isbn          | image_id |
+    |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 | id_1     |
+    |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 | id_2     |
 
   Given the following users exist:
     | id | last_name | first_name | email              | school | password     | password_confirmation |
@@ -17,8 +17,8 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
 
   Given the following courses exist:
     | id | code       | name              |
-    |  1 | COMS W4995 | Engineering ESaaS |
-    |  2 | COMS W9999 | Example Course    |
+    |  1 | COMSW4995  | Engineering ESaaS |
+    |  2 | COMSW9999  | Example Course    |
 
   Given the following book-course associations exist:
     | book_id | course_id |
@@ -26,8 +26,8 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     | 2       | 2         |
 
   Given the following listings exist:
-    | id | book_id   | price   | condition | description     | seller_id |
-    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         |
+    | id | book_id   | price   | condition | description     | seller_id | status    |
+    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         | published |
 
 Scenario: Perform a standard search and pull up a book's view via search
   Given I am on the home page

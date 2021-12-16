@@ -7,14 +7,14 @@ Feature: Search for books
 Background: books, users, courses, and BCAs have been added to the database
 
   Given the following books exist:
-    | id | title          | authors           | edition | isbn          |
-    |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 |
-    |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 |
+    | id | title          | authors           | edition | isbn          | image_id |
+    |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 | id_1     |
+    |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 | id_2     |
 
   Given the following courses exist:
     | id | code       | name              |
-    |  1 | COMS W4995 | Engineering ESaaS |
-    |  2 | COMS W9999 | Example Course    |
+    |  1 | COMSW4995  | Engineering ESaaS |
+    |  2 | COMSW9999  | Example Course    |
 
   Given the following book-course associations exist:
     | book_id | course_id |
@@ -58,46 +58,19 @@ Scenario: Perform a search by PARTIAL title and return multiple results
   Then I should see "9781123456213"
   Then I should see "9781575675320"
 
-Scenario: Perform a search by course code
+Scenario: Perform a search by ill-formatted course code
   Given I am on the home page
   And I select "Course Number" from "criteria"
   And I fill in "search" with "COMS W4995"
   And I press "Go"
-  Then I should be on the search results page
+  Then I should be on the home page
 
-  Then I should see "Sample Book 1"
-  Then I should not see "Sample Book 2"
-  Then I should see "9781123456213"
-  Then I should not see "9781575675320"
+  Then I should see "Invalid course code. Please use correct input form (E.g. 'HUMA1001')."
 
-Scenario: Perform a search by partial course code
+Scenario: Perform a search by correctly formatted course code
   Given I am on the home page
   And I select "Course Number" from "criteria"
-  And I fill in "search" with "COMS"
-  And I press "Go"
-  Then I should be on the search results page
-
-  Then I should see "Sample Book 1"
-  Then I should see "Sample Book 2"
-  Then I should see "9781123456213"
-  Then I should see "9781575675320"
-
-Scenario: Perform a search by course name
-  Given I am on the home page
-  And I select "Course Number" from "criteria"
-  And I fill in "search" with "Engineering ESaaS"
-  And I press "Go"
-  Then I should be on the search results page
-
-  Then I should see "Sample Book 1"
-  Then I should not see "Sample Book 2"
-  Then I should see "9781123456213"
-  Then I should not see "9781575675320"
-
-Scenario: Perform a search by partial course name
-  Given I am on the home page
-  And I select "Course Number" from "criteria"
-  And I fill in "search" with "ESaaS"
+  And I fill in "search" with "COMSW4995"
   And I press "Go"
   Then I should be on the search results page
 
@@ -139,7 +112,7 @@ Scenario: Perform a search for a title/author that does not exist
 Scenario: Perform a search for a course that does not exist
   Given I am on the home page
   And I select "Course Number" from "criteria"
-  And I fill in "search" with "abc"
+  And I fill in "search" with "ABCD1001"
   And I press "Go"
   Then I should be on the search results page
 

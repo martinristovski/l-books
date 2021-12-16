@@ -134,6 +134,15 @@ Then /^(?:|I )should not see "([^"]*)"$/ do |text|
   end
 end
 
+Then /^(?:|I )should not find the element with ID "([^"]*)"$/ do |ele_id|
+   begin
+       find("##{ele_id}")
+       false
+   rescue Capybara::ElementNotFound
+       true
+   end
+end
+
 Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
 

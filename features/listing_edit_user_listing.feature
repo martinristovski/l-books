@@ -7,9 +7,9 @@ Feature: View listing information
   Background: books, users, courses, BCAs, and listings have been added to the database
 
     Given the following books exist:
-      | id | title          | authors           | edition | isbn          |
-      |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 |
-      |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 |
+      | id | title          | authors           | edition | isbn          | image_id |
+      |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 | id_1     |
+      |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 | id_2     |
 
     Given the following users exist:
       | id | last_name | first_name | email              | school | password     | password_confirmation |
@@ -18,8 +18,8 @@ Feature: View listing information
 
     Given the following courses exist:
       | id | code       | name              |
-      |  1 | COMS W4995 | Engineering ESaaS |
-      |  2 | COMS W9999 | Example Course    |
+      |  1 | COMSW4995 | Engineering ESaaS |
+      |  2 | COMSW9999 | Example Course    |
 
     Given the following book-course associations exist:
       | book_id | course_id |
@@ -27,8 +27,8 @@ Feature: View listing information
       | 2       | 2         |
 
     Given the following listings exist:
-      | id | book_id   | price   | condition | description     | seller_id |
-      |  1 | 2         | 4.95    | Like new  | This is a test. | 1         |
+      | id | book_id   | price   | condition | description     | seller_id | status    |
+      |  1 | 2         | 4.95    | Like new  | This is a test. | 1         | published |
 
   Scenario: Edit a user's existing listing with errors
     Given I am on the home page
@@ -43,8 +43,11 @@ Feature: View listing information
     And I fill in "ISBN" with "1234567891111"
     And I fill in "Condition" with "good"
     And I fill in "Price" with "15"
-    And I fill in "Course" with "SaaS"
+    And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
     And I press "Post"
 
     Then I should see "Please enter more information about this book."
@@ -81,11 +84,16 @@ Feature: View listing information
     Then I should see "We encountered the following errors"
     And I should see "Please enter the book's condition."
     And I should see "Please enter the book's price."
+    And I should see "Invalid course code. Please use correct input form (E.g. 'HUMA1001')."
     And I should see "Please enter a description for the book."
 
     And I fill in "condition" with "ok"
     And I fill in "price" with "$13"
+    And I fill in "course" with "COMSW4995"
     And I fill in "description" with "test"
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
     And I press "Save"
 
     Then I should see "We encountered the following errors"

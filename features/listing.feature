@@ -7,9 +7,9 @@ Feature: View listing information
 Background: books, users, courses, BCAs, and listings have been added to the database
 
   Given the following books exist:
-    | id | title          | authors           | edition | isbn          |
-    |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 |
-    |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 |
+    | id | title          | authors           | edition | isbn          | image_id |
+    |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 | id_1     |
+    |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 | id_2     |
 
   Given the following users exist:
     | id | last_name | first_name | email              | school | password     | password_confirmation |
@@ -18,8 +18,8 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
 
   Given the following courses exist:
     | id | code       | name              |
-    |  1 | COMS W4995 | Engineering ESaaS |
-    |  2 | COMS W9999 | Example Course    |
+    |  1 | COMSW4995  | Engineering ESaaS |
+    |  2 | COMSW9999  | Example Course    |
 
   Given the following book-course associations exist:
     | book_id | course_id |
@@ -27,8 +27,8 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     | 2       | 2         |
 
   Given the following listings exist:
-    | id | book_id   | price   | condition | description     | seller_id |
-    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         |
+    | id | book_id   | price   | condition | description     | seller_id | status    |
+    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         | published |
 
   Scenario: Perform a standard search and pull up a book and then a listing via search
     Given I am on the home page
@@ -45,10 +45,21 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     And I should see "Seller Information"
     And I should see "Name: **Hidden**"
 
+  Scenario: Perform search on a course that does not yet exist in our database
+    Given I am on the home page
+    And I select "Course Number" from "criteria"
+    And I fill in "search" with "DSHE4118"
+    Then I should not find the element with ID "result-0"
+
   Scenario: Pull up listing information for a non-existent listing
     Given I am on the listing view page for a listing with ID "4"
     Then  I should be on the home page
     And   I should see "Sorry, we couldn't find a listing with that ID."
+
+  Scenario: Mark non-existent listing as sold
+    Given I am on the sold view page for a listing with ID "6"
+    Then I should be on the home page
+    And I should see "Sorry, we couldn't find a listing with that ID."
 
   Scenario: Edit listing information while not logged in
     Given I am on the home page
@@ -129,8 +140,10 @@ Scenario: Create a new listing without any initial fields completed
     And I should see "Please enter the book's price."
     And I should see "Please enter the book's condition."
     And I should see "Please enter a description for the book."
+    And I should see "Invalid course code. Please use correct input form (E.g. 'HUMA1001')."
+    And I should see "You must upload at least one image."
 
-Scenario: Create a new listing without any additional fields completed
+Scenario: Create a new listing without any additional fields completed and not in GBooks API
     Given I am on the home page
     And I follow "Sign In"
     And I fill in "email" with "jd123@columbia.edu"
@@ -140,11 +153,14 @@ Scenario: Create a new listing without any additional fields completed
     And I should see "Logged in successfully"
 
     Then I follow "New Listing"
-    And I fill in "ISBN" with "1234567891015"
+    And I fill in "ISBN" with "1000000000000"
     And I fill in "Condition" with "good"
     And I fill in "Price" with "15"
-    And I fill in "Course" with "SaaS"
+    And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
     And I press "Post"
 
     Then I should see "Please enter more information about this book."
@@ -179,7 +195,76 @@ Scenario: Create a new listing with price and ISBN fields invalid
     Then I should see "The ISBN you have entered is invalid."
     And I should see "The price you have entered is invalid."
 
-Scenario: Create a new listing with all fields completed
+Scenario: Create a new listing with extra fields auto-completed via GBooks API
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd123@columbia.edu"
+    And I fill in "password" with "qwerty123456"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    Then I follow "New Listing"
+    And I fill in "ISBN" with "9780201563177"
+    And I fill in "Condition" with "good"
+    And I fill in "Price" with "15"
+    And I fill in "Course" with "COMSW4118"
+    And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
+    And I press "Post"
+
+    Then I should see "Listing created!"
+
+Scenario: Create a new listing via autocomplete by GBooks API but attempting to exceed max number of images
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd123@columbia.edu"
+    And I fill in "password" with "qwerty123456"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    Then I follow "New Listing"
+    And I fill in "ISBN" with "9780201563177"
+    And I fill in "Condition" with "good"
+    And I fill in "Price" with "15"
+    And I fill in "Course" with "COMSW4118"
+    And I fill in "Description" with "This is a test listing."
+    
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 4 slot(s) left."
+
+    When I press "X"
+    Then I should see "Image deleted. You have 5 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 4 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 3 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 2 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 1 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have no more slots left."
+    
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "You have already uploaded the maximum of 5 images."
+
+Scenario: Create a new listing with all fields manually completed
     Given I am on the home page
     And I follow "Sign In"
     And I fill in "email" with "jd123@columbia.edu"
@@ -192,8 +277,11 @@ Scenario: Create a new listing with all fields completed
     And I fill in "ISBN" with "1234567891015"
     And I fill in "Condition" with "good"
     And I fill in "Price" with "15"
-    And I fill in "Course" with "SaaS"
+    And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."    
     And I press "Post"
     
     Then I should see "Please enter more information about this book."
@@ -215,7 +303,7 @@ Scenario: Create a new listing with all fields completed
     And I follow "Sign Out"
     Then I should see "Logged Out"
 
-Scenario: Create a new listing for an existing ISBN
+Scenario: Create a new listing for an existing ISBN in our app database
     Given I am on the home page
     And I follow "Sign In"
     And I fill in "email" with "jd123@columbia.edu"
@@ -228,8 +316,11 @@ Scenario: Create a new listing for an existing ISBN
     And I fill in "ISBN" with "9781575675320"
     And I fill in "Condition" with "good"
     And I fill in "Price" with "15"
-    And I fill in "Course" with "SaaS"
+    And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."  
     And I press "Post"
     
     Then I should see "Listing created!"
@@ -259,8 +350,7 @@ Scenario: Contact a seller via a listing
     And I should see "Reputation: 4.5"
     And I should see "Email: jd123@columbia.edu"
 
-    Then I fill in "post" with "Hi! I would like to purchase this listing"
-    Then I follow "Send"
+    And I should see "Contact Seller"
 
 Scenario: Edit a user's existing listing
     Given I am on the home page
@@ -275,8 +365,11 @@ Scenario: Edit a user's existing listing
     And I fill in "ISBN" with "1234567891111"
     And I fill in "Condition" with "good"
     And I fill in "Price" with "15"
-    And I fill in "Course" with "SaaS"
+    And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."    
     And I press "Post"
 
     Then I should see "Please enter more information about this book."
@@ -306,10 +399,135 @@ Scenario: Edit a user's existing listing
     And I follow "Edit"
 
     And I fill in "condition" with "fair"
+    And I fill in "course" with "COMSW4995"    
+    And I press "X"
+    And I press "Save"
+    Then I should see "You must upload at least one image."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
     And I press "Save"
 
-    Then I should see "fair"
+    Then I should see "Listing updated!"
+    And I should see "fair"
     And I should not see "good"
+
+Scenario: Mark a user's existing listing as sold to a non-existent user
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd123@columbia.edu"
+    And I fill in "password" with "qwerty123456"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    Then I follow "New Listing"
+    And I fill in "ISBN" with "1234567891111"
+    And I fill in "Condition" with "good"
+    And I fill in "Price" with "15"
+    And I fill in "Course" with "COMSW4995"
+    And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
+    And I press "Post"
+
+    Then I should see "Please enter more information about this book."
+
+    Then I fill in "Title" with "Sample Book 3"
+    And I fill in "Author(s)" with "author test"
+    And I fill in "Edition" with "1"
+    And I fill in "Publisher" with "McGraw Hill"
+    And I press "Post"
+
+    Then I should see "Listing created!"
+
+    And I follow "L'Books"
+    And I select "ISBN" from "criteria"
+    And I fill in "search" with "1234567891111"
+    And I press "Go"
+    Then I should be on the search results page
+
+    Then I click on the element with ID "result-0"
+    And I should see "Sample Book 3"
+    And I should see "1 listing found:"
+
+    Then I click on the element with ID "result-0"
+    And I should see "Seller Information"
+    And I should see "Name: Jane Doe"
+
+    And I follow "Mark As Sold"
+
+    Then I should see "Record the Purchase"
+    And I fill in "user_email" with "test@gmail.com"
+    And I fill in "amount" with "15"
+    And I press "Submit"
+
+    Then I should see "Please Enter Correct Email"
+
+Scenario: Mark a user's existing listing as sold to an existing user
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd123@columbia.edu"
+    And I fill in "password" with "qwerty123456"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    Then I follow "New Listing"
+    And I fill in "ISBN" with "1234567891111"
+    And I fill in "Condition" with "good"
+    And I fill in "Price" with "15"
+    And I fill in "Course" with "COMSW4995"
+    And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
+    And I press "Post"
+
+    Then I should see "Please enter more information about this book."
+
+    Then I fill in "Title" with "Sample Book 3"
+    And I fill in "Author(s)" with "author test"
+    And I fill in "Edition" with "1"
+    And I fill in "Publisher" with "McGraw Hill"
+    And I press "Post"
+
+    Then I should see "Listing created!"
+
+    And I follow "L'Books"
+    And I select "ISBN" from "criteria"
+    And I fill in "search" with "1234567891111"
+    And I press "Go"
+    Then I should be on the search results page
+
+    Then I click on the element with ID "result-0"
+    And I should see "Sample Book 3"
+    And I should see "1 listing found:"
+
+    Then I click on the element with ID "result-0"
+    And I should see "Seller Information"
+    And I should see "Name: Jane Doe"
+
+    And I follow "Mark As Sold"
+
+    Then I should see "Record the Purchase"
+    And I fill in "user_email" with "jd456@columbia.edu"
+    And I fill in "amount" with "15"
+    And I press "Submit"
+
+    Then I should see "This listing has been marked as SOLD!"
+    And I follow "L'Books"
+    And I select "ISBN" from "criteria"
+    And I fill in "search" with "1234567891111"
+    And I press "Go"
+    Then I should be on the search results page
+
+    Then I click on the element with ID "result-0"
+    And I should see "Sample Book 3"
+    And I should see "No listings found!"
+    And I should see "1 sold listing found"
 
 Scenario: Delete a user's existing listing
     Given I am on the home page
@@ -324,8 +542,11 @@ Scenario: Delete a user's existing listing
     And I fill in "ISBN" with "1234567891111"
     And I fill in "Condition" with "good"
     And I fill in "Price" with "1"
-    And I fill in "Course" with "SaaS"
+    And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."    
     And I press "Post"
     Then I should see "Please enter more information about this book."
     Then I fill in "Title" with "Sample Book 3"
