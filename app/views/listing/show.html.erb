@@ -29,6 +29,8 @@
          <%= link_to "Edit", "/listing/#{@listing.id}/edit", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
          <%= link_to "Delete", "/listing/#{@listing.id}/delete", :id => 'signin' , :style =>'float:left'%>
          <%= link_to "Mark As Sold", "/listing/#{@listing.id}/sold", :id => 'signin' , :style =>'float:left'%>
+        <% elsif not Current.user.nil? %>
+         <%= link_to (@existing_bookmark.nil? ? "Save" : "Unsave"), "/listing/#{@listing.id}/bookmark", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
         <% end %>
     </div>
     <% if Current.user %>
