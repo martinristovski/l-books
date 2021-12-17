@@ -160,6 +160,13 @@ RSpec.describe "Searches", type: :request do
       expect(response).to redirect_to('/')
       expect(flash[:notice]).to eq("Please enter a search term.")
     end
+
+    it "renders the home page because the course code query was not valid" do
+      params = {:commit => "Go", :criteria => "course", :search_term => "HUMA101"}
+      get '/search', params: params
+      expect(response).to redirect_to('/')
+      expect(flash[:notice]).to eq("Invalid course code. Please use correct input form (E.g. 'HUMA1001').")
+    end
   end
 
   describe "GET /search with valid parameters" do

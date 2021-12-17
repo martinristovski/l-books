@@ -15,7 +15,7 @@ class User < ApplicationRecord
   
   def get_avg_rating
     if ratings_as_seller.count.zero?
-      0.0
+      return 0.0
     end
     
     sum = 0
