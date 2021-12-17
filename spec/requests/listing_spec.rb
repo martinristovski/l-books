@@ -52,7 +52,6 @@ RSpec.describe "Listings", type: :request do
       edition: nil,
       publisher: "University of Chicago Press",
       isbn: "9780226470498",
-      image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: S3 later.
     )
     b2 = Book.create!(
       title: "Plato Symposium (Hackett Classics)",
@@ -60,7 +59,6 @@ RSpec.describe "Listings", type: :request do
       edition: "1989 Edition",
       publisher: "Hackett Publishing Co",
       isbn: "9780872200760",
-      image_url: "https://images-na.ssl-images-amazon.com/images/I/41vx+Jrc8GL.jpg" # TODO: S3 later.
     )
     b3 = Book.create!(
       title: "The Aeneid of Virgil (Bantam Classics)",
@@ -68,7 +66,6 @@ RSpec.describe "Listings", type: :request do
       edition: "Revised ed.",
       publisher: "Bantam Classics",
       isbn: "9780553210415",
-      image_url: "https://images-na.ssl-images-amazon.com/images/I/71Rd1htsJvL.jpg" # TODO: S3 later.
     )
 
     # courses
@@ -244,31 +241,31 @@ RSpec.describe "Listings", type: :request do
     end
 
     it "edits listing - invalid condition" do
-      post '/listing/1/edit', params: {:condition => "", :price => "5.50", :description => "lorem ipsum"}
+      post '/listing/1/edit', params: {:condition => "", :course => "HUMA1001", :price => "5.50", :description => "lorem ipsum"}
       expect(flash[:notice]).to match "Please enter the book's condition."
       expect(response).to render_template('edit')
     end
 
     it "edits listing - blank price" do
-      post '/listing/1/edit', params: {:condition => "a", :price => "", :description => "lorem ipsum"}
+      post '/listing/1/edit', params: {:condition => "a", :course => "HUMA1001", :price => "", :description => "lorem ipsum"}
       expect(flash[:notice]).to match "Please enter the book's price."
       expect(response).to render_template('edit')
     end
 
     it "edits listing - invalid price" do
-      post '/listing/1/edit', params: {:condition => "a", :price => "a", :description => "lorem ipsum"}
+      post '/listing/1/edit', params: {:condition => "a", :course => "HUMA1001", :price => "a", :description => "lorem ipsum"}
       expect(flash[:notice]).to match "The price you have entered is invalid."
       expect(response).to render_template('edit')
     end
 
     it "edits listing - invalid description" do
-      post '/listing/1/edit', params: {:condition => "a", :price => "5.50", :description => ""}
+      post '/listing/1/edit', params: {:condition => "a", :course => "HUMA1001", :price => "5.50", :description => ""}
       expect(flash[:notice]).to match "Please enter a description for the book."
       expect(response).to render_template('edit')
     end
 
     it "edits listing" do
-      post '/listing/1/edit', params: {:condition => "a", :price => "5.50", :description => "lorem ipsum"}
+      post '/listing/1/edit', params: {:condition => "a", :course => "HUMA1001", :price => "5.50", :description => "lorem ipsum"}
       expect(flash[:notice]).to eq("Listing updated!")
       expect(response).to redirect_to('/listing/1')
     end

@@ -33,7 +33,7 @@ RSpec.describe "Sessions", type: :request do
       params[:password] = "loremipsum"
 
       post '/signin', params: params
-      expect(flash[:notice]).to eq("Invalid email or password")
+      expect(flash[:warning]).to eq("Invalid email or password")
       expect(response).to render_template('new')
     end
 
@@ -53,7 +53,7 @@ RSpec.describe "Sessions", type: :request do
       params[:password] = "wrongpassword"
 
       post '/signin', params: params
-      expect(flash[:notice]).to eq("Invalid email or password")
+      expect(flash[:warning]).to eq("Invalid email or password")
       expect(response).to render_template('new')
     end
   end
@@ -61,8 +61,8 @@ RSpec.describe "Sessions", type: :request do
   describe "Log out user" do
     it "logs the user out" do
       params = {}
-      params[:email] = "fake@email.com"
-      params[:password] = "loremipsum"
+      params[:email] = "vn@columbia.edu"
+      params[:password] = "password123"
 
       post '/signin', params: params
 
