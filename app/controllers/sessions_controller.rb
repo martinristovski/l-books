@@ -1,9 +1,11 @@
 class SessionsController < ApplicationController
     layout 'other_pages'
     def new
-        @fdata = {
-          :redirect_url => request.referrer
-        }
+        if @fdata.nil? # unless the redirect url was preserved in a previous request, assign @fdata anew
+            @fdata = {
+              :redirect_url => request.referrer
+            }
+        end
         puts @fdata
     end
 
@@ -13,6 +15,9 @@ class SessionsController < ApplicationController
 
         if user.nil?
             flash[:warning] = 'Invalid email or password'
+            @fdata = {  # re-form fdata to preserve the redirect url
+              :redirect_url => params[:redirect_url]
+            }
             render :new
             return
         end
@@ -26,6 +31,9 @@ class SessionsController < ApplicationController
             end
         else
             flash[:warning] = 'Invalid email or password'
+            @fdata = {  # re-form fdata to preserve the redirect url
+              :redirect_url => params[:redirect_url]
+            }
             render :new
         end
     end
