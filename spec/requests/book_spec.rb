@@ -9,7 +9,6 @@ RSpec.describe "Books", type: :request do
       edition: nil,
       publisher: "University of Chicago Press",
       isbn: "9780226470498",
-      image_url: "https://images-na.ssl-images-amazon.com/images/I/61xbfNmcFwL.jpg" # TODO: S3 later.
     )
     b2 = Book.create!(
       title: "Plato Symposium (Hackett Classics)",
@@ -17,7 +16,6 @@ RSpec.describe "Books", type: :request do
       edition: "1989 Edition",
       publisher: "Hackett Publishing Co",
       isbn: "9780872200760",
-      image_url: "https://images-na.ssl-images-amazon.com/images/I/41vx+Jrc8GL.jpg" # TODO: S3 later.
     )
     b3 = Book.create!(
       title: "The Aeneid of Virgil (Bantam Classics)",
@@ -25,7 +23,6 @@ RSpec.describe "Books", type: :request do
       edition: "Revised ed.",
       publisher: "Bantam Classics",
       isbn: "9780553210415",
-      image_url: "https://images-na.ssl-images-amazon.com/images/I/71Rd1htsJvL.jpg" # TODO: S3 later.
     )
   end
 

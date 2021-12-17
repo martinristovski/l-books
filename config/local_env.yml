@@ -2,11 +2,11 @@
 # ONLY used in development mode! DO NOT commit any credentials in this file to git!
 
 # S3 credentials/settings
-S3_ENDPOINT_URL: ''
-S3_ACCESS_KEY: ''
-S3_SECRET_KEY: ''
-S3_BUCKET_REGION: ''
-S3_BUCKET_NAME: ''
+S3_ENDPOINT_URL: 'https://lbooks-s3.nairvish.io:2096'
+S3_ACCESS_KEY: 'l-books_appl_user'
+S3_SECRET_KEY: '4wxJzVsmJ9LVcG9CAB8bz07rD7gCHI7WQi1ghgkXcdPuDna855C2cq1PgylaHhzG'
+S3_BUCKET_REGION: 'us-east-1'
+S3_BUCKET_NAME: 'lbooks'
 
 # Google Books API credentials
 GBOOKS_API_KEY: ''
