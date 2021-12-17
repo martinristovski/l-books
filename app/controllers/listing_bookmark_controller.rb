@@ -14,8 +14,16 @@ class ListingBookmarkController < ActionController::Base
       return
     end
 
-    # check for an existing bookmark
     user_id = session[:user_id]
+
+    # prevent seller from bookmarking their own listing
+    if user_id == @listing.seller.id
+      flash[:notice] = "Cannot bookmark your own listing."
+      redirect_to "/listing/#{listing_id}"
+      return
+    end
+
+    # check for an existing bookmark
     existing_bookmark = ListingBookmark.find_by(listing_id: listing_id, user_id: user_id)
 
     if existing_bookmark.nil?
