@@ -38,7 +38,12 @@
             <p style="font-size: 25px;">Seller Information</p>
                <p class="seller-name">Name: <%= @listing.seller.first_name %> <%= @listing.seller.last_name %></p>
                <p class="seller-school">School: <%= @listing.seller.school %></p>
-               <p class="seller-reputation">Reputation: 4.5</p> <!-- TODO make it dynamic -->
+               <% if @listing.seller.get_num_ratings == 0 %>
+                <p class="seller-reputation">Reputation: No ratings received.</p>
+               <% else %>
+                <p class="seller-reputation">Reputation: <%= sprintf("%.2f", @listing.seller.get_avg_rating) %>
+                  (in <%= @listing.seller.get_num_ratings %> <%= @listing.seller.get_num_ratings == 1 ? 'rating' : 'ratings' %>)</p>
+               <% end %>
                <div class="seller-contact">
                    <p>Email: <%= @listing.seller.email %></p>
                </div>
