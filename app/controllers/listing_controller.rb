@@ -17,6 +17,10 @@ class ListingController < ApplicationController
     if @listing.status == "sold"
       flash[:notice] = "This listing has been marked as SOLD!"
     end
+
+    if session[:user_id] != nil
+      @existing_bookmark = ListingBookmark.find_by(listing_id: listing_id, user_id: session[:user_id])
+    end
   end
 
   def sold

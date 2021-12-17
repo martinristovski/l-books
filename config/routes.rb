@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   post '/listing/:id/edit/deleteimg/:imgid', to: 'listing#edit__delete_uploaded_image'
   get '/listing/:id/edit', to: 'listing#edit'
   post '/listing/:id/edit', to: 'listing#edit'
+  get '/listing/:id/bookmark', to: 'listing_bookmark#create'
 
   get '/listing/:id/sold', to: 'listing#sold'
   post '/listing/:id/sold', to: 'listing#sold'
