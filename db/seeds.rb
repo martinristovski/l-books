@@ -115,7 +115,9 @@ l1 = Listing.create!(
   condition: "Like new",
   description: "Copy of the Iliad. Looks like it was never used (which may or may not have been the case)...",
   seller_id: u1.id,
-  status: 'published'
+  status: 'sold',
+  buyer_id: u2.id,
+  bought_at_price: 5.00
 )
 l2 = Listing.create!(
   book_id: b1.id,
@@ -133,6 +135,16 @@ l3 = Listing.create!(
   seller_id: u3.id,
   status: 'published'
 )
+l4 = Listing.create!(
+  book_id: b2.id,
+  price: 8.00,
+  condition: "Almost new",
+  description: "Plato's Symposium. Looks like new.",
+  seller_id: u3.id,
+  status: 'sold',
+  buyer_id: u1.id,
+  bought_at_price: 5.00
+)
 
 # listing images
 l1_i1 = ListingImage.create!(
@@ -149,18 +161,26 @@ l2_i1 = ListingImage.create!(
 )
 l3_i1 = ListingImage.create!(
   listing_id: l3.id,
-  image_id: b3_cover_name
+  image_id: b2_cover_name
+)
+l4_i1 = ListingImage.create!(
+  listing_id: l4.id,
+  image_id: b2_cover_name
 )
 
 # listing bookmarks
-# lb1 = ListingBookmark.create!(
-#   listing_id: l3.id,
-#   user_id: u4.id
-# )
-# lb2 = ListingBookmark.create!(
-#   listing_id: l2.id,
-#   user_id: u4.id
-# )
+lb1 = ListingBookmark.create!(
+  listing_id: l3.id,
+  user_id: u4.id
+)
+lb2 = ListingBookmark.create!(
+  listing_id: l2.id,
+  user_id: u4.id
+)
+lb3  = ListingBookmark.create!(
+  listing_id: l3.id,
+  user_id: u1.id
+)
 
 # listing contacts (only record when contact initiated)
 lc1 = ListingContact.create!(
@@ -170,10 +190,11 @@ lc1 = ListingContact.create!(
   message: nil
 )
 
-# user reputation ratings
+# user reputation/transaction ratings
 ur1 = UserReputationRating.create!(
-  target_user_id: u3.id,
+  target_user_id: u1.id,
   rater_user_id: u2.id,
-  listing_id: l2.id,
+  listing_id: l1.id,
   score: 5
 )
+# no rating seeded for l4
