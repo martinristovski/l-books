@@ -42,6 +42,9 @@ Rails.application.routes.draw do
   post '/listing/:id/edit', to: 'listing#edit'
   get '/listing/:id/bookmark', to: 'listing_bookmark#create'
 
+  get '/listing/:id/rate', to: 'transaction_rating#form'
+  post '/listing/:id/rate', to: 'transaction_rating#submit'
+
   get '/listing/:id/sold', to: 'listing#sold'
   post '/listing/:id/sold', to: 'listing#sold'
 

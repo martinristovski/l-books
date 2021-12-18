@@ -1,5 +1,5 @@
 <div>
-  <h1>Welcome, <%= @user.first_name %>!</h1>
+  <h1>Hello, <%= @user.first_name %>!</h1>
   <p>Email: <%= link_to @user.email, "mailto:#{@user.email}" %> | UNI: <%= @user.uni %></p>
   <p>Seller rating:
     <% if @user.get_num_ratings == 0 %>
@@ -25,8 +25,8 @@
         <% if bookmark.listing.status == "sold"  %>
           <p>SOLD!</p>
         <% end %>
-        <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
-        <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
+        <div class="listing-price"><%= sprintf('%s', bookmark.listing.book.title) %></div>
+        <div class="listing-price"><%= sprintf('%s', bookmark.listing.book.authors) %></div>
         <div class="listing-price"><%= sprintf('$%.2f', bookmark.listing.price) %></div>
         <div class="listing-description"><em><%= bookmark.listing.condition %></em> | <%= bookmark.listing.description.truncate(25) %></div>
       <% end %>
@@ -74,7 +74,7 @@
         <% end %>
         <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
         <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
-        <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
+        <div class="listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
         <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
       <% end %>
     <% end %>
@@ -93,12 +93,14 @@
           </div>
         <% end %>
         <% if listing.status == "sold"  %>
-          <p>SOLD (to you)!</p>
+          <p>SOLD (to you!)</p>
         <% end %>
         <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
         <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
-        <div class="listing-price">Sold for: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
+        <div class="listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
         <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
+
+        <%= link_to (listing.transaction_rating.nil? ? "Rate" : "Edit Rating (gave #{listing.transaction_rating.score}/5)"), "/listing/#{listing.id}/rate", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
       <% end %>
     <% end %>
   <% else %>

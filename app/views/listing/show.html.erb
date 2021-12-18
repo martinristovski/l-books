@@ -38,6 +38,9 @@
         <% elsif not Current.user.nil? %>
          <%= link_to (@existing_bookmark.nil? ? "Save" : "Unsave"), "/listing/#{@listing.id}/bookmark", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
         <% end %>
+        <% if not Current.user.nil? and Current.user.email === @listing.buyer.email %>
+        <%= link_to (@listing.transaction_rating.nil? ? "Rate" : "Edit Rating (gave #{@listing.transaction_rating.score}/5)"), "/listing/#{@listing.id}/rate", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
+        <% end %>
     </div>
     <% if Current.user %>
           <div class="seller-info">
