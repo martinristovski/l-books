@@ -10,10 +10,10 @@ class DashboardController < ApplicationController
     # find the user in question
     @user = User.find_by(id: session[:user_id])
 
-    if @user.nil?
-      flash[:notice] = "Sorry, we couldn't find the user you're logged in as."
-      redirect_to controller: "search", action: 'index'
-      return
-    end
+    # if @user.nil?
+    #   flash[:notice] = "Sorry, we couldn't find the user you're logged in as."
+    #   redirect_to controller: "search", action: 'index'
+    #   return
+    # end
   end
 end
