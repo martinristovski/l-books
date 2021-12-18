@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  # layout 'other_pages'
+  layout 'other_pages'
 
   def show
     if session[:user_id].nil?

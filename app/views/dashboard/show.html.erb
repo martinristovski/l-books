@@ -1,6 +1,6 @@
-<div>
+<div style='margin-top :50px; padding:10px;' >
   <h1>Hello, <%= @user.first_name %>!</h1>
-  <p>Email: <%= link_to @user.email, "mailto:#{@user.email}" %> | UNI: <%= @user.uni %></p>
+  <p> <%= link_to @user.email, "mailto:#{@user.email}" %> |  <%= @user.uni %></p>
   <p>Seller rating:
     <% if @user.get_num_ratings == 0 %>
       No ratings received.
@@ -10,18 +10,12 @@
     <% end %>
   </p>
 
-  <br />
-
-  <h2>Listings Saved <%= @user.saved_listings.count > 0 ? sprintf("(%s)", @user.saved_listings.count) : "" %></h2>
+    </br></br>
+  <h2 class="dahsboard-heading">Listings Saved <%= @user.saved_listings.count > 0 ? sprintf("(%s)", @user.saved_listings.count) : "" %></h2>
 
   <% if @user.saved_listings.count > 0  %>
     <% @user.saved_listings.each_with_index do |bookmark, index| %>
-      <%= link_to "/listing/#{bookmark.listing.id}", :class => 'listing', :id => "result-#{index}" do %>
-        <% unless bookmark.listing.listing_images.count == 0 %>
-          <div class="listing-photos">
-            <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(bookmark.listing.listing_images[0].image_id, 2.hours.to_i), class: "listing-cover" %>
-          </div>
-        <% end %>
+      <%= link_to "/listing/#{bookmark.listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
         <% if bookmark.listing.status == "sold"  %>
           <p>SOLD!</p>
         <% end %>
@@ -32,39 +26,29 @@
       <% end %>
     <% end %>
   <% else %>
-    You have no saved listings!
+    <p class="dahsboard-heading">You have no saved listings!</p>
   <% end %>
+</br></br>
 
-  <h2>Active Listings as Seller <%= @user.active_seller_listings.count > 0 ? sprintf("(%s)", @user.active_seller_listings.count) : "" %></h2>
+<h2 class="dahsboard-heading">Active Listings as Seller <%= @user.active_seller_listings.count > 0 ? sprintf("(%s)", @user.active_seller_listings.count) : "" %></h2>
 
   <% if @user.active_seller_listings.count > 0  %>
     <% @user.active_seller_listings.each_with_index do |listing, index| %>
-      <%= link_to "/listing/#{listing.id}", :class => 'listing', :id => "result-#{index}" do %>
-        <% unless listing.listing_images.count == 0 %>
-          <div class="listing-photos">
-            <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(listing.listing_images[0].image_id, 2.hours.to_i), class: "listing-cover" %>
-          </div>
-        <% end %>
-        <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
-        <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
-        <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
-        <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
+      <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
+       <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
+       <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(50) %></div>
       <% end %>
     <% end %>
   <% else %>
-    You are not currently selling anything!
+    <p class="dahsboard-heading">You are not currently selling anything!</p>
   <% end %>
 
-  <h2>Sold Listings as Seller <%= @user.sold_seller_listings.count > 0 ? sprintf("(%s)", @user.sold_seller_listings.count) : "" %></h2>
+  </br></br>
+  <h2 class="dahsboard-heading">Sold Listings as Seller <%= @user.sold_seller_listings.count > 0 ? sprintf("(%s)", @user.sold_seller_listings.count) : "" %></h2>
 
   <% if @user.sold_seller_listings.count > 0  %>
     <% @user.sold_seller_listings.each_with_index do |listing, index| %>
-      <%= link_to "/listing/#{listing.id}", :class => 'listing', :id => "result-#{index}" do %>
-        <% unless listing.listing_images.count == 0 %>
-          <div class="listing-photos">
-            <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(listing.listing_images[0].image_id, 2.hours.to_i), class: "listing-cover" %>
-          </div>
-        <% end %>
+      <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
         <% if listing.status == "sold"  %>
           <% if listing.buyer.nil? %>
             <p>SOLD!</p>
@@ -79,19 +63,15 @@
       <% end %>
     <% end %>
   <% else %>
-    You have not sold anything!
+    <p class="dahsboard-heading">You have not sold anything!</p>
   <% end %>
+</br></br>
 
-  <h2>Listings Purchased <%= @user.purchased_listings.count > 0 ? sprintf("(%s)", @user.purchased_listings.count) : "" %></h2>
+  <h2 class="dahsboard-heading">Listings Purchased <%= @user.purchased_listings.count > 0 ? sprintf("(%s)", @user.purchased_listings.count) : "" %></h2>
 
   <% if @user.purchased_listings.count > 0  %>
     <% @user.purchased_listings.each_with_index do |listing, index| %>
-      <%= link_to "/listing/#{listing.id}", :class => 'listing', :id => "result-#{index}" do %>
-        <% unless listing.listing_images.count == 0 %>
-          <div class="listing-photos">
-            <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(listing.listing_images[0].image_id, 2.hours.to_i), class: "listing-cover" %>
-          </div>
-        <% end %>
+      <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
         <% if listing.status == "sold"  %>
           <p>SOLD (to you!)</p>
         <% end %>
@@ -99,11 +79,10 @@
         <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
         <div class="listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
         <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
-
         <%= link_to (listing.transaction_rating.nil? ? "Rate" : "Edit Rating (gave #{listing.transaction_rating.score}/5)"), "/listing/#{listing.id}/rate", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
       <% end %>
     <% end %>
   <% else %>
-    You have not purchased anything!
+    <p class="dahsboard-heading">You have not purchased anything! </p>
   <% end %>
 </div>

@@ -556,3 +556,20 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* dashboard */
+
+.listing-dashboard{
+    grid-area: listing;
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin: 4px 8px 4px 8px;
+    display: grid;
+    grid-template-columns: 128px 1fr 256px;
+    grid-template-rows: 64px;
+    grid-template-areas:
+        "listing-price listing-description listing-actions";
+}
+.dahsboard-heading{
+    padding-left: 15px !important;
+}
