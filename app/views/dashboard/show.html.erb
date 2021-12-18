@@ -45,9 +45,6 @@
             <%= image_tag S3FileHelper.get_presigned_dl_url_for_file(listing.listing_images[0].image_id, 2.hours.to_i), class: "listing-cover" %>
           </div>
         <% end %>
-        <% if listing.status == "sold"  %>
-          <p>SOLD!</p>
-        <% end %>
         <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
         <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
         <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
@@ -69,7 +66,11 @@
           </div>
         <% end %>
         <% if listing.status == "sold"  %>
-          <p>SOLD!</p>
+          <% if listing.buyer.nil? %>
+            <p>SOLD!</p>
+          <% else %>
+            <p>SOLD to <%= listing.buyer.uni %></p>
+          <% end %>
         <% end %>
         <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
         <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
