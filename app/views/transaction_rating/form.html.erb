@@ -1,0 +1,29 @@
+<div class="new_listing" >
+    <%= form_with url: "/listing/#{@listing.id}/rate" do |f| %>
+        <p class="h3"> Rate the transaction </p>
+        <p> Seller: <%= @listing.seller.first_name %>  <%= @listing.seller.last_name %> (<%= @listing.seller.uni %>) </p>
+        <p> Book: <%= @listing.book.title %> (<%= @listing.book.authors.truncate(25) %>) </p>
+
+        <% unless @existing_rating.nil? %>
+          <p style="color:red;"> <strong>
+            You have already entered a rating for this transaction. If you re-submit this form, you will edit your previous rating.
+          </strong> </p> <br />
+        <% end %>
+
+        <div class="form-group">
+                <p>
+                    <%= f.label 'Rating' %><br>
+                    <%= f.radio_button :rating, '1', :checked => @existing_rating != nil && @existing_rating.score == 1 %> 1 star<br />
+                    <%= f.radio_button :rating, '2', :checked => @existing_rating != nil && @existing_rating.score == 2 %> 2 stars<br />
+                    <%= f.radio_button :rating, '3', :checked => @existing_rating != nil && @existing_rating.score == 3 %> 3 stars<br />
+                    <%= f.radio_button :rating, '4', :checked => @existing_rating != nil && @existing_rating.score == 4 %> 4 stars<br />
+                    <%= f.radio_button :rating, '5', :checked => @existing_rating != nil && @existing_rating.score == 5 %> 5 stars<br />
+                </p>
+                <br/>
+                <p>
+                    <%= f.submit 'Submit' %>
+                </p>
+        </div>
+    <% end %>
+    </div>
+</div>
