@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   has_many :seller_listings, class_name: "Listing", foreign_key: "seller_id"
   has_many :ratings_as_seller, class_name: "UserReputationRating", foreign_key: "target_user_id"
+  has_many :saved_listings, class_name: "ListingBookmark", foreign_key: "user_id"
+  has_many :purchased_listings, class_name: "Listing", foreign_key: "buyer_id"
   
   def get_num_ratings
     ratings_as_seller.count

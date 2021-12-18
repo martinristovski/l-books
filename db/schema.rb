@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_06_001808) do
+ActiveRecord::Schema.define(version: 2021_12_18_020618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 2021_12_06_001808) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status"
+    t.decimal "bought_at_price", precision: 8, scale: 2
+    t.bigint "buyer_id"
     t.index ["book_id"], name: "index_listings_on_book_id"
     t.index ["seller_id"], name: "index_listings_on_seller_id"
   end
@@ -115,6 +117,7 @@ ActiveRecord::Schema.define(version: 2021_12_06_001808) do
   add_foreign_key "listing_contacts", "users", column: "initiator_id"
   add_foreign_key "listing_images", "listings"
   add_foreign_key "listings", "books"
+  add_foreign_key "listings", "users", column: "buyer_id"
   add_foreign_key "listings", "users", column: "seller_id"
   add_foreign_key "user_reputation_ratings", "listings"
   add_foreign_key "user_reputation_ratings", "users", column: "rater_user_id"
