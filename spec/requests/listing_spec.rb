@@ -443,9 +443,29 @@ RSpec.describe "Listings", type: :request do
       expect(response).to render_template('new')
     end
 
+    it "creates new listing with custom book info" do
+      params = {}
+      params[:isbn] = "9781001100110"
+      params[:condition] = "a" 
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:hidden_expandisbn] = "true"
+      params[:book_title] = "A" 
+      params[:book_authors] = "B"
+      params[:book_edition] = "C"
+      params[:book_publisher] = "Penguin"
+      params[:book_isbn] = params[:isbn]
+      params[:hidden_draft_listing_id] = "5"
+
+      post '/listing/new', params: params
+      expect(response).to render_template('new')
+    end
+
   end
 
-  describe "Handle marking listings as sold" do
+
+  describe "Handle marking listings as sold" do # TODO
     before :each do
       params = {:email => "vn@columbia.edu", :password => "password123"}
       post '/signin', params: params
@@ -478,4 +498,6 @@ RSpec.describe "Listings", type: :request do
     end
 
   end
+
+
 end
