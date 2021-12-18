@@ -444,4 +444,38 @@ RSpec.describe "Listings", type: :request do
     end
 
   end
+
+  describe "Handle marking listings as sold" do
+    before :each do
+      params = {:email => "vn@columbia.edu", :password => "password123"}
+      post '/signin', params: params
+      expect(session[:user_id]).to eq(1)
+      expect(flash[:notice]).to eq("Logged in successfully")
+    end
+
+    it "renders sold page" do
+      get '/listing/1/sold'
+      expect(response).to render_template('sold')
+    end
+
+    it "says there's no such listing for invalid listing id" do
+      post "/listing/8/sold"
+      expect(flash[:notice]).to eq("Sorry, we couldn't find a listing with that ID.")
+    end
+
+    it "asks for valid email if given invalid buyer email" do
+      params = {:user_email => "XXXXXXXXXXXic@columbia.edu", :amount => "5.5"}
+      post "/listing/1/sold"
+      expect(flash[:warning]).to eq('Please enter a valid email.')
+    end
+    
+    it "marks listing as sold" do
+      pending "TODO: FIX THIS"
+      params = {:user_email => "ic@columbia.edu", :amount => "5.5"}
+      post "/listing/1/sold"
+      expect(flash[:success]).to eq("Listing updated!")
+      expect(response).to redirect_to('/listing/1')
+    end
+
+  end
 end

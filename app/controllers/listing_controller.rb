@@ -55,7 +55,7 @@ class ListingController < ApplicationController
       @listing.status = 'sold'
       @listing.save!
 
-      flash[:notice] = "Listing updated!"
+      flash[:success] = "Listing updated!"
       redirect_to "/listing/#{listing_in_question.id}"
     end
   end
