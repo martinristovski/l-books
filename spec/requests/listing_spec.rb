@@ -464,19 +464,20 @@ RSpec.describe "Listings", type: :request do
 
     it "asks for valid email if given invalid buyer email" do
       params = {:user_email => "XXXXXXXXXXXic@columbia.edu", :amount => "5.5"}
-      post "/listing/1/sold"
+      post "/listing/1/sold", params: params
       expect(flash[:warning]).to eq('Please enter a valid email.')
     end
     
     it "marks listing as sold" do
-      pending "TODO: FIX THIS"
       params = {:user_email => "ic@columbia.edu", :amount => "5.5"}
-      post "/listing/1/sold"
+      post "/listing/1/sold", params: params
       expect(flash[:success]).to eq("Listing updated!")
       expect(response).to redirect_to('/listing/1')
     end
 
+    it "gets the listing show page for a sold listing" do
+      get "/listing/1"
+      expect(flash[:notice]).to eq("This listing has been marked as SOLD!")
+    end
   end
-
-
 end
