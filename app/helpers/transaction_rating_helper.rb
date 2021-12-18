@@ -1,0 +1,2 @@
+module TransactionRatingHelper
+end
