@@ -16,6 +16,13 @@ class TransactionRatingController < ApplicationController
       return
     end
 
+    # if the listing doesn't have a buyer or the logged-in user isn't the buyer, stop
+    if @listing.buyer.nil? or @listing.buyer.id != session[:user_id]
+      flash[:notice] = "You cannot rate this transaction."
+      redirect_to controller: "search", action: 'index'
+      return
+    end
+
     # get the existing rating if one exists
     @existing_rating = UserReputationRating.find_by(listing_id: @listing.id)
     flash[:notice] = nil # clear flash notice
