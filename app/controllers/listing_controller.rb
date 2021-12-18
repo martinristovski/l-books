@@ -46,7 +46,7 @@ class ListingController < ApplicationController
       user = User.find_by(email: @form_data[:user_email])
 
       if user.nil?
-          flash[:warning] = 'Please Enter Correct Email'
+          flash[:warning] = 'Please enter a valid email.'
           @listing = listing_in_question
           redirect_to controller: "listing", action: 'sold'
           return

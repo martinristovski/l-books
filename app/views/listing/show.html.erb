@@ -26,9 +26,15 @@
         <div class="listing-description"><em><%= @listing.condition %></em> | <%= @listing.description.truncate(50) %></div>
         </br>
         <% if not Current.user.nil? and Current.user.email === @listing.seller.email %>
-         <%= link_to "Edit", "/listing/#{@listing.id}/edit", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
-         <%= link_to "Delete", "/listing/#{@listing.id}/delete", :id => 'signin' , :style =>'float:left'%>
-         <%= link_to "Mark As Sold", "/listing/#{@listing.id}/sold", :id => 'signin' , :style =>'float:left'%>
+         <% if @listing.status != "sold" %>
+          <%= link_to "Edit", "/listing/#{@listing.id}/edit", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
+          <%= link_to "Delete", "/listing/#{@listing.id}/delete", :id => 'signin' , :style =>'float:left'%>
+         <% else %>
+          <%= link_to "Delete", "/listing/#{@listing.id}/delete", :id => 'signin' , :style =>'float:left;margin-left :0px'%>
+         <% end %>
+         <% unless @listing.status == "sold" %>
+          <%= link_to "Mark As Sold", "/listing/#{@listing.id}/sold", :id => 'signin' , :style =>'float:left'%>
+         <% end %>
         <% elsif not Current.user.nil? %>
          <%= link_to (@existing_bookmark.nil? ? "Save" : "Unsave"), "/listing/#{@listing.id}/bookmark", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
         <% end %>
@@ -62,7 +68,12 @@
             <p style="font-size: 25px;">Seller Information</p>
             <p class="seller-name">Name: **Hidden**</p>
             <p class="seller-school">School: **Hidden**</p>
-            <p class="seller-reputation">Reputation: 4.5</p>
+            <% if @listing.seller.get_num_ratings == 0 %>
+              <p class="seller-reputation">Reputation: No ratings received.</p>
+            <% else %>
+              <p class="seller-reputation">Reputation: <%= sprintf("%.2f", @listing.seller.get_avg_rating) %>
+                (in <%= @listing.seller.get_num_ratings %> <%= @listing.seller.get_num_ratings == 1 ? 'rating' : 'ratings' %>)</p>
+            <% end %>
             <div class="seller-contact">
                 <p>Email: **Hidden**</p>
             </div>
