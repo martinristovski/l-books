@@ -25,6 +25,9 @@ Rails.application.routes.draw do
     get '/book/:id', to: 'book#show'
   end
 
+  # dashboard
+  get '/dashboard', to: 'dashboard#show'
+
   # listing
   get '/listing', to: redirect('/')
 
