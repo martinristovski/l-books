@@ -10,6 +10,10 @@ class Listing < ApplicationRecord
     :sold => 20
   }
 
+  # expose scopes for listings
+  scope :active, -> { where(status: :published) }
+  scope :closed, -> { where(status: :sold) }
+
   # has_many :listing_bookmarks
 
   # a listing can have many images; if the listing is destroyed, destroy the listing images as well
