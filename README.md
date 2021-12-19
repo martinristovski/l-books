@@ -40,4 +40,4 @@ on how Ruby is installed on your computer.)_
 * Rate a seller/transaction.
 * User dashboard.
 * E-mail verification for school-specific (in this case, Columbia-specific) e-mail addresses.
-* E-mail and password-based authentication (implemented manually using [this tutorial](https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/).
+* E-mail and password-based authentication (implemented manually using [this tutorial](https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/)).
