@@ -767,9 +767,6 @@ class ListingController < ApplicationController
       return
     end
 
-    puts params
-    puts @form_data
-
     if params[:isbn].nil? or params[:hidden_expandisbn].nil? or params[:hidden_draft_listing_id].nil?
       @form_data = {
         :isbn => "",

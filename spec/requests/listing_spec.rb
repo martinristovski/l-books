@@ -373,20 +373,86 @@ RSpec.describe "Listings", type: :request do
       expect(flash[:notice]).to match "Please enter a description for the book."
     end
 
-    it "asks for more info if hidden_expandisbn == false" do
-      pending 'TODO: Upload an image first!'
-
+    it "asks for more info if hidden_expandisbn == true" do
       params = {}
       params[:isbn] = "9781001100110"
       params[:condition] = "a" 
       params[:price] = "3.12"
       params[:course] = "HUMA1001"
       params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
       params[:hidden_expandisbn] = false
 
+      # upload image first
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+
+      # test__img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      test__draft_listing_id = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+      params[:hidden_draft_listing_id] = test__draft_listing_id
+
+      # submit the listing
       post '/listing/new', params: params
       expect(flash[:notice]).to eq("Please enter more information about this book.")
       expect(response).to render_template('new')
+    end
+
+    it "correctly creates a listing for a book (whose info was obtained manually) that didn't already exist in the DB" do
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "a"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "Test Title"
+      params[:book_authors] = "Test Authors"
+      params[:book_edition] = "2nd"
+      params[:book_publisher] = "Test Pub"
+      params[:hidden__book_isbn] = "9780226470498"
+
+      # upload image first
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+
+      # test__img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      test__draft_listing_id = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+      params[:hidden_draft_listing_id] = test__draft_listing_id
+
+      # submit the listing
+      post '/listing/new', params: params
+      expect(flash[:notice]).to eq("Listing created!")
+      expect(response).to redirect_to("/listing/#{test__draft_listing_id}")
+      expect(@controller.instance_variable_get(:@listing).book.title).to eq("Test Title") # the title of the previously unknown book
+    end
+
+    it "correctly creates a listing for a book (whose info was obtained from the GBooks API) that didn't already exist in the DB" do
+      params = {}
+      params[:isbn] = "9780872203495"
+      params[:condition] = "a"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = false
+
+      # upload image first
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+
+      # test__img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      test__draft_listing_id = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+      params[:hidden_draft_listing_id] = test__draft_listing_id
+
+      # submit the listing
+      post '/listing/new', params: params
+      expect(flash[:notice]).to eq("Listing created!")
+      expect(response).to redirect_to("/listing/#{test__draft_listing_id}")
+      expect(@controller.instance_variable_get(:@listing).book.title).to eq("Complete Works") # the title of the previously unknown book
     end
 
     it "returns error for missing book title" do
@@ -446,7 +512,7 @@ RSpec.describe "Listings", type: :request do
       expect(response).to render_template('new')
     end
 
-    it "accepts a valid image as an upload" do
+    it "accepts a valid image as an upload and then allows deleting it" do
       params = {}
       params[:isbn] = "9780226470498"
       params[:condition] = "Good"
@@ -459,9 +525,240 @@ RSpec.describe "Listings", type: :request do
       post '/listing/new/uploadimg', params: params
       expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
       expect(response).to render_template('new')
+
+      test__img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      test__draft_listing_id = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+
+      # delete it now
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+      params[:hidden_expandisbn] = false
+      params[:hidden_draft_listing_id] = test__draft_listing_id
+
+      post "/listing/new/deleteimg/#{test__img_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 5 slot(s) left.'
+      expect(response).to render_template('new')
     end
 
+    it "accepts a valid image as an upload and then allows deleting it (WITH hidden_expandisbn as true)" do
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "Test Title"
+      params[:book_authors] = "Test Authors"
+      params[:book_edition] = "2nd"
+      params[:book_publisher] = "Test Pub"
+      params[:hidden__book_isbn] = "9780226470498"
 
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+
+      test__img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      test__draft_listing_id = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+
+      # delete it now
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "Test Title"
+      params[:book_authors] = "Test Authors"
+      params[:book_edition] = "2nd"
+      params[:book_publisher] = "Test Pub"
+      params[:hidden__book_isbn] = "9780226470498"
+      params[:hidden_draft_listing_id] = test__draft_listing_id
+
+      post "/listing/new/deleteimg/#{test__img_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 5 slot(s) left.'
+      expect(response).to render_template('new')
+    end
+
+    it "doesn't accept a nil image" do
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+      params[:hidden_expandisbn] = false
+
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to include "You must upload at least one image."
+      expect(response).to render_template('new')
+    end
+
+    it "allows for uploading multiple images but no more than 5,
+        allows for deleting (but only for known images),
+        prevents submission without at least one image,
+        and prevents uploading images >2MB" do
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = false
+
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+
+      params[:hidden_draft_listing_id] = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+
+      # img 2
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 3 slot(s) left."
+      expect(response).to render_template('new')
+
+      # img 3
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 2 slot(s) left."
+      expect(response).to render_template('new')
+
+      # img 4
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 1 slot(s) left."
+      expect(response).to render_template('new')
+
+      # img 5
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have no more slots left."
+      expect(response).to render_template('new')
+
+      # get img IDs
+      img1_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      img2_id = @controller.instance_variable_get(:@listing).listing_images[1].id
+      img3_id = @controller.instance_variable_get(:@listing).listing_images[2].id
+      img4_id = @controller.instance_variable_get(:@listing).listing_images[3].id
+      img5_id = @controller.instance_variable_get(:@listing).listing_images[4].id
+
+      # attempt to upload a 6th image
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to include "You have already uploaded the maximum of 5 images."
+      expect(response).to render_template('new')
+
+      # delete img 5
+      params[:image] = nil
+      post "/listing/new/deleteimg/#{img5_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 1 slot(s) left.'
+      expect(response).to render_template('new')
+
+      # attempt to delete an image with a bad ID
+      post "/listing/new/deleteimg/0", params: params
+      expect(flash[:notice]).to include 'The image in question could not be found.'
+      expect(response).to render_template('new')
+
+      # delete img 4
+      post "/listing/new/deleteimg/#{img4_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 2 slot(s) left.'
+      expect(response).to render_template('new')
+
+      # delete img 3
+      post "/listing/new/deleteimg/#{img3_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 3 slot(s) left.'
+      expect(response).to render_template('new')
+
+      # delete img 4
+      post "/listing/new/deleteimg/#{img2_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 4 slot(s) left.'
+      expect(response).to render_template('new')
+
+      # delete img 5
+      post "/listing/new/deleteimg/#{img1_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 5 slot(s) left.'
+      expect(response).to render_template('new')
+
+      # attempt to upload an oversized image
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/oversized1.jpg", 'image/jpeg')
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to include "The image you attempted to upload is too big."
+      expect(response).to render_template('new')
+
+      # attempt to submit without any images
+      post '/listing/new', params: params
+      expect(flash[:notice]).to include "You must upload at least one image."
+      expect(response).to render_template('new')
+    end
+
+    it "redirects to the sign-in page if we aren't logged in" do
+      get '/logout' # logout first
+
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+      params[:hidden_expandisbn] = false
+
+      post '/listing/new/uploadimg', params: params
+      expect(response).to redirect_to('/signin')
+
+      post "/listing/new/deleteimg/0", params: params
+      expect(response).to redirect_to('/signin')
+
+      post '/listing/new', params: params
+      expect(response).to redirect_to('/signin')
+    end
+
+    it "errors out if the logged in user isn't the author of the draft listing" do
+      # upload as vn@columbia.edy
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = false
+
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+
+      params[:hidden_draft_listing_id] = @controller.instance_variable_get(:@form_data)[:hidden_draft_listing_id]
+      img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+
+      # logout from vn's account
+      get '/logout' # logout first
+
+      # log in as another user -- ic@columbia.edu
+      loginparams = {:email => "ic@columbia.edu", :password => "password123"}
+      post '/signin', params: loginparams
+      expect(session[:user_id]).to eq(2)
+
+      # attempt to upload to the same draft listing
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "You are not authorized to do this."
+      expect(response).to redirect_to('/')
+
+      # attempt to delete the image in that draft listing
+      post "/listing/new/deleteimg/#{img_id}", params: params
+      expect(flash[:notice]).to include "You are not authorized to do this."
+
+      # attempt to submit that draft listing for publication
+      post '/listing/new', params: params
+      expect(flash[:notice]).to match "You are not authorized to do this."
+      expect(response).to redirect_to('/')
+    end
   end
 
   describe "Handle marking listings as sold" do # TODO
@@ -478,7 +775,7 @@ RSpec.describe "Listings", type: :request do
     end
 
     it "says there's no such listing for invalid listing id" do
-      post "/listing/8/sold"
+      post "/listing/0/sold"
       expect(flash[:notice]).to eq("Sorry, we couldn't find a listing with that ID.")
     end
 
