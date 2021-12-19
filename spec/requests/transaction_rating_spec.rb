@@ -176,7 +176,7 @@ RSpec.describe "TransactionRatings", type: :request do
 
     it "shows warning for invalid rating" do
       params = {:rating => "A"}
-      post '/listing/1/rate'
+      post '/listing/1/rate', params: params
 
       expect(flash[:notice]).to eq("Invalid rating.")
       expect(response).to redirect_to('/listing/1/rate')
@@ -184,10 +184,10 @@ RSpec.describe "TransactionRatings", type: :request do
 
     it "creates new rating if current one doesn't exist" do
       params = {:rating => '4'}
-      post '/listing/4/rate'
+      post '/listing/4/rate', params: params
 
       expect(flash[:notice]).to eq("Rating submitted!")
-      expect(response).to redirect_to('/listing/1')
+      expect(response).to redirect_to('/listing/4')
     end
 
   end
