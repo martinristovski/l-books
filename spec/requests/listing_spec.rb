@@ -267,14 +267,6 @@ RSpec.describe "Listings", type: :request do
       expect(response).to render_template('edit')
     end
 
-    it "edits listing" do
-      pending 'TODO: FIX THIS'
-
-      post '/listing/1/edit', params: {:condition => "a", :course => "HUMA1001", :price => "5.50", :description => "lorem ipsum"}
-      expect(flash[:notice]).to eq("Listing updated!")
-      expect(response).to redirect_to('/listing/1')
-    end
-
     it "accepts a valid image as an upload and then allows deleting it" do
       params = {}
       params[:condition] = "Like new"
@@ -306,6 +298,19 @@ RSpec.describe "Listings", type: :request do
       post "/listing/1/edit/uploadimg", params: params
       expect(flash[:notice]).to include "You must upload at least one image."
       expect(response).to render_template('edit')
+    end
+
+    it "errors out if the course code is in the wrong format" do
+      params = {}
+      params[:condition] = "Like new"
+      params[:price] = "3.12"
+      params[:course] = "huma 1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+
+      # submit the listing
+      post "/listing/1/edit", params: params
+      expect(flash[:notice]).to include("Invalid course code.")
     end
 
     it "allows for uploading multiple images but no more than 5,
@@ -653,6 +658,21 @@ RSpec.describe "Listings", type: :request do
       expect(@controller.instance_variable_get(:@listing).book.title).to eq("Complete Works") # the title of the previously unknown book
     end
 
+    it "errors out if the course code is in the wrong format" do
+      params = {}
+      params[:isbn] = "9780872203495"
+      params[:condition] = "a"
+      params[:price] = "3.12"
+      params[:course] = "huma 1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = false
+
+      # submit the listing
+      post '/listing/new', params: params
+      expect(flash[:notice]).to include("Invalid course code.")
+    end
+
     it "returns error for missing book title" do
       params = {}
       params[:isbn] = "9781001100110"
@@ -707,6 +727,26 @@ RSpec.describe "Listings", type: :request do
 
       post '/listing/new', params: params
       expect(flash[:notice]).to match "Please enter the unknown book's publisher."
+      expect(response).to render_template('new')
+    end
+
+    it "renders the form even with pre-provided data" do
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+      params[:hidden_expandisbn] = true
+      params[:book_title] = "Test Title"
+      params[:book_authors] = "Test Authors"
+      params[:book_edition] = "2nd"
+      params[:book_publisher] = "Test Pub"
+      params[:hidden__book_isbn] = "9780226470498"
+      params[:hidden_draft_listing_id] = "4"
+
+      get '/listing/new', params: params
       expect(response).to render_template('new')
     end
 
