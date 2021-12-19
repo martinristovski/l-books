@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Listings", type: :request do
+  # include necessary for file upload
+  include ActionDispatch::TestProcess::FixtureFile
+
   before(:all) do
     ## COPIED FROM seeds.rb ##
     # users
@@ -371,7 +374,7 @@ RSpec.describe "Listings", type: :request do
     end
 
     it "asks for more info if hidden_expandisbn == false" do
-      pending 'TODO: FIX THIS'
+      pending 'TODO: Upload an image first!'
 
       params = {}
       params[:isbn] = "9781001100110"
@@ -442,6 +445,23 @@ RSpec.describe "Listings", type: :request do
       expect(flash[:notice]).to match "Please enter the unknown book's publisher."
       expect(response).to render_template('new')
     end
+
+    it "accepts a valid image as an upload" do
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = false
+
+      post '/listing/new/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('new')
+    end
+
+
   end
 
   describe "Handle marking listings as sold" do # TODO
