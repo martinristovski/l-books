@@ -20,6 +20,9 @@ module NavigationHelpers
     #
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
+    
+    when /^the dashboard page$/
+      "/dashboard"
 
     when /^the results page for "(.*)"$/
       edit_book_path(Book.find_by_title($1).id)
@@ -47,12 +50,21 @@ module NavigationHelpers
     
     when /^the sold view page for a listing with ID "(.*)"$/
       "/listing/#{$1}/sold"
-  
+ 
+    when /^the rate selection page for a listing with ID "(.*)"$/
+      "/listing/#{$1}/rate"
+
+    when /^the bookmark page for a listing with ID "(.*)"$/
+      "/listing/#{$1}/bookmark"
+ 
     when /^the listing page for the book with ISBN "(.*)" and description "(.*)"$/
       listing_path(Listing.find(isbn = $1, description = $2))
 
     when /^the logged in page$/
       root_path
+
+    when /^the logged out page/
+      "/logout"
       
     else
       begin

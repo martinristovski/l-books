@@ -10,11 +10,13 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     | id | title          | authors           | edition | isbn          | image_id |
     |  1 | Sample Book 1  | Sample Example    | 2       | 9781123456213 | id_1     |
     |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 | id_2     |
+    |  3 | Sample Book 3  | Sample Example III| 6       | 9781230914832 | id_3     |
 
   Given the following users exist:
     | id | last_name | first_name | email              | school | password     | password_confirmation |
     |  1 | Doe       | Jane       | jd123@columbia.edu | SEAS   | qwerty123456 | qwerty123456          |
     |  2 | Doe       | John       | jd456@columbia.edu | CC     | qwerty135790 | qwerty135790          |
+    |  3 | Doe       | Janet      | jd789@columbia.edu | GS     | qwerty246810 | qwerty246810          |
 
   Given the following courses exist:
     | id | code       | name              |
@@ -25,10 +27,13 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     | book_id | course_id |
     | 1       | 1         |
     | 2       | 2         |
+    | 3       | 1         |
 
   Given the following listings exist:
-    | id | book_id   | price   | condition | description     | seller_id | status    |
-    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         | published |
+    | id | book_id   | price   | condition | description     | seller_id | status    | buyer_id | bought_at_price |
+    |  1 | 2         | 4.95    | Like new  | This is a test. | 1         | published |          |                 |
+    |  2 | 1         | 5.00    | Like new  | This is a test. | 1         | sold      | 2        | 5.00            |
+    |  3 | 3         | 6.00    | Like new  | This is a test. | 2         | published |          |                 |
 
   Scenario: Perform a standard search and pull up a book and then a listing via search
     Given I am on the home page
@@ -318,6 +323,11 @@ Scenario: Create a new listing for an existing ISBN in our app database
     And I fill in "Price" with "15"
     And I fill in "Course" with "COMSW4995"
     And I fill in "Description" with "This is a test listing."
+    
+    When I attach the file "../l-books/db/seed_files/extra_large_image.jpg" to "image"
+    And I press "Upload"
+    Then I should see "The image you attempted to upload is too big. Max allowed size: 2 MB. Your image: 5.15 MB"
+
     When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
     And I press "Upload"
     Then I should see "Image uploaded."  
@@ -347,7 +357,7 @@ Scenario: Contact a seller via a listing
     And I should see "Seller Information"
     And I should see "Name: Jane Doe" 
     And I should see "School: SEAS"
-    And I should see "Reputation: 4.5"
+    And I should see "Reputation: No ratings received."
     And I should see "Email: jd123@columbia.edu"
 
     And I should see "Contact Seller"
@@ -404,9 +414,42 @@ Scenario: Edit a user's existing listing
     And I press "Save"
     Then I should see "You must upload at least one image."
 
+    And I press "Upload"
+    Then I should see "You must upload at least one image."
+    When I attach the file "../l-books/db/seed_files/extra_large_image.jpg" to "image"
+    And I press "Upload"
+    Then I should see "The image you attempted to upload is too big. Max allowed size: 2 MB. Your image: 5.15 MB"
+
     When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
     And I press "Upload"
-    Then I should see "Image uploaded."
+    Then I should see "Image uploaded. You have 4 slot(s) left."
+
+    When I press "X"
+    Then I should see "Image deleted. You have 5 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 4 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 3 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 2 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have 1 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded. You have no more slots left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "You have already uploaded the maximum of 5 images."
     And I press "Save"
 
     Then I should see "Listing updated!"
@@ -464,7 +507,7 @@ Scenario: Mark a user's existing listing as sold to a non-existent user
     And I fill in "amount" with "15"
     And I press "Submit"
 
-    Then I should see "Please Enter Correct Email"
+    Then I should see "Please enter a valid email"
 
 Scenario: Mark a user's existing listing as sold to an existing user
     Given I am on the home page
@@ -528,6 +571,61 @@ Scenario: Mark a user's existing listing as sold to an existing user
     And I should see "Sample Book 3"
     And I should see "No listings found!"
     And I should see "1 sold listing found"
+
+    And I follow "Sign Out"
+    Then I should see "Logged Out"
+   
+Scenario: Rate a transaction when signed out
+    Given I am on the home page
+    And I am on the rate selection page for a listing with ID "2"
+    Then I should be on the signin page
+ 
+Scenario: Rate a transaction
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"    
+    And I press "Log In"
+    And I should see "Logged in successfully"
+
+    And I follow "Dashboard"
+    Then I should see "Listings Purchased (1)"
+
+    And I follow "Rate"
+    And I choose "rating_5"
+    And I press "Submit"
+    Then I should see "Edit Rating (gave 5/5)"
+
+    And I follow "Edit Rating (gave 5/5)"
+    Then I should see "You have already entered a rating for this transaction. If you re-submit this form, you will edit your previous rating."
+    And I choose "rating_4"
+    And I press "Submit"
+    Then I should see "Edit Rating (gave 4/5)"
+    And I should not see "Edit Rating (gave 5/5)"
+
+Scenario: Attempts to rate a non-existent listing
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    And I should see "Logged in successfully"
+    
+    When I am on the rate selection page for a listing with ID "6"
+    Then I should be on the home page
+    And I should see "Could not find the listing you are looking for."
+
+Scenario: Attempts to rate a listing that was not bought by themselves
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd789@columbia.edu"
+    And I fill in "password" with "qwerty246810"
+    And I press "Log In"
+    And I should see "Logged in successfully"
+   
+    When I am on the rate selection page for a listing with ID "2"
+    Then I should be on the home page
+    And I should see "You cannot rate this transaction."
 
 Scenario: Delete a user's existing listing
     Given I am on the home page
@@ -628,3 +726,73 @@ Scenario: Attempt to delete a non-existent listing
 
     When I am on the listing deletion page for a listing with ID "4"
     Then I should see "Sorry, we couldn't find a listing with that ID."
+
+Scenario: Bookmark a listing
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    And I select "ISBN" from "criteria"
+    And I fill in "search" with "9781575675320"
+    And I press "Go"
+    Then I should be on the search results page
+
+    Then I click on the element with ID "result-0"
+    And I should see "Sample Book 2"
+    And I should see "1 listing found:"
+
+    Then I click on the element with ID "result-0"
+    And I should see "Seller Information"
+    And I should see "Name: Jane Doe"
+    And I should see "School: SEAS"
+    And I should see "Reputation: No ratings received."
+    And I should see "Email: jd123@columbia.edu"
+
+    And I follow "Save"
+    Then I should see "Listing bookmarked!"
+    And I follow "Unsave"
+    Then I should see "Bookmark removed!"
+
+Scenario: Attempts to bookmark own listing
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    When I am on the bookmark page for a listing with ID "3"
+    Then I should see "Cannot bookmark your own listing."
+
+Scenario: Attempts to bookmark non-existent listing
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    When I am on the bookmark page for a listing with ID "6"
+    Then I should see "Sorry, we couldn't find a listing with that ID."
+
+Scenario: Attempts to bookmark when not signed in
+    Given I am on the home page
+    When I am on the bookmark page for a listing with ID "1"
+    Then I should be on the signin page
+
+Scenario: Attempts to visit dashboard when not signed in
+    Given I am on the home page
+    When I am on the dashboard page
+    Then I should be on the signin page
+
+Scenario: Attempts to logout when not signed in
+    Given I am on the home page
+    When I am on the logged out page
+    Then I should be on the home page
+    And I should see "Cannot log out if you never logged in."
