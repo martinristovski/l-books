@@ -12,8 +12,8 @@ A SaaS product created for [COMS W4995: Engineering Software-as-a-Service](http:
 * GitHub: https://github.com/martinristovski/l-books
 * Heroku: https://lbooks-4995.herokuapp.com/
 * Coverage:
-  * RSpec: https://lbooks-4995.herokuapp.com/cov_rspec
-  * Cucumber: https://lbooks-4995.herokuapp.com/cov_cucumber
+  * RSpec (97% coverage): https://lbooks-4995.herokuapp.com/cov_rspec
+  * Cucumber (85% coverage): https://lbooks-4995.herokuapp.com/cov_cucumber
 
 ## Running it locally
 
@@ -29,31 +29,15 @@ use the `rspec` and `cucumber` commands.
 _(Note that some of these commands may be different on your end depending 
 on how Ruby is installed on your computer.)_
 
-## Currently-implemented features
+## All implemented features
 
 * Search by title/author, course, and ISBN.
 * See book results, and see book information page.
 * See listing info for a book, and see individual listings.
 * Register and login using an account.
-* Create, delete, and edit a listing.
-
-### Features implemented in iteration 2
-
-1. User login, registration, and session creation (implemented manually using this tutorial:  
-   [https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/](https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/).
-2. The ability to create a new listing, edit a listing, and delete that listing.
-3. The ability to add a new book if the ISBN given for a book does not yet exist in our database.
-4. New views and new/improved CSS styling.
-5. New Cucumber and RSpec testing cases and scenarios
-
-We also set up an S3 server to store images (although S3-specific features 
-were not implemented in this iteration).
-
-### Projected tasks for next iteration
-
-- User dashboard and password edits/resets.
-- Uploading listing photos.
-- Buyer-seller contact functionality.
-- E-mail verification for school-specific e-mail addresses.
-- Seller/transaction ratings.
-- Associating books with specific courses and improving search filtering.
+* Create, delete, and edit a listing, including adding/removing images. (Images are stored on an S3 server.)
+* Automatically retrieve book information from Google Books (or provide such information manually if Google Books cannot find it).
+* Rate a seller/transaction.
+* User dashboard.
+* E-mail verification for school-specific (in this case, Columbia-specific) e-mail addresses.
+* E-mail and password-based authentication (implemented manually using [this tutorial](https://www.section.io/engineering-education/how-to-setup-user-authentication-from-scratch-with-rails-6/).
