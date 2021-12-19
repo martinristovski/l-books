@@ -182,12 +182,26 @@ RSpec.describe "TransactionRatings", type: :request do
       expect(response).to redirect_to('/listing/1/rate')
     end
 
-    it "creates new rating if current one doesn't exist" do
+    it "creates new rating if current one doesn't exist (and allows for editing it)" do
       params = {:rating => '4'}
       post '/listing/4/rate', params: params
 
       expect(flash[:notice]).to eq("Rating submitted!")
       expect(response).to redirect_to('/listing/4')
+
+      # verify that we see the correct rating on the listing's page
+      get '/listing/4'
+      expect(response.body).to include("The Iliad of Homer")
+      expect(response.body).to include("Edit Rating (gave 4/5)")
+
+      # edit the rating
+      params = {:rating => '5'}
+      post '/listing/4/rate', params: params
+
+      # verify that we see the NEW rating on the listing's page
+      get '/listing/4'
+      expect(response.body).to include("The Iliad of Homer")
+      expect(response.body).to include("Edit Rating (gave 5/5)")
     end
 
   end

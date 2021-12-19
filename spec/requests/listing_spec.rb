@@ -957,6 +957,22 @@ RSpec.describe "Listings", type: :request do
       expect(flash[:notice]).to match "You are not authorized to do this."
       expect(response).to redirect_to('/')
     end
+
+    it "errors out if we attempt to call deleteimg when a draft listing has not yet been created" do
+      # upload as vn@columbia.edy
+      params = {}
+      params[:isbn] = "9780226470498"
+      params[:condition] = "Good"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+      params[:hidden_expandisbn] = false
+
+      # attempt to delete the image in that draft listing
+      post "/listing/new/deleteimg/1", params: params
+      expect(flash[:notice]).to include "Draft listing missing."
+    end
   end
 
   describe "Handle marking listings as sold" do # TODO
