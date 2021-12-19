@@ -12,8 +12,8 @@ A SaaS product created for [COMS W4995: Engineering Software-as-a-Service](http:
 * GitHub: https://github.com/martinristovski/l-books
 * Heroku: https://lbooks-4995.herokuapp.com/
 * Coverage:
-  * RSpec (97% coverage): https://lbooks-4995.herokuapp.com/cov_rspec
-  * Cucumber (85% coverage): https://lbooks-4995.herokuapp.com/cov_cucumber
+  * RSpec **(97% coverage)**: https://lbooks-4995.herokuapp.com/cov_rspec
+  * Cucumber **(85% coverage)**: https://lbooks-4995.herokuapp.com/cov_cucumber
 
 ## Running it locally
 
