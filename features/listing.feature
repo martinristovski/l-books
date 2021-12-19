@@ -218,6 +218,13 @@ Scenario: Create a new listing with extra fields auto-completed via GBooks API
     When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
     And I press "Upload"
     Then I should see "Image uploaded."
+
+    And I press "X"
+    Then I should see "Image deleted. You have 5 slot(s) left."
+
+    When I attach the file "../l-books/db/seed_files/b1_iliad.jpg" to "image"
+    And I press "Upload"
+    Then I should see "Image uploaded."
     And I press "Post"
 
     Then I should see "Listing created!"
@@ -796,3 +803,32 @@ Scenario: Attempts to logout when not signed in
     When I am on the logged out page
     Then I should be on the home page
     And I should see "Cannot log out if you never logged in."
+
+Scenario: Attempts to logout directly with URL when signed in
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+    
+    And I am on the logged out page
+    Then I should see "Logged Out"
+
+Scenario: Attempts to sign in when already signed in
+    Given I am on the home page
+    And I follow "Sign In"
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
+    And I am on the signin page
+    And I fill in "email" with "jd456@columbia.edu"
+    And I fill in "password" with "qwerty135790"
+    And I press "Log In"
+    Then I should be on the logged in page
+    And I should see "Logged in successfully"
+
