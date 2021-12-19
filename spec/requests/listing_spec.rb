@@ -227,7 +227,7 @@ RSpec.describe "Listings", type: :request do
     end
 
     it "redirects to / if the listing doesn't exist" do
-      post '/listing/50/edit'
+      post '/listing/0/edit'
       expect(flash[:notice]).to eq("Sorry, we couldn't find a listing with that ID.")
       expect(response).to redirect_to('/')
     end
@@ -273,6 +273,204 @@ RSpec.describe "Listings", type: :request do
       post '/listing/1/edit', params: {:condition => "a", :course => "HUMA1001", :price => "5.50", :description => "lorem ipsum"}
       expect(flash[:notice]).to eq("Listing updated!")
       expect(response).to redirect_to('/listing/1')
+    end
+
+    it "accepts a valid image as an upload and then allows deleting it" do
+      params = {}
+      params[:condition] = "Like new"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+
+      post "/listing/1/edit/uploadimg", params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('edit')
+
+      test__img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+
+      # delete it now
+      post "/listing/1/edit/deleteimg/#{test__img_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 5 slot(s) left.'
+      expect(response).to render_template('edit')
+    end
+
+    it "doesn't accept a nil image" do
+      params = {}
+      params[:condition] = "Like new"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+
+      post "/listing/1/edit/uploadimg", params: params
+      expect(flash[:notice]).to include "You must upload at least one image."
+      expect(response).to render_template('edit')
+    end
+
+    it "allows for uploading multiple images but no more than 5,
+        allows for deleting (but only for known images),
+        prevents submission without at least one image,
+        and prevents uploading images >2MB" do
+      params = {}
+      params[:condition] = "Like new"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('edit')
+
+      # img 2
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 3 slot(s) left."
+      expect(response).to render_template('edit')
+
+      # img 3
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 2 slot(s) left."
+      expect(response).to render_template('edit')
+
+      # img 4
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 1 slot(s) left."
+      expect(response).to render_template('edit')
+
+      # img 5
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have no more slots left."
+      expect(response).to render_template('edit')
+
+      # get img IDs
+      img1_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+      img2_id = @controller.instance_variable_get(:@listing).listing_images[1].id
+      img3_id = @controller.instance_variable_get(:@listing).listing_images[2].id
+      img4_id = @controller.instance_variable_get(:@listing).listing_images[3].id
+      img5_id = @controller.instance_variable_get(:@listing).listing_images[4].id
+
+      # attempt to upload to a non-existent listing
+      post '/listing/0/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Sorry, we couldn't find a listing with that ID."
+      expect(response).to redirect_to('/')
+
+      # attempt to upload a 6th image
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to include "You have already uploaded the maximum of 5 images."
+      expect(response).to render_template('edit')
+
+      # delete img 5
+      params[:image] = nil
+      post "/listing/1/edit/deleteimg/#{img5_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 1 slot(s) left.'
+      expect(response).to render_template('edit')
+
+      # attempt to delete an image with a bad ID
+      post "/listing/1/edit/deleteimg/0", params: params
+      expect(flash[:notice]).to include 'The image in question could not be found.'
+      expect(response).to render_template('edit')
+
+      # delete img 4
+      post "/listing/1/edit/deleteimg/#{img4_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 2 slot(s) left.'
+      expect(response).to render_template('edit')
+
+      # delete img 3
+      post "/listing/1/edit/deleteimg/#{img3_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 3 slot(s) left.'
+      expect(response).to render_template('edit')
+
+      # delete img 4
+      post "/listing/1/edit/deleteimg/#{img2_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 4 slot(s) left.'
+      expect(response).to render_template('edit')
+
+      # delete img 5
+      post "/listing/1/edit/deleteimg/#{img1_id}", params: params
+      expect(flash[:notice]).to match 'Image deleted. You have 5 slot(s) left.'
+      expect(response).to render_template('edit')
+
+      # attempt to delete from a non-existent listing
+      post '/listing/0/edit/deleteimg/0', params: params
+      expect(flash[:notice]).to match "Sorry, we couldn't find a listing with that ID."
+      expect(response).to redirect_to('/')
+
+      # attempt to upload an oversized image
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/oversized1.jpg", 'image/jpeg')
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to include "The image you attempted to upload is too big."
+      expect(response).to render_template('edit')
+
+      # attempt to submit without any images
+      post '/listing/1/edit', params: params
+      expect(flash[:notice]).to include "You must upload at least one image."
+      expect(response).to render_template('edit')
+    end
+
+    it "redirects to the sign-in page if we aren't logged in" do
+      get '/logout' # logout first
+
+      params = {}
+      params[:condition] = "Like new"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = nil
+
+      post '/listing/1/edit/uploadimg', params: params
+      expect(response).to redirect_to('/signin')
+
+      post "/listing/1/edit/deleteimg/0", params: params
+      expect(response).to redirect_to('/signin')
+
+      post '/listing/1/edit', params: params
+      expect(response).to redirect_to('/signin')
+    end
+
+    it "errors out if the logged in user isn't the author of the listing" do
+      # upload an image and edit the listing as vn@columbia.edy
+      params = {}
+      params[:condition] = "Like new"
+      params[:price] = "3.12"
+      params[:course] = "HUMA1001"
+      params[:description] = "Lorem ipsum."
+      params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
+
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Image uploaded. You have 4 slot(s) left."
+      expect(response).to render_template('edit')
+
+      # submit the edit!
+      post '/listing/1/edit', params: params
+      expect(flash[:notice]).to include "Listing updated!"
+      expect(response).to redirect_to('/listing/1')
+
+      # get the uploaded image's ID
+      img_id = @controller.instance_variable_get(:@listing).listing_images[0].id
+
+      # logout from vn's account
+      get '/logout' # logout first
+
+      # log in as another user -- ic@columbia.edu
+      loginparams = {:email => "ic@columbia.edu", :password => "password123"}
+      post '/signin', params: loginparams
+      expect(session[:user_id]).to eq(2)
+
+      # attempt to upload to the same draft listing
+      post '/listing/1/edit/uploadimg', params: params
+      expect(flash[:notice]).to match "Forbidden: Only the seller of a listing can edit that listing."
+      expect(response).to redirect_to('/')
+
+      # attempt to delete the image in that draft listing
+      post "/listing/1/edit/deleteimg/#{img_id}", params: params
+      expect(flash[:notice]).to match "Forbidden: Only the seller of a listing can edit that listing."
+      expect(response).to redirect_to('/')
+
+      # attempt to submit that draft listing for publication
+      post '/listing/1/edit', params: params
+      expect(flash[:notice]).to match "Forbidden: Only the seller of a listing can edit that listing."
+      expect(response).to redirect_to('/')
     end
   end
 
