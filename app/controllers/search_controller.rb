@@ -29,7 +29,7 @@ class SearchController < ApplicationController
           redirect_to action: "index"
           return
         else
-          courses = Course.where("LOWER(code) like ? OR LOWER(name) like ?", "%#{st}%", "%#{st}%")
+          courses = Course.where("LOWER(code) like ?", "%#{st}%")
           if courses.empty?
             @results = []
           else

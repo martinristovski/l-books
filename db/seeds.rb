@@ -67,7 +67,7 @@ b2 = Book.create!(
   authors: "Plato; Alexander Nehamas; Paul Woodruff",
   edition: "1989 Edition",
   publisher: "Hackett Publishing Co",
-  isbn: "9780872200760",
+    isbn: "9780872200760",
   image_id: b2_cover_name
 )
 
@@ -86,12 +86,12 @@ b3 = Book.create!(
 
 # courses
 c1 = Course.create!(
-  code: "HUMA1001",
-  name: "Masterpieces of Western Literature and Philosophy I"
+  code: "HUMA1001"
+  # name: "Masterpieces of Western Literature and Philosophy I"
 )
 c2 = Course.create!(
-  code: "HUMA1002",
-  name: "Masterpieces of Western Literature and Philosophy II"
+  code: "HUMA1002"
+  # name: "Masterpieces of Western Literature and Philosophy II"
 )
 
 # book-course associations
@@ -117,6 +117,7 @@ l1 = Listing.create!(
   seller_id: u1.id,
   status: 'sold',
   buyer_id: u2.id,
+  course_id: c1.id,
   bought_at_price: 5.00
 )
 l2 = Listing.create!(
@@ -125,6 +126,7 @@ l2 = Listing.create!(
   condition: "Used, slightly worn",
   description: "Another copy of the Iliad. This actually looks like it was used.",
   seller_id: u2.id,
+  course_id: c1.id,
   status: 'published'
 )
 l3 = Listing.create!(
@@ -133,6 +135,7 @@ l3 = Listing.create!(
   condition: "Used",
   description: "Plato's Symposium. Used.",
   seller_id: u3.id,
+  course_id: c1.id,
   status: 'published'
 )
 l4 = Listing.create!(
@@ -143,6 +146,7 @@ l4 = Listing.create!(
   seller_id: u3.id,
   status: 'sold',
   buyer_id: u1.id,
+  course_id: c1.id,
   bought_at_price: 5.00
 )
 

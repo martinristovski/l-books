@@ -23,7 +23,14 @@
             <%= @listing.book.isbn %>
         </p>
         <p class="listing-price"><%= sprintf('$%.2f', @listing.price) %></p>
-        <div class="listing-description"><em><%= @listing.condition %></em> | <%= @listing.description.truncate(50) %></div>
+        <div class="listing-description">
+          <em><%= @listing.condition %></em>
+          <% unless @listing.primary_course.nil? %>
+            (used for <%= @listing.primary_course.code %>)
+          <% end %>
+          |
+          <%= @listing.description %>
+        </div>
         </br>
         <% if not Current.user.nil? and Current.user.email === @listing.seller.email %>
          <% if @listing.status != "sold" %>

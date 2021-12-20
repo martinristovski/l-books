@@ -274,7 +274,7 @@ class ListingController < ApplicationController
       @form_data = {
         :condition => listing_in_question.condition,
         :price => sprintf('%.2f', listing_in_question.price),  # convert to a string to 2 decimal places
-        :course => "", # TODO
+        :course => listing_in_question.primary_course.nil? ? "" : listing_in_question.primary_course.code,
         :description => listing_in_question.description,
         :hidden_draft_listing_id => listing_in_question.id
       }
@@ -287,7 +287,7 @@ class ListingController < ApplicationController
       @form_data = {
         :condition => params[:condition],
         :price => params[:price],
-        :course => params[:course], # TODO
+        :course => params[:course],
         :description => params[:description]
       }
 
@@ -340,10 +340,31 @@ class ListingController < ApplicationController
         return
       end
 
+      # get an existing course with this code; else create a new one
+      course = Course.find_by(code: @form_data[:course])
+      bca = nil
+      if course.nil?
+        course = Course.create!(id: Course.maximum(:id).next, code: @form_data[:course])
+      else
+        bca = BookCourseAssociation.find_by(
+          course_id: course.id,
+          book_id: @book.id
+        )
+      end
+
+      if bca.nil?
+        bca = BookCourseAssociation.create!(
+          id: BookCourseAssociation.maximum(:id).next,
+          course_id: course.id,
+          book_id: @book.id
+        )
+      end
+
       listing_in_question.update(
         condition: @form_data[:condition],
         price: @form_data[:price],
         description: @form_data[:description],
+        course_id: course.id
       )
 
       flash[:notice] = "Listing updated!"
@@ -705,16 +726,6 @@ class ListingController < ApplicationController
           file_name_on_s3 = nil
         end
 
-        # extra_book_info = {
-        #   :book_title => book_match.title,
-        #   :book_authors => book_match.authors,
-        #   :book_edition => "", # make this optional
-        #   :book_publisher => book_match.publisher,
-        #   # add image to s3, using book_match.image_link(:zoom => 2) for a medium sized image
-        #   :hidden__book_isbn => @form_data[:isbn]
-        # }
-        # @form_data = @form_data.merge(extra_book_info)
-
         # create the new book
         Book.create!(
           id: Book.maximum(:id).next,
@@ -746,14 +757,34 @@ class ListingController < ApplicationController
       this_book = books_with_isbn[0]
     end
 
+    # get an existing course with this code; else create a new one
+    course = Course.find_by(code: @form_data[:course])
+    bca = nil
+    if course.nil?
+      course = Course.create!(id: Course.maximum(:id).next, code: @form_data[:course])
+    else
+      bca = BookCourseAssociation.find_by(
+        course_id: course.id,
+        book_id: this_book.id
+      )
+    end
+
+    if bca.nil?
+      bca = BookCourseAssociation.create!(
+        id: BookCourseAssociation.maximum(:id).next,
+        course_id: course.id,
+        book_id: this_book.id
+      )
+    end
+
     # create the listing
-    # TODO: How do we use course?
     @listing = Listing.find_by_id(@form_data[:hidden_draft_listing_id])
     @listing.book_id = this_book.id
     @listing.price = @form_data[:price]
     @listing.condition = @form_data[:condition]
     @listing.description = @form_data[:description]
     @listing.status = "published"
+    @listing.course_id = course.id
     @listing.save!
 
     @form_data = nil

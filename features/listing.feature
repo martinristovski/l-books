@@ -19,9 +19,9 @@ Background: books, users, courses, BCAs, and listings have been added to the dat
     |  3 | Doe       | Janet      | jd789@columbia.edu | GS     | qwerty246810 | qwerty246810          |
 
   Given the following courses exist:
-    | id | code       | name              |
-    |  1 | COMSW4995  | Engineering ESaaS |
-    |  2 | COMSW9999  | Example Course    |
+    | id | code       |
+    |  1 | COMSW4995  |
+    |  2 | COMSW9999  |
 
   Given the following book-course associations exist:
     | book_id | course_id |

@@ -4,6 +4,7 @@ class Listing < ApplicationRecord
   belongs_to :book, optional: true
   belongs_to :seller, class_name: "User", foreign_key: "seller_id"
   belongs_to :buyer, class_name: "User", foreign_key: "buyer_id", optional: true
+  belongs_to :primary_course, class_name: "Course", foreign_key: "course_id", optional: true
 
   enum status: {
     :draft => 0,

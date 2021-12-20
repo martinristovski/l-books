@@ -73,12 +73,10 @@ RSpec.describe "Listings", type: :request do
 
     # courses
     c1 = Course.create!(
-      code: "HUMA1001",
-      name: "Masterpieces of Western Literature and Philosophy I"
+      code: "HUMA1001"
     )
     c2 = Course.create!(
-      code: "HUMA1002",
-      name: "Masterpieces of Western Literature and Philosophy II"
+      code: "HUMA1002"
     )
 
     # book-course associations
@@ -102,6 +100,7 @@ RSpec.describe "Listings", type: :request do
       price: 5.00,
       condition: "Like new",
       description: "Copy of the Iliad. Looks like it was never used (which may or may not have been the case)...",
+      course_id: c1.id,
       seller_id: u1.id
     )
     l2 = Listing.create!(
@@ -110,6 +109,7 @@ RSpec.describe "Listings", type: :request do
       price: 4.50,
       condition: "Used, slightly worn",
       description: "Another copy of the Iliad. This actually looks like it was used.",
+      course_id: c1.id,
       seller_id: u2.id
     )
     l3 = Listing.create!(
@@ -118,6 +118,7 @@ RSpec.describe "Listings", type: :request do
       price: 5.15,
       condition: "Used",
       description: "Plato's Symposium. Used.",
+      course_id: c1.id,
       seller_id: u3.id
     )
   end
@@ -632,12 +633,13 @@ RSpec.describe "Listings", type: :request do
       expect(@controller.instance_variable_get(:@listing).book.title).to eq("Test Title") # the title of the previously unknown book
     end
 
-    it "correctly creates a listing for a book (whose info was obtained from the GBooks API) that didn't already exist in the DB" do
+    it "correctly creates a listing for a book (whose info was obtained from the GBooks API) that didn't already exist in the DB
+        and for which the designated course previously didn't exist" do
       params = {}
       params[:isbn] = "9780872203495"
       params[:condition] = "a"
       params[:price] = "3.12"
-      params[:course] = "HUMA1001"
+      params[:course] = "TEST1005"
       params[:description] = "Lorem ipsum."
       params[:image] = fixture_file_upload("#{Rails.root}/spec/fixtures/files/plato1.jpg", 'image/jpeg')
       params[:hidden_expandisbn] = false

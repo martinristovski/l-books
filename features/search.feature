@@ -12,9 +12,9 @@ Background: books, users, courses, and BCAs have been added to the database
     |  2 | Sample Book 2  | Sample Example II | 4       | 9781575675320 | id_2     |
 
   Given the following courses exist:
-    | id | code       | name              |
-    |  1 | COMSW4995  | Engineering ESaaS |
-    |  2 | COMSW9999  | Example Course    |
+    | id | code       |
+    |  1 | COMSW4995  |
+    |  2 | COMSW9999  |
 
   Given the following book-course associations exist:
     | book_id | course_id |

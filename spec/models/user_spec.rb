@@ -33,8 +33,7 @@ RSpec.describe User, type: :model do
       isbn: "9780226470498",
     )
     c1 = Course.create!(
-      code: "HUMA1001",
-      name: "Masterpieces of Western Literature and Philosophy I"
+      code: "HUMA1001"
     )
     bca1 = BookCourseAssociation.create!(
       book_id: b1.id,

@@ -17,9 +17,9 @@ Feature: View listing information
       |  2 | Doe       | John       | jd456@columbia.edu | CC     | qwerty135790 | qwerty135790          |
 
     Given the following courses exist:
-      | id | code       | name              |
-      |  1 | COMSW4995 | Engineering ESaaS |
-      |  2 | COMSW9999 | Example Course    |
+      | id | code      |
+      |  1 | COMSW4995 |
+      |  2 | COMSW9999 |
 
     Given the following book-course associations exist:
       | book_id | course_id |
@@ -79,6 +79,7 @@ Feature: View listing information
     And I fill in "condition" with ""
     And I fill in "price" with ""
     And I fill in "description" with ""
+    And I fill in "course" with ""
     And I press "Save"
 
     Then I should see "We encountered the following errors"
