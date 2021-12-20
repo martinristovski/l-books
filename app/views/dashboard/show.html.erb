@@ -1,4 +1,4 @@
-<div style='margin-top :50px; padding:10px;' >
+<div style='margin-top :50px; padding:10px;' class="dashboard-main" >
   <h1>Hello, <%= @user.first_name %>!</h1>
   <p> <%= link_to @user.email, "mailto:#{@user.email}" %> |  <%= @user.uni %></p>
   <p>Seller rating:
@@ -11,7 +11,7 @@
   </p>
 
     </br></br>
-  <h2 class="dahsboard-heading">Listings Saved <%= @user.saved_listings.count > 0 ? sprintf("(%s)", @user.saved_listings.count) : "" %></h2>
+  <h2 class="dashboard-heading">Listings Saved <%= @user.saved_listings.count > 0 ? sprintf("(%s)", @user.saved_listings.count) : "" %></h2>
 
   <% if @user.saved_listings.count > 0  %>
     <% @user.saved_listings.each_with_index do |bookmark, index| %>
@@ -19,70 +19,70 @@
         <% if bookmark.listing.status == "sold"  %>
           <p>SOLD!</p>
         <% end %>
-        <div class="listing-price"><%= sprintf('%s', bookmark.listing.book.title) %></div>
-        <div class="listing-price"><%= sprintf('%s', bookmark.listing.book.authors) %></div>
-        <div class="listing-price"><%= sprintf('$%.2f', bookmark.listing.price) %></div>
-        <div class="listing-description"><em><%= bookmark.listing.condition %></em> | <%= bookmark.listing.description.truncate(25) %></div>
+        <div class="d-listing-title"><%= sprintf('%s', bookmark.listing.book.title) %></div>
+        <div class="d-listing-authors"><%= sprintf('%s', bookmark.listing.book.authors) %></div>
+        <div class="d-listing-price"><%= sprintf('$%.2f', bookmark.listing.price) %></div>
+        <div class="d-listing-description"><em><%= bookmark.listing.condition %></em> | <%= bookmark.listing.description.truncate(25) %></div>
       <% end %>
     <% end %>
   <% else %>
-    <p class="dahsboard-heading">You have no saved listings!</p>
+    <p class="dashboard-heading">You have no saved listings!</p>
   <% end %>
-</br></br>
+  
+  </br></br>
 
-<h2 class="dahsboard-heading">Active Listings as Seller <%= @user.active_seller_listings.count > 0 ? sprintf("(%s)", @user.active_seller_listings.count) : "" %></h2>
+  <h2 class="dashboard-heading">Active Listings as Seller <%= @user.active_seller_listings.count > 0 ? sprintf("(%s)", @user.active_seller_listings.count) : "" %></h2>
 
   <% if @user.active_seller_listings.count > 0  %>
     <% @user.active_seller_listings.each_with_index do |listing, index| %>
       <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
-       <div class="listing-price"><%= sprintf('$%.2f', listing.price) %></div>
-       <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(50) %></div>
+       <div class="d-listing-price"><%= sprintf('$%.2f', listing.price) %></div>
+       <div class="d-listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(50) %></div>
       <% end %>
     <% end %>
   <% else %>
-    <p class="dahsboard-heading">You are not currently selling anything!</p>
+    <p class="dashboard-heading">You are not currently selling anything!</p>
   <% end %>
 
   </br></br>
-  <h2 class="dahsboard-heading">Sold Listings as Seller <%= @user.sold_seller_listings.count > 0 ? sprintf("(%s)", @user.sold_seller_listings.count) : "" %></h2>
+  <h2 class="dashboard-heading">Sold Listings as Seller <%= @user.sold_seller_listings.count > 0 ? sprintf("(%s)", @user.sold_seller_listings.count) : "" %></h2>
 
   <% if @user.sold_seller_listings.count > 0  %>
     <% @user.sold_seller_listings.each_with_index do |listing, index| %>
-      <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
+      <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard-sold', :id => "result-#{index}" do %>
+        <div class="d-listing-title"><%= sprintf('%s', listing.book.title) %></div>
+        <div class="d-listing-authors"><%= sprintf('%s', listing.book.authors) %></div>
+        <div class="d-listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
+        <div class="d-listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
         <% if listing.status == "sold"  %>
           <% if listing.buyer.nil? %>
-            <p>SOLD!</p>
+            <div class="d-listing-sold">SOLD!</div>
           <% else %>
-            <p>SOLD to <%= listing.buyer.uni %></p>
+            <div class="d-listing-sold">SOLD to <%= listing.buyer.uni %></div>
           <% end %>
         <% end %>
-        <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
-        <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
-        <div class="listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
-        <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
       <% end %>
     <% end %>
   <% else %>
-    <p class="dahsboard-heading">You have not sold anything!</p>
+    <p class="dashboard-heading">You have not sold anything!</p>
   <% end %>
-</br></br>
 
-  <h2 class="dahsboard-heading">Listings Purchased <%= @user.purchased_listings.count > 0 ? sprintf("(%s)", @user.purchased_listings.count) : "" %></h2>
+  </br></br>
+
+  <h2 class="dashboard-heading">Listings Purchased <%= @user.purchased_listings.count > 0 ? sprintf("(%s)", @user.purchased_listings.count) : "" %></h2>
 
   <% if @user.purchased_listings.count > 0  %>
     <% @user.purchased_listings.each_with_index do |listing, index| %>
       <%= link_to "/listing/#{listing.id}", :class => 'listing-dashboard', :id => "result-#{index}" do %>
-        <% if listing.status == "sold"  %>
-          <p>SOLD (to you!)</p>
-        <% end %>
-        <div class="listing-price"><%= sprintf('%s', listing.book.title) %></div>
-        <div class="listing-price"><%= sprintf('%s', listing.book.authors) %></div>
-        <div class="listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
-        <div class="listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
+        <div class="d-listing-title"><%= sprintf('%s', listing.book.title) %></div>
+        <div class="d-listing-authors"><%= sprintf('%s', listing.book.authors) %></div>
+        <div class="d-listing-price">Listed at: <%= sprintf('$%.2f', listing.price) %> | Bought at: <%= sprintf('$%.2f', listing.bought_at_price) %></div>
+        <div class="d-listing-description"><em><%= listing.condition %></em> | <%= listing.description.truncate(25) %></div>
         <%= link_to (listing.transaction_rating.nil? ? "Rate" : "Edit Rating (gave #{listing.transaction_rating.score}/5)"), "/listing/#{listing.id}/rate", :id => 'signin' , :style =>'float:left;margin-left :0px' %>
       <% end %>
     <% end %>
   <% else %>
-    <p class="dahsboard-heading">You have not purchased anything! </p>
+    <p class="dashboard-heading">You have not purchased anything! </p>
   <% end %>
+
 </div>

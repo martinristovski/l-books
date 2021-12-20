@@ -443,7 +443,7 @@ p, div {
 
 /* USER DASHBOARD SECTION */
 
-.dashboard-main {
+/* .dashboard-main {
     margin-top: 64px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -452,14 +452,68 @@ p, div {
         ". heading ."
         ". my-listings ."
         ". my-listings-wrapper ."
-}
+} */
 
 #heading {
     grid-area: heading;
     font-size: 30px;
 }
 
-#my-listings {
+.listing-dashboard {
+    grid-area: listing;
+    border: 1px solid gray;
+    border-radius: 32px;
+    margin: 4px 8px 4px 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 64px;
+    grid-template-areas: 
+        "d-listing-price d-listing-title d-listing-authors d-listing-description";
+}
+
+.d-listing-price {
+    grid-area: d-listing-price;
+    justify-self: center;
+    align-self: center;
+}
+
+.d-listing-title {
+    grid-area: d-listing-title;
+    justify-self: center;
+    align-self: center;
+}
+
+.d-listing-authors {
+    grid-area: d-listing-authors;
+    justify-self: center;
+    align-self: center;
+}
+
+.d-listing-description {
+    grid-area: d-listing-description;
+    justify-self: center;
+    align-self: center;
+}
+
+.d-listing-sold {
+    grid-area: d-listing-sold;
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-dashboard-sold {
+    grid-area: listing;
+    border: 1px solid gray;
+    border-radius: 32px;
+    margin: 4px 8px 4px 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 64px;
+    grid-template-areas: 
+        "d-listing-price d-listing-title d-listing-authors d-listing-description d-listing-sold";
+}
+
+/* #my-listings {
     grid-area: my-listings;
     font-size: 30px;
     margin-top: 30px;
@@ -474,7 +528,7 @@ p, div {
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
-}
+} */
 
 .result {
     display: grid;
@@ -486,6 +540,7 @@ p, div {
     border-radius: 5px;
     margin: 20px 10px 20px 10px;
 }
+
 /*singin promt css */
 .signin_prompt {
     background-color: #FFFFFF;
@@ -555,21 +610,4 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
-}
-
-/* dashboard */
-
-.listing-dashboard{
-    grid-area: listing;
-    border: 1px solid gray;
-    border-radius: 10px;
-    margin: 4px 8px 4px 8px;
-    display: grid;
-    grid-template-columns: 128px 1fr 256px;
-    grid-template-rows: 64px;
-    grid-template-areas:
-        "listing-price listing-description listing-actions";
-}
-.dahsboard-heading{
-    padding-left: 15px !important;
 }
