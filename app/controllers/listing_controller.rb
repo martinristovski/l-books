@@ -344,11 +344,7 @@ class ListingController < ApplicationController
       course = Course.find_by(code: @form_data[:course])
       bca = nil
       if course.nil?
-        course = Course.create!(code: @form_data[:course])
-        bca = BookCourseAssociation.create!(
-          course_id: course.id,
-          book_id: @book.id
-        )
+        course = Course.create!(id: Course.maximum(:id).next, code: @form_data[:course])
       else
         bca = BookCourseAssociation.find_by(
           course_id: course.id,
@@ -358,6 +354,7 @@ class ListingController < ApplicationController
 
       if bca.nil?
         bca = BookCourseAssociation.create!(
+          id: BookCourseAssociation.maximum(:id).next,
           course_id: course.id,
           book_id: @book.id
         )
@@ -764,11 +761,7 @@ class ListingController < ApplicationController
     course = Course.find_by(code: @form_data[:course])
     bca = nil
     if course.nil?
-      course = Course.create!(code: @form_data[:course])
-      bca = BookCourseAssociation.create!(
-        course_id: course.id,
-        book_id: this_book.id
-      )
+      course = Course.create!(id: Course.maximum(:id).next, code: @form_data[:course])
     else
       bca = BookCourseAssociation.find_by(
         course_id: course.id,
@@ -778,6 +771,7 @@ class ListingController < ApplicationController
 
     if bca.nil?
       bca = BookCourseAssociation.create!(
+        id: BookCourseAssociation.maximum(:id).next,
         course_id: course.id,
         book_id: this_book.id
       )
