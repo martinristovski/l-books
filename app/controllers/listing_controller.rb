@@ -274,7 +274,7 @@ class ListingController < ApplicationController
       @form_data = {
         :condition => listing_in_question.condition,
         :price => sprintf('%.2f', listing_in_question.price),  # convert to a string to 2 decimal places
-        :course => listing_in_question.primary_course.code,
+        :course => listing_in_question.primary_course.nil? ? "" : listing_in_question.primary_course.code,
         :description => listing_in_question.description,
         :hidden_draft_listing_id => listing_in_question.id
       }

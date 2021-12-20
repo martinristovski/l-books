@@ -73,12 +73,10 @@ RSpec.describe "Listings", type: :request do
 
     # courses
     c1 = Course.create!(
-      code: "HUMA1001",
-      name: "Masterpieces of Western Literature and Philosophy I"
+      code: "HUMA1001"
     )
     c2 = Course.create!(
-      code: "HUMA1002",
-      name: "Masterpieces of Western Literature and Philosophy II"
+      code: "HUMA1002"
     )
 
     # book-course associations
@@ -102,6 +100,7 @@ RSpec.describe "Listings", type: :request do
       price: 5.00,
       condition: "Like new",
       description: "Copy of the Iliad. Looks like it was never used (which may or may not have been the case)...",
+      course_id: c1.id,
       seller_id: u1.id
     )
     l2 = Listing.create!(
@@ -110,6 +109,7 @@ RSpec.describe "Listings", type: :request do
       price: 4.50,
       condition: "Used, slightly worn",
       description: "Another copy of the Iliad. This actually looks like it was used.",
+      course_id: c1.id,
       seller_id: u2.id
     )
     l3 = Listing.create!(
@@ -118,6 +118,7 @@ RSpec.describe "Listings", type: :request do
       price: 5.15,
       condition: "Used",
       description: "Plato's Symposium. Used.",
+      course_id: c1.id,
       seller_id: u3.id
     )
   end
