@@ -12,8 +12,8 @@ A SaaS product created for [COMS W4995: Engineering Software-as-a-Service](http:
 * GitHub: https://github.com/martinristovski/l-books
 * Heroku: https://lbooks-4995.herokuapp.com/
 * Coverage:
-  * RSpec **(97% coverage)**: https://lbooks-4995.herokuapp.com/cov_rspec
-  * Cucumber **(85% coverage)**: https://lbooks-4995.herokuapp.com/cov_cucumber
+  * RSpec **(~97% coverage)**: https://lbooks-4995.herokuapp.com/cov_rspec
+  * Cucumber **(~85% coverage)**: https://lbooks-4995.herokuapp.com/cov_cucumber
 
 ## Running it locally
 
@@ -28,6 +28,15 @@ use the `rspec` and `cucumber` commands.
 
 _(Note that some of these commands may be different on your end depending 
 on how Ruby is installed on your computer.)_
+
+### Environment variables
+
+This app requires several environment variables to be defined in order for it to
+properly run. If you are running this app locally, you may define them in `config/
+local_env.yml`.
+
+**To the TAs**: We should have submitted working values for these environment variables
+in the file we submitted on CourseWorks. Please contact us if they do not work for some reason.
 
 ## All implemented features
 
